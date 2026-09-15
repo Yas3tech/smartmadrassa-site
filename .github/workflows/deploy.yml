@@ -1,0 +1,70 @@
+name: Déploiement OVH
+
+# Compile le site et l'envoie par FTPS dans www/ à chaque push sur main.
+# Le déclenchement manuel (workflow_dispatch) permet de renvoyer le site
+# sans avoir à faire un commit.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un seul déploiement à la fois : évite que deux envois FTP se chevauchent.
+concurrency:
+  group: deploiement-ovh
+  cancel-in-progress: false
+
+jobs:
+  deployer:
+    name: Compiler et publier
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: Vérifier les types
+        run: pnpm exec tsc -b
+
+      - name: Compiler
+        run: pnpm build
+
+      - name: Vérifier que le build est complet
+        run: |
+          set -e
+          for f in index.html .htaccess robots.txt sitemap.xml og-image.png api/contact.php; do
+            if [ ! -f "dist/$f" ]; then
+              echo "::error::Fichier manquant dans dist/ : $f"
+              exit 1
+            fi
+          done
+          echo "Build complet — $(du -sh dist | cut -f1)"
+
+      - name: Envoyer sur OVH par FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.OVH_FTP_HOST }}
+          username: ${{ secrets.OVH_FTP_USER }}
+          password: ${{ secrets.OVH_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          server-dir: ${{ vars.OVH_SERVER_DIR || './www/' }}
+          # Synchronisation incrémentale : l'action garde un état sur le serveur
+          # et ne renvoie que les fichiers modifiés.
+          state-name: .ftp-deploy-state.json
+          dangerous-clean-slate: false
+          log-level: minimal

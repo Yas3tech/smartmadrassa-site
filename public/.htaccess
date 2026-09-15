@@ -1,0 +1,88 @@
+# ==========================================================================
+#  SmartMadrassa — site vitrine (hébergement mutualisé OVH, Apache)
+#  Placer ce fichier à la racine du dossier www/ avec le contenu de dist/
+# ==========================================================================
+
+# --- Forcer PHP 8.2 (spécifique OVH, ignoré ailleurs) ---------------------
+# Si le formulaire de contact renvoie une erreur 500, commentez la ligne
+# suivante ou ajustez-la à une version disponible dans votre hébergement.
+# AddHandler application/x-httpd-php82 .php
+
+# --- Page d'erreur --------------------------------------------------------
+ErrorDocument 404 /index.html
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+
+# --- HTTPS + domaine canonique -------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTP -> HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # www -> apex (inversez si vous préférez www)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Application monopage : tout ce qui n'est pas un fichier réel
+  # ni un script PHP est servi par index.html
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# --- En-têtes de sécurité -------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+
+  # Le site n'appelle aucun service tiers : tout est servi depuis son origine.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
+
+  # Les fichiers versionnés par Vite (hash dans le nom) sont immuables
+  <FilesMatch "\.(js|css|woff2|woff|svg|png|jpg|jpeg|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Le HTML ne doit jamais être mis en cache durablement
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# --- Compression ----------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --- Expiration (repli si mod_headers absent) -----------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# --- Types MIME -----------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# --- Protection des fichiers sensibles ------------------------------------
+<FilesMatch "^(\.env|\.htaccess|\.htpasswd|composer\.(json|lock)|package(-lock)?\.json)$">
+  Require all denied
+</FilesMatch>

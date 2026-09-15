@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>SmartMadrassa — La plateforme de gestion pour écoles associatives et instituts</title>
+    <meta
+      name="description"
+      content="SmartMadrassa digitalise votre école : appel et présences en 30 secondes, notes, bulletins automatisés, communication avec les parents, finances et inscriptions. Trilingue FR/NL/AR, hébergé en Europe, conforme RGPD."
+    />
+    <link rel="canonical" href="https://smartmadrassa.be/" />
+    <meta name="theme-color" content="#04070F" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="author" content="SmartMadrassa" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Icônes -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SmartMadrassa" />
+    <meta property="og:locale" content="fr_BE" />
+    <meta property="og:url" content="https://smartmadrassa.be/" />
+    <meta property="og:title" content="SmartMadrassa — Toute votre école dans une seule plateforme" />
+    <meta
+      property="og:description"
+      content="Appel, notes, bulletins, communication parents, finances. Trilingue FR/NL/AR, hébergé en Europe, conforme RGPD."
+    />
+    <meta property="og:image" content="https://smartmadrassa.be/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SmartMadrassa — Toute votre école dans une seule plateforme" />
+    <meta
+      name="twitter:description"
+      content="Appel, notes, bulletins, communication parents, finances. Trilingue FR/NL/AR, hébergé en Europe, conforme RGPD."
+    />
+    <meta name="twitter:image" content="https://smartmadrassa.be/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "SmartMadrassa",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "School Management System",
+        "operatingSystem": "Web, iOS, Android",
+        "url": "https://smartmadrassa.be",
+        "inLanguage": ["fr", "nl", "ar"],
+        "description": "Plateforme SaaS de gestion pédagogique et administrative pour écoles associatives, instituts de langues et structures de soutien scolaire.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR",
+          "description": "Essai gratuit — mise en route accompagnée"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "SmartMadrassa",
+          "email": "contact@smartmadrassa.be",
+          "areaServed": "BE",
+          "url": "https://smartmadrassa.be"
+        }
+      }
+    </script>
+
+    <style>
+      html { background: #04070f; }
+      #boot {
+        position: fixed; inset: 0; display: grid; place-items: center;
+        background: #04070f; z-index: 60; transition: opacity .45s ease;
+      }
+      #boot.out { opacity: 0; pointer-events: none; }
+      #boot i {
+        width: 38px; height: 38px; border-radius: 50%;
+        border: 2px solid rgba(249,115,22,.18); border-top-color: #f97316;
+        display: block; animation: bspin .8s linear infinite;
+      }
+      @keyframes bspin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { #boot i { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <div id="boot"><i></i></div>
+    <div id="root"></div>
+    <noscript>
+      <div style="padding:48px;color:#e2e8f0;font-family:system-ui,sans-serif;max-width:640px;margin:0 auto">
+        <h1>SmartMadrassa</h1>
+        <p>
+          Plateforme de gestion scolaire pour écoles associatives, instituts de langues et structures
+          de soutien scolaire. Appel et présences, notes, bulletins, communication avec les parents,
+          finances et inscriptions. Trilingue FR/NL/AR, hébergement européen, conforme RGPD.
+        </p>
+        <p>Activez JavaScript pour afficher le site, ou écrivez-nous à contact@smartmadrassa.be.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

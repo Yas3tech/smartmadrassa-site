@@ -1,0 +1,14 @@
+{
+  "name": "SmartMadrassa",
+  "short_name": "SmartMadrassa",
+  "description": "Plateforme de gestion scolaire pour écoles associatives, instituts de langues et structures de soutien scolaire.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#04070F",
+  "theme_color": "#04070F",
+  "lang": "fr",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,12 @@
+# Fins de ligne normalisées en LF dans le dépôt et à la sortie :
+# le build tourne sous Linux (GitHub Actions) et les fichiers partent tels quels
+# sur un serveur Apache.
+* text=auto eol=lf
+
+# Binaires : ne jamais convertir
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ico  binary
+*.woff binary
+*.woff2 binary

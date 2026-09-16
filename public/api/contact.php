@@ -48,7 +48,15 @@ foreach (['HTTP_ORIGIN', 'HTTP_REFERER'] as $cle) {
         if ($hote !== null && $hote !== false) { $origines[] = strtolower($hote); }
     }
 }
-$hotesAutorises = ['smartmadrassa.be', 'www.smartmadrassa.be'];
+
+// L'hôte du serveur lui-même est toujours accepté : cela couvre le domaine de
+// production, un éventuel domaine de préproduction et le serveur PHP local
+// lancé pour tester le formulaire, sans liste à tenir à jour. Le port ne fait
+// pas partie de la comparaison — Origin n'en porte pas toujours.
+$hoteServeur = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+$hoteServeur = (string) parse_url('http://' . $hoteServeur, PHP_URL_HOST);
+$hotesAutorises = array_filter(['smartmadrassa.be', 'www.smartmadrassa.be', 'localhost', $hoteServeur]);
+
 if (!$origines || !array_intersect($origines, $hotesAutorises)) {
     repondre(403, ['ok' => false, 'error' => 'Origine de la requête non autorisée.']);
 }

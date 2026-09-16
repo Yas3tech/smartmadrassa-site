@@ -17,7 +17,8 @@
     "og": "node scripts/generate-og.mjs",
     "deploy": "node scripts/deploy-sftp.mjs",
     "deploy:dry": "node scripts/deploy-sftp.mjs --dry-run",
-    "check:i18n": "node scripts/check-i18n.mjs"
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "api": "php -S localhost:8787 -t public"
   },
   "dependencies": {
     "@fontsource/cairo": "^5.3.0",

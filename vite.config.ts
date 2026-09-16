@@ -33,5 +33,28 @@ export default defineConfig({
       },
     },
   },
-  server: { port: 5174, open: true },
+  server: {
+    port: 5174,
+    open: true,
+    /**
+     * En production, aucun proxy n'est nécessaire : Apache sert le site et
+     * /api/contact.php depuis la même origine — c'est ce qui permet une CSP en
+     * `connect-src 'self'`, l'absence de CORS et le contrôle d'origine du
+     * formulaire.
+     *
+     * En développement, Vite ne sait pas exécuter PHP : sans ce renvoi, poster
+     * le formulaire retomberait sur le HTML de l'application. Lancez le serveur
+     * PHP intégré à côté, puis testez l'envoi :
+     *
+     *   pnpm api        # php -S localhost:8787 -t public
+     *   pnpm dev
+     */
+    proxy: {
+      '/api': {
+        target: process.env.API_PROXY ?? 'http://localhost:8787',
+        // On garde l'en-tête Origin d'origine : contact.php le vérifie.
+        changeOrigin: false,
+      },
+    },
+  },
 });

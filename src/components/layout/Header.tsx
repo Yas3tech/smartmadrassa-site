@@ -1,5 +1,5 @@
 import { t, localizedHref } from '../../lib/i18n';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
@@ -36,6 +36,21 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  /**
+   * Le logo ramène en haut de la page.
+   *
+   * Depuis l'accueil, un lien vers « / » ne déclenche aucun changement de route :
+   * il ne se passait donc rien. On remonte nous-mêmes, sans empiler d'entrée
+   * d'historique inutile. Depuis une autre page, la navigation a lieu et le
+   * défilement est remis à zéro dans la foulée.
+   */
+  const remonter = (event: MouseEvent) => {
+    setOpen(false);
+    const doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isHome) event.preventDefault();
+    window.scrollTo({ top: 0, behavior: doux ? 'smooth' : 'auto' });
+  };
+
   useEffect(() => {
     if (!open) return;
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -68,7 +83,12 @@ export function Header() {
               : 'border border-transparent bg-transparent',
           )}
         >
-          <Link to={localizedHref('/')} aria-label={`${SITE.name} — ${t('accueil')}`} className="shrink-0">
+          <Link
+            to={localizedHref('/')}
+            onClick={remonter}
+            aria-label={`${SITE.name} — ${t('accueil')}`}
+            className="shrink-0"
+          >
             <Logo priority className="[&_.logo-wordmark]:hidden min-[400px]:[&_.logo-wordmark]:inline [&_.logo-wordmark]:text-[13px] sm:[&_.logo-wordmark]:text-[17px]" />
           </Link>
 

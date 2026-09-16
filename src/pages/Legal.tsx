@@ -1,5 +1,5 @@
 import { t, localizedHref } from '../lib/i18n';
-import { useEffect, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { SITE } from '../content/site';
@@ -16,12 +16,6 @@ function LegalLayout({
   intro: string;
   children: ReactNode;
 }) {
-  // Le titre et la description sont posés par applyPageSeo(), au niveau de la
-  // route : ici on se contente de remonter en haut de la page légale.
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [title]);
-
   return (
     <main className="relative pb-24 pt-32 sm:pt-40">
       <Aurora variant="soft" />
@@ -222,10 +216,7 @@ export function Conditions() {
 /* ------------------------------------------------------------------ */
 
 export function NotFound() {
-  useEffect(() => {
-    document.title = `${t('Page introuvable')} — ${SITE.name}`;
-  }, []);
-
+  // Titre, description et « noindex » sont posés par applyPageSeo().
   return (
     <main className="relative grid min-h-[70vh] place-items-center pt-32">
       <Aurora variant="soft" />

@@ -62,7 +62,7 @@ export function AppFrame({
           <svg viewBox="0 0 24 24" className="h-2.5 w-2.5 text-success" fill="currentColor">
             <path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 1 1 6 0v3H9z" />
           </svg>
-          app.smartmadrassa.be
+          wns.smartmadrassa.be
         </div>
         <div className="ml-auto flex items-center gap-2 sm:ml-0">
           <span className="hidden rounded-full border border-contrast/10 px-2 py-0.5 text-[9px] font-semibold text-slate-400 sm:inline">

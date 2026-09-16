@@ -1,6 +1,6 @@
 # Site vitrine SmartMadrassa — `smartmadrassa.be`
 
-Site de présentation public, **séparé de l'application** (`app.smartmadrassa.be`, hébergée sur
+Site de présentation public, **séparé de l'application** (`wns.smartmadrassa.be`, hébergée sur
 Firebase). Il se compile en fichiers statiques déposés sur un hébergement mutualisé OVH.
 
 Ce dépôt ne contient que le site vitrine ; le code de l'application vit dans un dépôt distinct.
@@ -64,7 +64,7 @@ pnpm og               # régénère public/og-image.png (aperçu de partage)
 
 1. **Tarifs** (`PRICING`) — 39 € / 79 € / sur mesure sont des valeurs de départ indicatives à confirmer.
 2. **Éditeur et mentions** — Le site présente SmartMadrassa comme projet indépendant conçu et développé en solo par Yassine E. en Belgique.
-3. **URL de l'application** — `SITE.appUrl` pointe vers `https://app.smartmadrassa.be`.
+3. **URL de l'application** — `SITE.appUrl` pointe vers `https://wns.smartmadrassa.be`.
    Ajustez-la si le sous-domaine diffère.
 4. **Témoignages** — n'ajoutez dans `TESTIMONIALS` que des retours réels obtenus par écrit.
 

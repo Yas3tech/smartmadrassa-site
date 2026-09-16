@@ -7,7 +7,7 @@ export const SITE = {
   name: 'SmartMadrassa',
   domain: 'smartmadrassa.be',
   url: 'https://smartmadrassa.be',
-  appUrl: 'https://app.smartmadrassa.be',
+  appUrl: 'https://wns.smartmadrassa.be',
   email: 'contact@smartmadrassa.be',
   editor: 'Yassine E. — créateur et éditeur indépendant',
   country: 'Belgique',

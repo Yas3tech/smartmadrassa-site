@@ -87,7 +87,7 @@ export function Roles() {
                 aria-pressed={isActive}
                 className={cn(
                   'relative inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors',
-                  isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200',
+                  isActive ? 'text-contrast' : 'text-slate-400 hover:text-slate-200',
                 )}
               >
                 {isActive && (
@@ -113,7 +113,7 @@ export function Roles() {
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.4, ease: EASE }}
             >
-              <h3 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-[-0.025em] text-white sm:text-3xl">
+              <h3 className="text-balance font-display text-2xl font-bold leading-[1.15] tracking-[-0.025em] text-contrast sm:text-3xl">
                 {role.headline}
               </h3>
               <p className="mt-4 leading-relaxed text-slate-400">{role.body}</p>
@@ -125,9 +125,9 @@ export function Roles() {
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.45, ease: EASE, delay: 0.08 + i * 0.06 }}
-                    className="flex items-center gap-3 border-b border-white/[0.05] pb-3 last:border-0"
+                    className="flex items-center gap-3 border-b border-contrast/[0.05] pb-3 last:border-0"
                   >
-                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-brand-400" />
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-accent" />
                     <span className="text-sm text-slate-300">{p}</span>
                   </motion.li>
                 ))}

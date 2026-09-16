@@ -34,10 +34,10 @@ export function Bento() {
             return (
               <RevealItem key={item.title} className={cn(item.span)}>
                 <SpotlightCard className="h-full p-6 sm:p-7">
-                  <span className="mb-5 grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-400/20 to-brand-600/10 text-brand-300 ring-1 ring-inset ring-brand-400/20">
+                  <span className="mb-5 grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-400/20 to-brand-600/10 text-accent ring-1 ring-inset ring-brand-400/20">
                     <Icon className="h-[18px] w-[18px]" strokeWidth={1.9} />
                   </span>
-                  <h3 className="font-display text-[17px] font-semibold leading-snug text-white">
+                  <h3 className="font-display text-[17px] font-semibold leading-snug text-contrast">
                     {item.title}
                   </h3>
                   <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{item.body}</p>

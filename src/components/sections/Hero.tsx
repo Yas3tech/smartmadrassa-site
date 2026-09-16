@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Check, Play, Bell, CalendarCheck2 } from 'lucide-react';
 import { HERO, MARQUEE } from '../../content/site';
 import { EASE } from '../../lib/motion';
@@ -28,13 +28,13 @@ function FloatingCard({
       initial={{ opacity: 0, y: 18, scale: 0.94 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.9, ease: EASE, delay }}
-      className={`pointer-events-none absolute z-20 hidden animate-float items-start gap-2.5 rounded-xl border border-white/10 bg-ink-850/90 p-3 shadow-[0_20px_60px_-20px_rgba(0,0,0,.9)] backdrop-blur-xl lg:flex ${className}`}
+      className={`pointer-events-none absolute z-20 hidden animate-float items-start gap-2.5 rounded-xl border border-contrast/10 bg-ink-850 p-3 shadow-device lg:flex ${className}`}
     >
-      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-400/25 to-brand-600/25 text-brand-300 ring-1 ring-inset ring-brand-400/25">
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-400/25 to-brand-600/25 text-accent ring-1 ring-inset ring-brand-400/25">
         {icon}
       </span>
       <span className="min-w-0">
-        <span className="block text-[11px] font-semibold text-white">{title}</span>
+        <span className="block text-[11px] font-semibold text-contrast">{title}</span>
         <span className="block text-[10px] text-slate-400">{body}</span>
       </span>
     </motion.div>
@@ -49,13 +49,12 @@ export function Hero() {
     target: stageRef,
     offset: ['start 85%', 'end 30%'],
   });
-  const p = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
 
   // La maquette se « déplie » vers le lecteur au fil du scroll.
-  const rotateX = useTransform(p, [0, 1], reduced ? [0, 0] : [26, 0]);
-  const scale = useTransform(p, [0, 1], reduced ? [1, 1] : [0.88, 1]);
-  const translateY = useTransform(p, [0, 1], reduced ? [0, 0] : [56, 0]);
-  const glow = useTransform(p, [0, 1], [0.25, 0.75]);
+  const rotateX = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [26, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [0.88, 1]);
+  const translateY = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [56, 0]);
+  const glow = useTransform(scrollYProgress, [0, 1], reduced ? [0.5, 0.5] : [0.25, 0.75]);
 
   return (
     <section id="plateforme" className="relative overflow-hidden pb-8 pt-32 sm:pt-40">
@@ -77,7 +76,7 @@ export function Hero() {
             {HERO.badge}
           </motion.div>
 
-          <h1 className="mt-7 font-display text-[2.6rem] font-extrabold leading-[1.03] tracking-[-0.045em] text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-7 font-display text-[2.6rem] font-extrabold leading-[1.03] tracking-[-0.045em] text-contrast sm:text-6xl lg:text-7xl">
             <MaskedLines
               lines={[
                 HERO.titleLines[0],
@@ -87,7 +86,7 @@ export function Hero() {
                     <span className="text-gradient text-shadow-glow">{HERO.titleAccent}</span>
                     <motion.svg
                       viewBox="0 0 320 16"
-                      className="absolute -bottom-1.5 left-0 h-3 w-full overflow-visible text-brand-500/70"
+                      className="absolute -bottom-1.5 left-0 h-3 w-full overflow-visible text-accent/70"
                       fill="none"
                       aria-hidden
                     >
@@ -141,7 +140,7 @@ export function Hero() {
           >
             {HERO.proofs.map((proof) => (
               <li key={proof} className="flex items-center gap-1.5 text-[13px] text-slate-500">
-                <Check className="h-3.5 w-3.5 text-jade-400" strokeWidth={3} />
+                <Check className="h-3.5 w-3.5 text-success" strokeWidth={3} />
                 {proof}
               </li>
             ))}
@@ -204,7 +203,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 mt-16 border-y border-white/[0.06] bg-white/[0.012] py-4">
+      <div className="relative z-10 mt-16 border-y border-contrast/[0.06] bg-contrast/[0.012] py-4">
         <Marquee items={MARQUEE} duration={52} />
       </div>
     </section>

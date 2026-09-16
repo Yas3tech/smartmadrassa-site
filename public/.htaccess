@@ -55,6 +55,11 @@ DirectoryIndex index.html
   <FilesMatch "\.(html)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+
+  # Ce script est chargé avant le rendu et son nom n'est pas versionné.
+  <Files "theme-init.js">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </Files>
 </IfModule>
 
 # --- Compression ----------------------------------------------------------

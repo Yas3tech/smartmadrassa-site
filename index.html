@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" dir="ltr">
+<html lang="fr" dir="ltr" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -10,9 +10,11 @@
       content="SmartMadrassa digitalise votre école : appel et présences en 30 secondes, notes, bulletins automatisés, communication avec les parents, finances et inscriptions. Trilingue FR/NL/AR, hébergé en Europe, conforme RGPD."
     />
     <link rel="canonical" href="https://smartmadrassa.be/" />
-    <meta name="theme-color" content="#04070F" />
+    <meta name="theme-color" content="#faf9f6" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="/theme-init.js"></script>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta name="author" content="SmartMadrassa" />
+    <meta name="author" content="Yassine E. — créateur indépendant" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <!-- Icônes -->
@@ -62,22 +64,23 @@
           "description": "Essai gratuit — mise en route accompagnée"
         },
         "publisher": {
-          "@type": "Organization",
-          "name": "SmartMadrassa",
+          "@type": "Person",
+          "name": "Yassine E.",
           "email": "contact@smartmadrassa.be",
-          "areaServed": "BE",
           "url": "https://smartmadrassa.be"
         }
       }
     </script>
 
     <style>
-      html { background: #04070f; }
+      html { background: #faf9f6; }
+      html[data-theme='dark'] { background: #04070f; }
       #boot {
         position: fixed; inset: 0; display: grid; place-items: center;
-        background: #04070f; z-index: 60; transition: opacity .45s ease;
+        background: #faf9f6; z-index: 60; transition: opacity .45s ease;
       }
       #boot.out { opacity: 0; pointer-events: none; }
+      html[data-theme='dark'] #boot { background: #04070f; }
       #boot i {
         width: 38px; height: 38px; border-radius: 50%;
         border: 2px solid rgba(249,115,22,.18); border-top-color: #f97316;
@@ -91,14 +94,15 @@
     <div id="boot"><i></i></div>
     <div id="root"></div>
     <noscript>
-      <div style="padding:48px;color:#e2e8f0;font-family:system-ui,sans-serif;max-width:640px;margin:0 auto">
+      <style>#boot { display: none; }</style>
+      <div style="padding:48px;color:#273645;font-family:system-ui,sans-serif;max-width:640px;margin:0 auto">
         <h1>SmartMadrassa</h1>
         <p>
           Plateforme de gestion scolaire pour écoles associatives, instituts de langues et structures
           de soutien scolaire. Appel et présences, notes, bulletins, communication avec les parents,
           finances et inscriptions. Trilingue FR/NL/AR, hébergement européen, conforme RGPD.
         </p>
-        <p>Activez JavaScript pour afficher le site, ou écrivez-nous à contact@smartmadrassa.be.</p>
+        <p>Activez JavaScript pour afficher le site, ou écrivez-moi à contact@smartmadrassa.be.</p>
       </div>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

@@ -22,12 +22,12 @@ export function Steps() {
               Opérationnel en <span className="text-gradient">deux à trois semaines</span>
             </>
           }
-          lead="Vous ne repartez pas de zéro : nous reprenons vos fichiers existants et nous nous chargeons de la configuration. Votre équipe n’a qu’à apprendre à s’en servir."
+          lead="Je reprends vos fichiers existants et je configure la plateforme avec vous. Puis j’accompagne votre équipe dans sa prise en main."
         />
 
         <div ref={ref} className="relative mt-16 pl-12 sm:pl-16">
           {/* Rail vertical */}
-          <div aria-hidden className="absolute left-[15px] top-2 h-[calc(100%-3rem)] w-px bg-white/[0.08] sm:left-[23px]">
+          <div aria-hidden className="absolute left-[15px] top-2 h-[calc(100%-3rem)] w-px bg-contrast/[0.08] sm:left-[23px]">
             <motion.div
               style={{ scaleY }}
               className="h-full w-full origin-top bg-gradient-to-b from-brand-400 via-brand-500 to-jade-500"
@@ -45,15 +45,15 @@ export function Steps() {
                 className="relative"
               >
                 {/* Pastille sur le rail */}
-                <span className="absolute -left-12 top-0.5 grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-ink-900 font-display text-[11px] font-bold text-brand-300 shadow-[0_0_24px_rgba(249,115,22,.25)] sm:-left-16 sm:h-12 sm:w-12 sm:text-[13px]">
+                <span className="absolute -left-12 top-0.5 grid h-8 w-8 place-items-center rounded-full border border-contrast/10 bg-ink-900 font-display text-[11px] font-bold text-accent shadow-[0_0_24px_rgba(249,115,22,.25)] sm:-left-16 sm:h-12 sm:w-12 sm:text-[13px]">
                   {step.n}
                 </span>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-white sm:text-[1.4rem]">
+                  <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-contrast sm:text-[1.4rem]">
                     {step.title}
                   </h3>
-                  <span className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-0.5 text-[11px] font-medium text-slate-400">
+                  <span className="rounded-full border border-contrast/[0.08] bg-contrast/[0.03] px-2.5 py-0.5 text-[11px] font-medium text-slate-400">
                     {step.duration}
                   </span>
                 </div>

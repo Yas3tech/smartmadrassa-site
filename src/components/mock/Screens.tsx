@@ -31,13 +31,13 @@ function Kpi({
   tone?: 'brand' | 'jade' | 'red' | 'slate';
 }) {
   const tones = {
-    brand: 'text-brand-300',
-    jade: 'text-jade-300',
-    red: 'text-rose-300',
+    brand: 'text-accent',
+    jade: 'text-success',
+    red: 'text-danger',
     slate: 'text-slate-200',
   };
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-2.5">
+    <div className="rounded-lg border border-contrast/[0.07] bg-contrast/[0.02] p-2.5">
       <div className="text-[9px] uppercase tracking-wider text-slate-500">{label}</div>
       <div className={cn('mt-1 font-display text-lg font-bold leading-none', tones[tone])}>{value}</div>
       {delta && <div className="mt-1 text-[9px] text-slate-500">{delta}</div>}
@@ -71,7 +71,7 @@ function Bar({ value, tone = 'brand', delay = 0 }: { value: number; tone?: 'bran
     violet: 'from-violet-600 to-violet-400',
   };
   return (
-    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-contrast/[0.06]">
       <motion.div
         className={cn('h-full rounded-full bg-gradient-to-r', tones[tone])}
         initial={{ width: 0 }}
@@ -103,7 +103,7 @@ export function DashboardScreen() {
         <div className="ui-pane">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[10px] font-semibold text-slate-300">Présence — 7 derniers jours</span>
-            <span className="inline-flex items-center gap-1 text-[9px] text-jade-300">
+            <span className="inline-flex items-center gap-1 text-[9px] text-success">
               <TrendingUp className="h-2.5 w-2.5" /> +3,2 %
             </span>
           </div>
@@ -136,7 +136,7 @@ export function DashboardScreen() {
               ['10:30', 'Coran — 2B', 'jade'],
               ['13:15', 'Sciences — 4A', 'sky'],
             ].map(([time, label, tone]) => (
-              <div key={label} className="flex items-center gap-2 rounded-md bg-white/[0.03] px-2 py-1.5">
+              <div key={label} className="flex items-center gap-2 rounded-md bg-contrast/[0.03] px-2 py-1.5">
                 <span className="font-mono text-[9px] text-slate-500">{time}</span>
                 <span className="truncate text-[10px] text-slate-300">{label}</span>
                 <span
@@ -185,7 +185,7 @@ function StatusPills({ status, delay }: { status: string; delay: number }) {
             aria-label={label}
             className={cn(
               'grid h-5 w-5 place-items-center rounded-md transition-colors',
-              active ? on : 'bg-white/[0.05] text-slate-600',
+              active ? on : 'bg-contrast/[0.05] text-slate-600',
             )}
             initial={active ? { scale: 0.6, opacity: 0 } : false}
             whileInView={active ? { scale: 1, opacity: 1 } : undefined}
@@ -204,12 +204,12 @@ export function AttendanceScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-brand-500/15 text-brand-300 ring-1 ring-inset ring-brand-500/25">
+        <span className="ui-chip bg-brand-500/15 text-accent ring-1 ring-inset ring-brand-500/25">
           Classe 3A
         </span>
-        <span className="ui-chip bg-white/[0.04] text-slate-400">Arabe — 09:00</span>
-        <span className="ui-chip bg-white/[0.04] text-slate-400">Lun. 16 sept.</span>
-        <span className="ml-auto inline-flex items-center gap-1 text-[9px] text-jade-300">
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Arabe — 09:00</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Lun. 16 sept.</span>
+        <span className="ml-auto inline-flex items-center gap-1 text-[9px] text-success">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-jade-400" /> Synchronisé
         </span>
       </div>
@@ -225,7 +225,7 @@ export function AttendanceScreen() {
         {ROLL.map((s, i) => (
           <motion.div
             key={s.name}
-            className="flex items-center gap-2 rounded-md px-1.5 py-1.5 odd:bg-white/[0.02]"
+            className="flex items-center gap-2 rounded-md px-1.5 py-1.5 odd:bg-contrast/[0.02]"
             initial={{ opacity: 0, x: -8 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={viewport}
@@ -244,7 +244,7 @@ export function AttendanceScreen() {
         <span className="rounded-md bg-brand-500 px-2.5 py-1 text-[9px] font-semibold text-white">
           Valider l’appel
         </span>
-        <span className="inline-flex items-center gap-1 rounded-md border border-white/[0.08] px-2.5 py-1 text-[9px] text-slate-400">
+        <span className="inline-flex items-center gap-1 rounded-md border border-contrast/[0.08] px-2.5 py-1 text-[9px] text-slate-400">
           <Download className="h-2.5 w-2.5" /> Export Excel
         </span>
       </div>
@@ -268,15 +268,15 @@ export function GradesScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-jade-500/15 text-jade-300 ring-1 ring-inset ring-jade-500/25">
+        <span className="ui-chip bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">
           Arabe — 3A
         </span>
-        <span className="ui-chip bg-white/[0.04] text-slate-400">Période 2</span>
-        <span className="ml-auto ui-chip bg-white/[0.04] text-slate-400">Moyenne classe 16,3</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Période 2</span>
+        <span className="ml-auto ui-chip bg-contrast/[0.04] text-slate-400">Moyenne classe 16,3</span>
       </div>
 
       <div className="ui-pane overflow-hidden p-0">
-        <div className="grid grid-cols-[1.6fr_repeat(3,1fr)_0.9fr] gap-1 border-b border-white/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
+        <div className="grid grid-cols-[1.6fr_repeat(3,1fr)_0.9fr] gap-1 border-b border-contrast/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
           <span>Élève</span>
           <span className="text-center">Interro.</span>
           <span className="text-center">Devoir</span>
@@ -286,7 +286,7 @@ export function GradesScreen() {
         {GRADES.map((row, i) => (
           <motion.div
             key={row.name}
-            className="grid grid-cols-[1.6fr_repeat(3,1fr)_0.9fr] items-center gap-1 px-3 py-1.5 odd:bg-white/[0.02]"
+            className="grid grid-cols-[1.6fr_repeat(3,1fr)_0.9fr] items-center gap-1 px-3 py-1.5 odd:bg-contrast/[0.02]"
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewport}
@@ -304,16 +304,16 @@ export function GradesScreen() {
                   s === '—'
                     ? 'text-slate-600'
                     : Number(s.replace(',', '.')) >= 16
-                      ? 'bg-jade-500/12 text-jade-300'
+                      ? 'bg-jade-500/12 text-success'
                       : Number(s.replace(',', '.')) >= 12
-                        ? 'bg-white/[0.05] text-slate-300'
-                        : 'bg-rose-500/12 text-rose-300',
+                        ? 'bg-contrast/[0.05] text-slate-300'
+                        : 'bg-rose-500/12 text-danger',
                 )}
               >
                 {s}
               </span>
             ))}
-            <span className="text-right font-mono text-[10px] font-semibold text-white">{row.avg}</span>
+            <span className="text-right font-mono text-[10px] font-semibold text-contrast">{row.avg}</span>
           </motion.div>
         ))}
       </div>
@@ -324,7 +324,7 @@ export function GradesScreen() {
           ['Devoirs', 30],
           ['Examen', 40],
         ].map(([label, weight], i) => (
-          <div key={label as string} className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-2">
+          <div key={label as string} className="rounded-lg border border-contrast/[0.07] bg-contrast/[0.02] p-2">
             <div className="mb-1.5 flex items-center justify-between">
               <span className="text-slate-400">{label}</span>
               <span className="font-semibold text-slate-200">{weight} %</span>
@@ -352,10 +352,10 @@ export function BulletinScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-violet-500/15 text-violet-300 ring-1 ring-inset ring-violet-500/25">
+        <span className="ui-chip bg-violet-500/15 text-status-violet ring-1 ring-inset ring-violet-500/25">
           Période 2 · 2025-2026
         </span>
-        <span className="ui-chip bg-white/[0.04] text-slate-400">Clôture le 20 déc.</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Clôture le 20 déc.</span>
       </div>
 
       <div className="ui-pane space-y-2.5">
@@ -374,10 +374,10 @@ export function BulletinScreen() {
                 className={cn(
                   'ml-auto ui-chip',
                   c.done === 100
-                    ? 'bg-jade-500/15 text-jade-300'
+                    ? 'bg-jade-500/15 text-success'
                     : c.done >= 70
-                      ? 'bg-amber-500/15 text-amber-300'
-                      : 'bg-rose-500/15 text-rose-300',
+                      ? 'bg-amber-500/15 text-warning'
+                      : 'bg-rose-500/15 text-danger',
                 )}
               >
                 {c.done === 100 ? (
@@ -397,7 +397,7 @@ export function BulletinScreen() {
       </div>
 
       <div className="flex items-center gap-2 rounded-lg border border-violet-500/20 bg-violet-500/[0.06] p-2.5">
-        <FileCheck2 className="h-3.5 w-3.5 shrink-0 text-violet-300" />
+        <FileCheck2 className="h-3.5 w-3.5 shrink-0 text-status-violet" />
         <span className="text-[10px] text-slate-300">
           2 classes sur 4 sont prêtes à être publiées.
         </span>
@@ -423,7 +423,7 @@ export function CommsScreen() {
   return (
     <div className="grid gap-2 sm:grid-cols-[1fr_0.85fr]">
       <div className="ui-pane flex flex-col gap-2">
-        <div className="flex items-center gap-2 border-b border-white/[0.07] pb-2">
+        <div className="flex items-center gap-2 border-b border-contrast/[0.07] pb-2">
           <Avatar initials="MB" tone="sky" />
           <div className="min-w-0">
             <div className="truncate text-[10px] font-medium text-slate-200">Mme Benali</div>
@@ -446,7 +446,7 @@ export function CommsScreen() {
                 'rounded-xl px-2.5 py-1.5 text-[10px] leading-snug',
                 m.from === 'me'
                   ? 'rounded-tr-sm bg-brand-500/90 text-white'
-                  : 'rounded-tl-sm bg-white/[0.06] text-slate-300',
+                  : 'rounded-tl-sm bg-contrast/[0.06] text-slate-300',
               )}
             >
               {m.text}
@@ -454,17 +454,17 @@ export function CommsScreen() {
           </motion.div>
         ))}
 
-        <div className="mt-auto flex items-center gap-2 rounded-lg border border-white/[0.07] bg-ink-950/60 px-2.5 py-1.5">
+        <div className="mt-auto flex items-center gap-2 rounded-lg border border-contrast/[0.07] bg-ink-950/60 px-2.5 py-1.5">
           <span className="text-[10px] text-slate-600">Écrire un message…</span>
-          <Send className="ml-auto h-3 w-3 text-brand-400" />
+          <Send className="ml-auto h-3 w-3 text-accent" />
         </div>
       </div>
 
       <div className="ui-pane space-y-2">
         <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-300">
-          <Megaphone className="h-3 w-3 text-brand-400" /> Nouvelle annonce
+          <Megaphone className="h-3 w-3 text-accent" /> Nouvelle annonce
         </div>
-        <div className="rounded-lg border border-white/[0.07] bg-ink-950/60 p-2">
+        <div className="rounded-lg border border-contrast/[0.07] bg-ink-950/60 p-2">
           <div className="text-[10px] font-medium text-slate-200">Réunion de parents — 12 octobre</div>
           <p className="mt-1 text-[9px] leading-relaxed text-slate-500">
             Chers parents, la réunion se tiendra le samedi 12 octobre à 14 h dans la grande salle…
@@ -481,7 +481,7 @@ export function CommsScreen() {
               <span
                 className={cn(
                   'grid h-3 w-3 place-items-center rounded-[3px]',
-                  on ? 'bg-brand-500' : 'border border-white/15',
+                  on ? 'bg-brand-500' : 'border border-contrast/15',
                 )}
               >
                 {on && <Check className="h-2 w-2 text-white" strokeWidth={4} />}
@@ -490,7 +490,7 @@ export function CommsScreen() {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-1.5 rounded-md bg-jade-500/10 px-2 py-1.5 text-[9px] text-jade-300">
+        <div className="flex items-center gap-1.5 rounded-md bg-jade-500/10 px-2 py-1.5 text-[9px] text-success">
           <Check className="h-2.5 w-2.5" /> 186 e-mails seront envoyés
         </div>
       </div>
@@ -510,9 +510,9 @@ const PAYMENTS = [
 ];
 
 const STATUS_TONE: Record<string, string> = {
-  'Payé': 'bg-jade-500/15 text-jade-300',
-  Partiel: 'bg-amber-500/15 text-amber-300',
-  'En attente': 'bg-rose-500/15 text-rose-300',
+  'Payé': 'bg-jade-500/15 text-success',
+  Partiel: 'bg-amber-500/15 text-warning',
+  'En attente': 'bg-rose-500/15 text-danger',
 };
 
 export function FinanceScreen() {
@@ -525,7 +525,7 @@ export function FinanceScreen() {
       </div>
 
       <div className="ui-pane overflow-hidden p-0">
-        <div className="grid grid-cols-[1.6fr_1fr_0.9fr_auto] gap-2 border-b border-white/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
+        <div className="grid grid-cols-[1.6fr_1fr_0.9fr_auto] gap-2 border-b border-contrast/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
           <span>Élève</span>
           <span>Minerval</span>
           <span>Statut</span>
@@ -534,7 +534,7 @@ export function FinanceScreen() {
         {PAYMENTS.map((p, i) => (
           <motion.div
             key={p.name}
-            className="grid grid-cols-[1.6fr_1fr_0.9fr_auto] items-center gap-2 px-3 py-1.5 odd:bg-white/[0.02]"
+            className="grid grid-cols-[1.6fr_1fr_0.9fr_auto] items-center gap-2 px-3 py-1.5 odd:bg-contrast/[0.02]"
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewport}
@@ -551,8 +551,8 @@ export function FinanceScreen() {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] p-2.5">
-        <Download className="h-3.5 w-3.5 shrink-0 text-brand-400" />
+      <div className="flex items-center gap-2 rounded-lg border border-contrast/[0.07] bg-contrast/[0.02] p-2.5">
+        <Download className="h-3.5 w-3.5 shrink-0 text-accent" />
         <span className="text-[10px] text-slate-400">
           Reçu PDF à l’en-tête de l’école, généré pour chaque règlement.
         </span>
@@ -570,16 +570,16 @@ export function PhoneAttendanceScreen() {
     <div className="space-y-2.5 px-3 pb-3 pt-2">
       <div>
         <div className="text-[9px] text-slate-500">Lundi 16 septembre</div>
-        <div className="font-display text-[13px] font-semibold text-white">Arabe — 3A</div>
+        <div className="font-display text-[13px] font-semibold text-contrast">Arabe — 3A</div>
       </div>
 
       <div className="grid grid-cols-3 gap-1.5">
         {[
-          ['21', 'Présents', 'text-jade-300'],
-          ['2', 'Absents', 'text-rose-300'],
-          ['1', 'Retards', 'text-amber-300'],
+          ['21', 'Présents', 'text-success'],
+          ['2', 'Absents', 'text-danger'],
+          ['1', 'Retards', 'text-warning'],
         ].map(([v, l, c]) => (
-          <div key={l} className="rounded-lg bg-white/[0.04] p-1.5 text-center">
+          <div key={l} className="rounded-lg bg-contrast/[0.04] p-1.5 text-center">
             <div className={cn('font-display text-sm font-bold', c)}>{v}</div>
             <div className="text-[8px] text-slate-500">{l}</div>
           </div>
@@ -590,7 +590,7 @@ export function PhoneAttendanceScreen() {
         {ROLL.slice(0, 5).map((s, i) => (
           <motion.div
             key={s.name}
-            className="flex items-center gap-2 rounded-lg bg-white/[0.03] px-2 py-2"
+            className="flex items-center gap-2 rounded-lg bg-contrast/[0.03] px-2 py-2"
             initial={{ opacity: 0, x: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={viewport}

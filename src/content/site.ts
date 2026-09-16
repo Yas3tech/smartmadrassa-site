@@ -9,7 +9,7 @@ export const SITE = {
   url: 'https://smartmadrassa.be',
   appUrl: 'https://app.smartmadrassa.be',
   email: 'contact@smartmadrassa.be',
-  editor: 'M. Yassine E. — éditeur indépendant',
+  editor: 'Yassine E. — créateur et éditeur indépendant',
   country: 'Belgique',
   tagline: 'Toute votre école, dans une seule plateforme.',
 };
@@ -24,7 +24,7 @@ export const NAV = [
 ];
 
 export const HERO = {
-  badge: 'Conçu en Belgique · Hébergé dans l’Union européenne',
+  badge: 'Créé en solo, en Belgique',
   titleLines: ['Toute votre école,', 'dans une seule'],
   titleAccent: 'plateforme.',
   subtitle:
@@ -110,8 +110,8 @@ export const PROBLEM = {
  * Le texte est découpé automatiquement : écrivez-le normalement.
  */
 export const MANIFESTO = {
-  eyebrow: 'Notre parti pris',
-  text: 'Un logiciel scolaire ne se juge pas à sa liste de fonctions. Il se juge un mardi soir, quand un enseignant fatigué doit encoder vingt notes avant de fermer son ordinateur. C’est ce moment-là que nous avons conçu en premier.',
+  eyebrow: 'Mon parti pris',
+  text: 'Un logiciel scolaire ne se juge pas à sa liste de fonctions. Il se juge un mardi soir, quand un enseignant fatigué doit encoder vingt notes avant de fermer son ordinateur. C’est ce moment-là que j’ai conçu en premier.',
   signature: 'Yassine E. — concepteur de SmartMadrassa',
 };
 
@@ -378,26 +378,26 @@ export const ROLES: Role[] = [
 export const STEPS = [
   {
     n: '01',
-    title: 'On reprend vos fichiers',
-    body: 'Vous nous transmettez vos listes existantes — Excel, Word, papier scanné. Classes, élèves, parents et enseignants sont importés puis vérifiés avec vous.',
+    title: 'Je reprends vos fichiers',
+    body: 'Vous me transmettez vos listes existantes — Excel, Word, papier scanné. Classes, élèves, parents et enseignants sont importés puis vérifiés avec vous.',
     duration: 'Jour 1 à 3',
   },
   {
     n: '02',
-    title: 'On configure votre année',
+    title: 'Je configure votre année',
     body: 'Périodes académiques, matières, catégories de notes et pondérations, horaires des cours : la plateforme est réglée sur le fonctionnement réel de votre école.',
     duration: 'Jour 3 à 5',
   },
   {
     n: '03',
-    title: 'On forme votre équipe',
+    title: 'Je forme votre équipe',
     body: 'Une session courte par profil — direction, enseignants, secrétariat. L’interface est volontairement simple : une heure suffit en général.',
     duration: 'Semaine 2',
   },
   {
     n: '04',
     title: 'Vous ouvrez aux familles',
-    body: 'Les comptes parents et élèves sont activés, avec un message d’accueil dans leur langue. Nous restons joignables pendant toute la première période.',
+    body: 'Les comptes parents et élèves sont activés, avec un message d’accueil dans leur langue. Je reste joignable pendant toute la première période.',
     duration: 'Semaine 2 à 3',
   },
 ];
@@ -455,7 +455,7 @@ export const PRICING = {
   eyebrow: 'Tarifs',
   title: 'Un prix clair, sans surprise en cours d’année',
   lead: 'Facturation mensuelle ou annuelle. Mise en route, import des données et formation inclus dans toutes les formules.',
-  note: 'Prix hors TVA, par établissement. Les écoles associatives sans but lucratif bénéficient d’un tarif adapté — parlons-en.',
+  note: 'Tarifs indicatifs par établissement, à confirmer ensemble selon vos besoins. Les écoles associatives sans but lucratif bénéficient d’un tarif adapté — parlons-en.',
   plans: [
     {
       id: 'essentiel',
@@ -508,7 +508,7 @@ export const PRICING = {
         'Accompagnement dédié',
         'Convention de traitement sur mesure',
       ],
-      cta: 'Nous contacter',
+      cta: 'Me contacter',
       highlighted: false,
     },
   ],
@@ -516,16 +516,20 @@ export const PRICING = {
 
 export const FAQ = [
   {
+    q: 'Qui est derrière SmartMadrassa ?',
+    a: 'Je m’appelle Yassine E. J’ai conçu et développé SmartMadrassa seul, en Belgique. C’est un projet personnel que je porte en tant qu’éditeur indépendant : vous échangez directement avec la personne qui crée la plateforme.',
+  },
+  {
     q: 'Faut-il installer quelque chose ?',
     a: 'Non. SmartMadrassa fonctionne dans le navigateur, sur ordinateur comme sur téléphone. Les enseignants peuvent l’ajouter à leur écran d’accueil en deux gestes : elle se comporte alors comme une application native, sans passer par un store.',
   },
   {
     q: 'Nos données restent-elles en Europe ?',
-    a: 'Oui. Les données scolaires sont hébergées sur une infrastructure cloud sécurisée située dans l’Union européenne, et les e-mails transactionnels transitent par une passerelle européenne. Le détail figure dans notre politique de confidentialité.',
+    a: 'Oui. Les données scolaires sont hébergées sur une infrastructure cloud sécurisée située dans l’Union européenne, et les e-mails transactionnels transitent par une passerelle européenne. Le détail figure dans la politique de confidentialité.',
   },
   {
     q: 'Comment récupérez-vous nos données existantes ?',
-    a: 'Vous nous envoyez ce que vous avez — un Excel, un export d’un autre logiciel, voire des listes papier scannées. Nous nous chargeons de la mise en forme et de l’import, puis nous validons ensemble avant l’ouverture aux familles.',
+    a: 'Vous m’envoyez ce que vous avez — un Excel, un export d’un autre logiciel, voire des listes papier scannées. Je me charge de la mise en forme et de l’import, puis nous validons ensemble avant l’ouverture aux familles.',
   },
   {
     q: 'Les parents doivent-ils créer un compte eux-mêmes ?',
@@ -541,7 +545,7 @@ export const FAQ = [
   },
   {
     q: 'Que se passe-t-il si nous arrêtons ?',
-    a: 'Vous exportez l’intégralité de vos données en Excel et PDF avant la fermeture du compte, et nous les supprimons de nos systèmes selon la durée annoncée dans la politique de confidentialité. Rien n’est conservé à des fins commerciales.',
+    a: 'Vous exportez l’intégralité de vos données en Excel et PDF avant la fermeture du compte, puis je les supprime de la plateforme selon la durée annoncée dans la politique de confidentialité. Rien n’est conservé à des fins commerciales.',
   },
   {
     q: 'Proposez-vous une démonstration ?',
@@ -551,7 +555,7 @@ export const FAQ = [
 
 export const CTA = {
   title: 'Voyons ce que ça donne sur votre école.',
-  lead: 'Trente minutes suffisent pour savoir si SmartMadrassa correspond à votre fonctionnement. Nous partons de vos classes réelles, pas d’une démonstration générique.',
+  lead: 'Échangez directement avec Yassine, le créateur de SmartMadrassa. En trente minutes, je vous présente la plateforme à partir du fonctionnement de votre école.',
   bullets: [
     'Démonstration personnalisée',
     'Estimation de la reprise de vos données',
@@ -561,8 +565,8 @@ export const CTA = {
 
 export const CONTACT = {
   eyebrow: 'Parlons-en',
-  title: 'Écrivez-nous',
-  lead: 'Décrivez votre école en quelques lignes : nombre d’élèves, et ce qui vous pose problème aujourd’hui. Nous répondons sous deux jours ouvrables.',
+  title: 'Écrivez-moi',
+  lead: 'Décrivez votre école en quelques lignes : nombre d’élèves, et ce qui vous pose problème aujourd’hui. Je vous réponds personnellement sous deux jours ouvrables.',
   subjects: [
     'Demande de démonstration',
     'Question sur les tarifs',
@@ -574,7 +578,7 @@ export const CONTACT = {
 
 export const FOOTER = {
   blurb:
-    'Plateforme de gestion pédagogique et administrative pour écoles associatives, instituts de langues et structures de soutien scolaire.',
+    'Un projet indépendant, conçu et développé en solo par Yassine E. pour simplifier le quotidien des écoles associatives, instituts de langues et structures de soutien scolaire.',
   columns: [
     {
       title: 'Plateforme',
@@ -591,7 +595,7 @@ export const FOOTER = {
       links: [
         { label: 'Questions fréquentes', href: '/#faq' },
         { label: 'Mise en route', href: '/#demarrage' },
-        { label: 'Nous contacter', href: '/#contact' },
+        { label: 'Me contacter', href: '/#contact' },
         { label: 'Accéder à mon espace', href: SITE.appUrl, external: true },
       ],
     },

@@ -26,12 +26,12 @@ export function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <RevealItem key={t.author}>
               <figure className="card flex h-full flex-col p-7">
-                <Quote className="mb-4 h-6 w-6 text-brand-400/50" />
+                <Quote className="mb-4 h-6 w-6 text-accent/50" />
                 <blockquote className="flex-1 text-sm leading-relaxed text-slate-300">
                   « {t.quote} »
                 </blockquote>
-                <figcaption className="mt-6 border-t border-white/[0.07] pt-4">
-                  <div className="text-sm font-semibold text-white">{t.author}</div>
+                <figcaption className="mt-6 border-t border-contrast/[0.07] pt-4">
+                  <div className="text-sm font-semibold text-contrast">{t.author}</div>
                   <div className="text-xs text-slate-500">
                     {t.role} — {t.school}
                   </div>

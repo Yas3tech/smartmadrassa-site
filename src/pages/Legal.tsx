@@ -29,7 +29,7 @@ function LegalLayout({
       <div className="container-x relative z-10 max-w-3xl">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 transition-colors hover:text-white"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 transition-colors hover:text-contrast"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour à l’accueil
@@ -43,10 +43,10 @@ function LegalLayout({
 
         <div className="mt-12 space-y-10">{children}</div>
 
-        <div className="mt-16 rounded-2xl border border-white/[0.07] bg-white/[0.015] p-6">
+        <div className="mt-16 rounded-2xl border border-contrast/[0.07] bg-contrast/[0.015] p-6">
           <p className="text-sm leading-relaxed text-slate-400">
-            Une question sur ce document ? Écrivez-nous à{' '}
-            <a href={`mailto:${SITE.email}`} className="text-brand-300 underline underline-offset-2">
+            Une question sur ce document ? Écrivez-moi à{' '}
+            <a href={`mailto:${SITE.email}`} className="text-accent underline underline-offset-2">
               {SITE.email}
             </a>
             .
@@ -60,8 +60,8 @@ function LegalLayout({
 function Article({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
-      <h2 className="font-display text-lg font-semibold text-white sm:text-xl">{title}</h2>
-      <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-400 [&_a]:text-brand-300 [&_a]:underline [&_a]:underline-offset-2 [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-slate-200">
+      <h2 className="font-display text-lg font-semibold text-contrast sm:text-xl">{title}</h2>
+      <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-400 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-slate-200">
         {children}
       </div>
     </section>
@@ -79,13 +79,13 @@ export function MentionsLegales() {
       <Article title="1. Éditeur du site">
         <p>
           Le site <strong>{SITE.domain}</strong> et la plateforme {SITE.name} sont édités par{' '}
-          <strong>M. Yassine E.</strong>, éditeur indépendant établi en Belgique.
+          <strong>Yassine E.</strong>, créateur et éditeur indépendant établi en Belgique.
+          SmartMadrassa est un projet personnel, conçu et développé en solo.
         </p>
         <ul className="space-y-1">
           <li>
             Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
           </li>
-          <li>Numéro d’entreprise / TVA : à compléter</li>
           <li>Directeur de la publication : Yassine E.</li>
         </ul>
       </Article>
@@ -149,7 +149,7 @@ export function Confidentialite() {
       <Article title="1. Responsable du traitement">
         <p>
           Pour les données collectées via ce site vitrine, le responsable du traitement est{' '}
-          <strong>M. Yassine E.</strong>, éditeur de {SITE.name}, joignable à l’adresse{' '}
+          <strong>Yassine E.</strong>, éditeur indépendant de {SITE.name}, joignable à l’adresse{' '}
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
         </p>
         <p>
@@ -163,7 +163,8 @@ export function Confidentialite() {
         <ul className="space-y-1">
           <li>
             <strong>Formulaire de contact</strong> : nom, nom de la structure, e-mail, téléphone
-            (facultatif), nombre d’élèves (facultatif), sujet et contenu du message.
+            (facultatif), nombre d’élèves (facultatif), sujet et contenu du message. L’adresse IP et
+            l’heure de l’envoi sont également utilisées pour limiter les abus et jointes au message.
           </li>
           <li>
             <strong>Journaux techniques de l’hébergeur</strong> : adresse IP, date et heure d’accès,
@@ -200,7 +201,8 @@ export function Confidentialite() {
 
       <Article title="5. Destinataires">
         <p>
-          Les données transmises via le formulaire sont adressées uniquement à l’éditeur. Elles ne
+          Les données transmises via le formulaire sont adressées à l’éditeur sur{' '}
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Elles ne
           sont ni vendues, ni louées, ni transmises à des fins publicitaires. Les seuls tiers
           susceptibles d’y accéder techniquement sont l’hébergeur du site et le fournisseur de
           messagerie, tous deux établis dans l’Union européenne.
@@ -229,7 +231,7 @@ export function Confidentialite() {
         </p>
       </Article>
 
-      <Article title="8. Cookies">
+      <Article title="8. Cookies et préférences d’affichage">
         <p id="cookies">
           Ce site ne dépose <strong>aucun cookie</strong> autre que ceux strictement nécessaires à
           son affichage. Aucune bannière de consentement n’est donc requise. Si des cookies de mesure
@@ -238,7 +240,15 @@ export function Confidentialite() {
         </p>
       </Article>
 
-      <Article title="9. Sécurité">
+      <Article title="9. Préférence de thème">
+        <p>
+          Votre choix de thème clair ou sombre est mémorisé dans votre navigateur. Cette préférence
+          n’est pas transmise au serveur et peut être effacée en supprimant les données du site
+          dans votre navigateur.
+        </p>
+      </Article>
+
+      <Article title="10. Sécurité">
         <p>
           Le site est servi exclusivement en HTTPS. Les messages reçus via le formulaire sont
           transmis par une passerelle de messagerie européenne et conservés sur une boîte protégée
@@ -326,7 +336,7 @@ export function NotFound() {
         </p>
         <Link
           to="/"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-brand-400 to-brand-600 px-6 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-12px_rgba(249,115,22,.85)]"
+          className="button-primary mt-8 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Retour à l’accueil

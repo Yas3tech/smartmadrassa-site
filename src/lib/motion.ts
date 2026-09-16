@@ -13,13 +13,12 @@ export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => 
   show: { transition: { staggerChildren, delayChildren } },
 });
 
-/** Montée douce avec léger flou — la brique de base des révélations. */
+/** Montée douce via transform et opacité, sans filtre à recalculer. */
 export const riseIn: Variants = {
-  hidden: { opacity: 0, y: 26, filter: 'blur(6px)' },
+  hidden: { opacity: 0, y: 26 },
   show: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: { duration: 0.85, ease: EASE },
   },
 };

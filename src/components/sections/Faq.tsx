@@ -35,21 +35,21 @@ export function Faq() {
               eyebrow="Questions fréquentes"
               title={
                 <>
-                  Ce qu’on nous demande <span className="text-gradient">avant de signer</span>
+                  Ce qu’on me demande <span className="text-gradient">avant de se lancer</span>
                 </>
               }
-              lead="Une question qui n’est pas ici ? Écrivez-nous, la réponse arrive sous deux jours ouvrables."
+              lead="Une question qui n’est pas ici ? Écrivez-moi, je vous réponds sous deux jours ouvrables."
             />
             <a
               href={`mailto:${SITE.email}`}
-              className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-brand-500/30 hover:bg-brand-500/[0.08]"
+              className="mt-7 inline-flex items-center gap-2 rounded-full border border-contrast/10 bg-contrast/[0.03] px-4 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-brand-500/30 hover:bg-brand-500/[0.08]"
             >
-              <MessagesSquare className="h-4 w-4 text-brand-400" />
+              <MessagesSquare className="h-4 w-4 text-accent" />
               {SITE.email}
             </a>
           </div>
 
-          <div className="divide-y divide-white/[0.07] border-y border-white/[0.07]">
+          <div className="divide-y divide-contrast/[0.07] border-y border-contrast/[0.07]">
             {FAQ.map((item, i) => {
               const isOpen = open === i;
               return (
@@ -70,7 +70,7 @@ export function Faq() {
                       <span
                         className={cn(
                           'flex-1 font-display text-[15px] font-semibold transition-colors sm:text-base',
-                          isOpen ? 'text-white' : 'text-slate-300 group-hover:text-white',
+                          isOpen ? 'text-contrast' : 'text-slate-300 group-hover:text-contrast',
                         )}
                       >
                         {item.q}
@@ -79,8 +79,8 @@ export function Faq() {
                         className={cn(
                           'mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border transition-all duration-300',
                           isOpen
-                            ? 'rotate-45 border-brand-500/40 bg-brand-500/15 text-brand-300'
-                            : 'border-white/10 text-slate-500 group-hover:border-white/25',
+                            ? 'rotate-45 border-brand-500/40 bg-brand-500/15 text-accent'
+                            : 'border-contrast/10 text-slate-500 group-hover:border-contrast/25',
                         )}
                       >
                         <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />

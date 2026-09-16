@@ -45,7 +45,7 @@ const fragment = /* glsl */ `
   float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.55;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
       value += amplitude * noise(p);
       p *= 2.02;
       amplitude *= 0.5;
@@ -111,11 +111,19 @@ export function ShaderBackdrop({
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
+  const [dark, setDark] = useState(() => document.documentElement.dataset.theme === 'dark');
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
+    const root = document.documentElement;
+    const observer = new MutationObserver(() => setDark(root.dataset.theme === 'dark'));
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const host = hostRef.current;
-    if (!host || reduced) return;
+    if (!host || reduced || !dark || window.matchMedia('(pointer: coarse)').matches) return;
 
     let cancelled = false;
     let teardown: (() => void) | undefined;
@@ -136,7 +144,7 @@ export function ShaderBackdrop({
         renderer = new Renderer({
           alpha: false,
           antialias: false,
-          dpr: Math.min(window.devicePixelRatio || 1, 1.5),
+          dpr: Math.min(window.devicePixelRatio || 1, 1, 1440 / window.innerWidth),
           powerPreference: 'low-power',
         });
       } catch {
@@ -169,37 +177,49 @@ export function ShaderBackdrop({
       const sizeObserver = new ResizeObserver(resize);
       sizeObserver.observe(host);
 
-      let onScreen = true;
+      let onScreen = false;
+      let frame = 0;
+      let lastRender = -Infinity;
+      let ready = false;
+      const start = performance.now();
+      const loop = (now: number) => {
+        frame = 0;
+        if (!onScreen || document.hidden) return;
+        if (now - lastRender >= 1000 / 30) {
+          program.uniforms.uTime.value = (now - start) / 1000;
+          renderer.render({ scene: mesh });
+          lastRender = now;
+          if (!ready) {
+            ready = true;
+            setLive(true);
+          }
+        }
+        frame = requestAnimationFrame(loop);
+      };
+      const syncLoop = () => {
+        if (onScreen && !document.hidden) {
+          if (!frame) frame = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
+      };
       const visibility = new IntersectionObserver(
         ([entry]) => {
           onScreen = entry.isIntersecting;
+          syncLoop();
         },
-        { rootMargin: '120px' },
+        { threshold: 0 },
       );
       visibility.observe(host);
 
-      const onTabChange = () => {
-        onScreen = !document.hidden;
-      };
-      document.addEventListener('visibilitychange', onTabChange);
-
-      let frame = 0;
-      const start = performance.now();
-      const loop = (now: number) => {
-        frame = requestAnimationFrame(loop);
-        if (!onScreen) return;
-        program.uniforms.uTime.value = (now - start) / 1000;
-        renderer.render({ scene: mesh });
-      };
-      frame = requestAnimationFrame(loop);
-
-      setLive(true);
+      document.addEventListener('visibilitychange', syncLoop);
 
       teardown = () => {
         cancelAnimationFrame(frame);
         sizeObserver.disconnect();
         visibility.disconnect();
-        document.removeEventListener('visibilitychange', onTabChange);
+        document.removeEventListener('visibilitychange', syncLoop);
         gl.canvas.remove();
         gl.getExtension('WEBGL_lose_context')?.loseContext();
       };
@@ -210,7 +230,7 @@ export function ShaderBackdrop({
       teardown?.();
       setLive(false);
     };
-  }, [reduced, intensity]);
+  }, [reduced, dark, intensity]);
 
   return (
     <div

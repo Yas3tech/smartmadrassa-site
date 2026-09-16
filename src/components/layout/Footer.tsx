@@ -7,11 +7,11 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/[0.07] bg-ink-950">
+    <footer className="relative overflow-hidden border-t border-contrast/[0.07] bg-ink-950">
       {/* Signature typographique géante, en filigrane */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-[-1.5rem] select-none text-center font-display text-[11vw] font-extrabold leading-none tracking-[-0.06em] text-white/[0.022]"
+        className="pointer-events-none absolute inset-x-0 bottom-[-1.5rem] select-none text-center font-display text-[11vw] font-extrabold leading-none tracking-[-0.06em] text-contrast/[0.022]"
       >
         SmartMadrassa
       </div>
@@ -23,12 +23,12 @@ export function Footer() {
             <p className="mt-5 text-sm leading-relaxed text-slate-400">{FOOTER.blurb}</p>
             <a
               href={`mailto:${SITE.email}`}
-              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-300 transition-colors hover:text-brand-200"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent"
             >
               <Mail className="h-4 w-4" />
               {SITE.email}
             </a>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-jade-500/20 bg-jade-500/[0.06] px-3 py-1.5 text-[11px] font-medium text-jade-300">
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-jade-500/20 bg-jade-500/[0.06] px-3 py-1.5 text-[11px] font-medium text-success">
               <ShieldCheck className="h-3.5 w-3.5" />
               Données hébergées dans l’Union européenne
             </div>
@@ -50,7 +50,7 @@ export function Footer() {
                             href={link.href}
                             target="_blank"
                             rel="noreferrer noopener"
-                            className="group inline-flex items-center gap-1 text-sm text-slate-400 transition-colors hover:text-white"
+                            className="group inline-flex items-center gap-1 text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
                             <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -58,14 +58,14 @@ export function Footer() {
                         ) : link.href.startsWith('/#') ? (
                           <a
                             href={link.href}
-                            className="text-sm text-slate-400 transition-colors hover:text-white"
+                            className="text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
                           </a>
                         ) : (
                           <Link
                             to={link.href}
-                            className="text-sm text-slate-400 transition-colors hover:text-white"
+                            className="text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
                           </Link>
@@ -79,14 +79,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/[0.07] pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-contrast/[0.07] pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {SITE.name} — {SITE.editor}, {SITE.country}.
           </p>
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>TVA / entreprise : à compléter</span>
-            <span aria-hidden className="hidden h-3 w-px bg-white/10 sm:inline-block" />
-            <span>Conçu et développé en Belgique</span>
+            <span>Conçu et développé en solo, en Belgique</span>
           </p>
         </div>
       </div>

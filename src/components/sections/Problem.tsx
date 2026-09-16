@@ -23,7 +23,7 @@ function Column({
       className={
         bright
           ? 'relative overflow-hidden rounded-3xl border border-jade-500/20 bg-gradient-to-b from-jade-500/[0.07] to-transparent p-6 sm:p-8'
-          : 'relative overflow-hidden rounded-3xl border border-white/[0.07] bg-white/[0.015] p-6 sm:p-8'
+          : 'relative overflow-hidden rounded-3xl border border-contrast/[0.07] bg-contrast/[0.015] p-6 sm:p-8'
       }
     >
       {bright && (
@@ -37,8 +37,8 @@ function Column({
           <span
             className={
               bright
-                ? 'grid h-7 w-7 place-items-center rounded-lg bg-jade-500/20 text-jade-300'
-                : 'grid h-7 w-7 place-items-center rounded-lg bg-white/[0.05] text-slate-500'
+                ? 'grid h-7 w-7 place-items-center rounded-lg bg-jade-500/20 text-success'
+                : 'grid h-7 w-7 place-items-center rounded-lg bg-contrast/[0.05] text-slate-500'
             }
           >
             {bright ? <Check className="h-4 w-4" strokeWidth={3} /> : <X className="h-4 w-4" strokeWidth={3} />}
@@ -46,7 +46,7 @@ function Column({
           <h3
             className={
               bright
-                ? 'font-display text-base font-semibold text-white'
+                ? 'font-display text-base font-semibold text-contrast'
                 : 'font-display text-base font-semibold text-slate-400'
             }
           >
@@ -100,7 +100,7 @@ export function Problem() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={viewportOnce}
             transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
-            className="absolute left-1/2 top-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-ink-900 text-brand-400 shadow-[0_0_40px_rgba(249,115,22,.35)] lg:grid"
+            className="absolute left-1/2 top-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-contrast/10 bg-ink-900 text-accent shadow-[0_0_40px_rgba(249,115,22,.35)] lg:grid"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />

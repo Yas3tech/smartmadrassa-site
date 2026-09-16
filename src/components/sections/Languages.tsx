@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { Bell, Check } from 'lucide-react';
 import { LANGUAGES } from '../../content/site';
 import { cn } from '../../lib/utils';
 import { EASE } from '../../lib/motion';
+import { usePrefersReducedMotion } from '../../lib/hooks';
 import { Reveal, SectionHeading } from '../ui/primitives';
 
 /** Aperçu d'une notification, rejouée dans les trois langues. */
@@ -39,13 +40,30 @@ const PREVIEWS = [
 
 export function Languages() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [interacted, setInteracted] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [pageVisible, setPageVisible] = useState(() => document.visibilityState === 'visible');
+  const previewRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(previewRef, { amount: 0.5 });
+  const reducedMotion = usePrefersReducedMotion();
+  const cycling = inView && pageVisible && !reducedMotion && !interacted && !hovered;
 
   useEffect(() => {
-    if (paused) return;
+    const onVisibilityChange = () => setPageVisible(document.visibilityState === 'visible');
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, []);
+
+  useEffect(() => {
+    if (!cycling) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % PREVIEWS.length), 3200);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [cycling]);
+
+  const selectLanguage = (nextIndex: number) => {
+    setInteracted(true);
+    setIndex(nextIndex);
+  };
 
   const current = PREVIEWS[index];
 
@@ -74,33 +92,29 @@ export function Languages() {
               <button
                 key={item.code}
                 type="button"
-                onMouseEnter={() => {
-                  setPaused(true);
-                  setIndex(i);
-                }}
-                onMouseLeave={() => setPaused(false)}
-                onFocus={() => {
-                  setPaused(true);
-                  setIndex(i);
-                }}
-                onBlur={() => setPaused(false)}
+                aria-pressed={index === i}
+                aria-controls="language-preview"
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                onFocus={() => selectLanguage(i)}
+                onClick={() => selectLanguage(i)}
                 className={cn(
-                  'flex w-full items-center gap-4 rounded-2xl border px-4 py-3.5 text-left transition-all duration-300',
+                  'flex w-full items-center gap-4 rounded-2xl border px-4 py-3.5 text-left transition-colors duration-300 motion-reduce:transition-none',
                   index === i
                     ? 'border-brand-500/30 bg-brand-500/[0.07]'
-                    : 'border-white/[0.07] bg-white/[0.015] hover:border-white/15',
+                    : 'border-contrast/[0.07] bg-contrast/[0.015] hover:border-contrast/15',
                 )}
               >
                 <span
                   className={cn(
                     'grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[11px] font-bold transition-colors',
-                    index === i ? 'bg-brand-500 text-white' : 'bg-white/[0.06] text-slate-400',
+                    index === i ? 'bg-brand-500 text-white' : 'bg-contrast/[0.06] text-slate-400',
                   )}
                 >
                   {item.code}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium text-white">{item.label}</span>
+                  <span className="block text-sm font-medium text-contrast">{item.label}</span>
                   <span
                     dir={item.dir}
                     className={cn(
@@ -112,7 +126,7 @@ export function Languages() {
                   </span>
                 </span>
                 {item.dir === 'rtl' && (
-                  <span className="shrink-0 rounded-md border border-jade-500/25 bg-jade-500/10 px-2 py-0.5 text-[10px] font-semibold text-jade-300">
+                  <span className="shrink-0 rounded-md border border-jade-500/25 bg-jade-500/10 px-2 py-0.5 text-[10px] font-semibold text-success">
                     RTL
                   </span>
                 )}
@@ -123,28 +137,28 @@ export function Languages() {
 
         {/* Aperçu animé */}
         <Reveal delay={0.1} className="relative">
-          <div className="relative mx-auto max-w-md">
+          <div ref={previewRef} className="relative mx-auto max-w-md">
             <div
               aria-hidden
               className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-brand-500/15 via-transparent to-jade-500/15 blur-2xl"
             />
             <div className="card p-5 sm:p-6">
               <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                <Bell className="h-3.5 w-3.5 text-brand-400" />
+                <Bell className="h-3.5 w-3.5 text-accent" />
                 Notification envoyée au parent
               </div>
 
-              <div className="relative min-h-[170px]">
+              <div id="language-preview" className="relative min-h-[170px]">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={current.code}
                     dir={current.dir}
-                    initial={{ opacity: 0, y: 14, filter: 'blur(4px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
-                    transition={{ duration: 0.45, ease: EASE }}
+                    initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -12 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.45, ease: EASE }}
                     className={cn(
-                      'rounded-2xl border border-white/[0.08] bg-ink-900 p-4',
+                      'rounded-2xl border border-contrast/[0.08] bg-ink-900 p-4',
                       current.font,
                       current.dir === 'rtl' && 'text-right',
                     )}
@@ -159,7 +173,7 @@ export function Languages() {
                         <Bell className="h-3.5 w-3.5" />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-sm font-semibold text-white">{current.title}</div>
+                        <div className="truncate text-sm font-semibold text-contrast">{current.title}</div>
                         <div className="text-[11px] text-slate-500">{current.meta}</div>
                       </div>
                     </div>
@@ -175,7 +189,7 @@ export function Languages() {
                       <span className="rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-semibold text-white">
                         {current.action}
                       </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] text-jade-300">
+                      <span className="inline-flex items-center gap-1 text-[11px] text-success">
                         <Check className="h-3 w-3" strokeWidth={3} /> smartmadrassa.be
                       </span>
                     </div>
@@ -184,15 +198,16 @@ export function Languages() {
               </div>
 
               {/* Barre de progression du cycle */}
-              <div className="mt-4 flex gap-1.5">
+              <div aria-hidden className="mt-4 flex gap-1.5">
                 {PREVIEWS.map((p, i) => (
-                  <span key={p.code} className="h-0.5 flex-1 overflow-hidden rounded-full bg-white/[0.08]">
+                  <span key={p.code} className="h-0.5 flex-1 overflow-hidden rounded-full bg-contrast/[0.08]">
                     {i === index && (
                       <motion.span
-                        className="block h-full bg-brand-400"
-                        initial={{ width: '0%' }}
-                        animate={{ width: paused ? '100%' : '100%' }}
-                        transition={{ duration: paused ? 0.2 : 3.2, ease: 'linear' }}
+                        key={`${p.code}-${cycling}`}
+                        className="block h-full origin-left bg-brand-400"
+                        initial={cycling ? { scaleX: 0 } : false}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: cycling ? 3.2 : 0, ease: 'linear' }}
                       />
                     )}
                   </span>

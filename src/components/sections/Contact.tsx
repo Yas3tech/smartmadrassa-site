@@ -9,7 +9,7 @@ import { Button, Eyebrow } from '../ui/primitives';
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
 const FIELD =
-  'w-full rounded-xl border border-white/[0.09] bg-white/[0.025] px-4 py-3 text-sm text-white placeholder:text-slate-600 transition-colors focus:border-brand-500/50 focus:bg-white/[0.04] focus:outline-none';
+  'w-full rounded-xl border border-contrast/[0.09] bg-contrast/[0.025] px-4 py-3 text-sm text-contrast placeholder:text-slate-600 transition-colors focus:border-brand-500/50 focus:bg-contrast/[0.04] focus:outline-none';
 
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
@@ -17,6 +17,7 @@ export function Contact() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === 'sending') return;
     const form = e.currentTarget;
     const data = new FormData(form);
 
@@ -28,9 +29,15 @@ export function Contact() {
 
     setStatus('sending');
     setError('');
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20_000);
 
     try {
-      const res = await fetch('/api/contact.php', { method: 'POST', body: data });
+      const res = await fetch('/api/contact.php', {
+        method: 'POST',
+        body: data,
+        signal: controller.signal,
+      });
       const payload = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
 
       if (!res.ok || !payload?.ok) {
@@ -40,7 +47,17 @@ export function Contact() {
       form.reset();
     } catch (err) {
       setStatus('error');
-      setError(err instanceof Error ? err.message : 'Envoi impossible pour le moment.');
+      setError(
+        controller.signal.aborted
+          ? 'Le serveur n’a pas confirmé l’envoi à temps. Votre demande a peut-être été transmise.'
+          : err instanceof TypeError
+            ? 'La connexion au serveur a échoué. Vérifiez votre connexion Internet.'
+            : err instanceof Error
+              ? err.message
+              : 'Envoi impossible pour le moment.',
+      );
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
@@ -80,7 +97,7 @@ export function Contact() {
                   transition={{ duration: 0.5, ease: EASE, delay: 0.15 + i * 0.08 }}
                   className="flex items-center gap-3"
                 >
-                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-jade-500/15 text-jade-300 ring-1 ring-inset ring-jade-500/25">
+                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">
                     <Check className="h-3 w-3" strokeWidth={3.5} />
                   </span>
                   <span className="text-sm text-slate-300">{b}</span>
@@ -88,11 +105,11 @@ export function Contact() {
               ))}
             </ul>
 
-            <div className="mt-10 rounded-2xl border border-white/[0.07] bg-white/[0.015] p-5">
+            <div className="mt-10 rounded-2xl border border-contrast/[0.07] bg-contrast/[0.015] p-5">
               <p className="text-sm leading-relaxed text-slate-400">{CONTACT.lead}</p>
               <a
                 href={`mailto:${SITE.email}`}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-300 transition-colors hover:text-brand-200"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent"
               >
                 <Mail className="h-4 w-4" />
                 {SITE.email}
@@ -116,19 +133,20 @@ export function Contact() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, ease: EASE }}
                   className="flex min-h-[26rem] flex-col items-center justify-center text-center"
+                  role="status"
                 >
-                  <span className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-jade-500/15 text-jade-300 ring-1 ring-inset ring-jade-500/30">
+                  <span className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/30">
                     <Check className="h-6 w-6" strokeWidth={2.5} />
                   </span>
-                  <h3 className="font-display text-xl font-bold text-white">Message envoyé</h3>
+                  <h3 className="font-display text-xl font-bold text-contrast">Message transmis</h3>
                   <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-                    Merci. Nous revenons vers vous sous deux jours ouvrables, à l’adresse que vous
-                    avez indiquée.
+                    Merci. Je vous répondrai sous deux jours ouvrables, à l’adresse que vous avez
+                    indiquée.
                   </p>
                   <button
                     type="button"
                     onClick={() => setStatus('idle')}
-                    className="mt-6 text-sm font-medium text-brand-300 hover:text-brand-200"
+                    className="mt-6 text-sm font-medium text-accent hover:text-accent"
                   >
                     Envoyer un autre message
                   </button>
@@ -140,9 +158,16 @@ export function Contact() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="space-y-4"
-                  noValidate
+                  aria-busy={status === 'sending'}
                 >
-                  <h3 className="font-display text-xl font-bold text-white">{CONTACT.title}</h3>
+                  <h3 className="font-display text-xl font-bold text-contrast">{CONTACT.title}</h3>
+                  <p className="text-xs leading-relaxed text-slate-500">
+                    Votre message est adressé directement à Yassine, à{' '}
+                    <a href={`mailto:${SITE.email}`} className="text-accent underline underline-offset-2">
+                      {SITE.email}
+                    </a>
+                    .
+                  </p>
 
                   {/* Pot de miel anti-robot */}
                   <div className="absolute left-[-9999px]" aria-hidden>
@@ -155,13 +180,13 @@ export function Contact() {
                       <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-slate-400">
                         Nom et prénom *
                       </label>
-                      <input id="name" name="name" required autoComplete="name" className={FIELD} placeholder="Yassine E." />
+                      <input id="name" name="name" required maxLength={120} autoComplete="name" className={FIELD} placeholder="Votre nom et prénom" />
                     </div>
                     <div>
                       <label htmlFor="school" className="mb-1.5 block text-xs font-medium text-slate-400">
                         École / structure *
                       </label>
-                      <input id="school" name="school" required className={FIELD} placeholder="Institut Al-Firdaws" />
+                      <input id="school" name="school" required maxLength={160} autoComplete="organization" className={FIELD} placeholder="Nom de votre école" />
                     </div>
                   </div>
 
@@ -170,13 +195,13 @@ export function Contact() {
                       <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-slate-400">
                         E-mail *
                       </label>
-                      <input id="email" name="email" type="email" required autoComplete="email" className={FIELD} placeholder="vous@exemple.be" />
+                      <input id="email" name="email" type="email" required maxLength={160} autoComplete="email" className={FIELD} placeholder="vous@exemple.be" />
                     </div>
                     <div>
                       <label htmlFor="phone" className="mb-1.5 block text-xs font-medium text-slate-400">
                         Téléphone
                       </label>
-                      <input id="phone" name="phone" type="tel" autoComplete="tel" className={FIELD} placeholder="+32 4xx xx xx xx" />
+                      <input id="phone" name="phone" type="tel" maxLength={40} autoComplete="tel" className={FIELD} placeholder="+32 4xx xx xx xx" />
                     </div>
                   </div>
 
@@ -197,7 +222,7 @@ export function Contact() {
                       <label htmlFor="students" className="mb-1.5 block text-xs font-medium text-slate-400">
                         Nombre d’élèves
                       </label>
-                      <input id="students" name="students" inputMode="numeric" className={FIELD} placeholder="120" />
+                      <input id="students" name="students" type="number" min={1} step={1} inputMode="numeric" className={FIELD} placeholder="120" />
                     </div>
                   </div>
 
@@ -209,6 +234,8 @@ export function Contact() {
                       id="message"
                       name="message"
                       required
+                      minLength={10}
+                      maxLength={5000}
                       rows={4}
                       className={cn(FIELD, 'resize-none')}
                       placeholder="Ce qui vous pose problème aujourd’hui, et ce que vous aimeriez améliorer."
@@ -221,7 +248,7 @@ export function Contact() {
                         type="checkbox"
                         name="consent"
                         required
-                        className="peer h-4 w-4 cursor-pointer appearance-none rounded border border-white/20 bg-white/[0.04] transition-colors checked:border-brand-500 checked:bg-brand-500 focus-visible:outline-none"
+                        className="peer h-4 w-4 cursor-pointer appearance-none rounded border border-contrast/20 bg-contrast/[0.04] transition-colors checked:border-brand-500 checked:bg-brand-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950"
                       />
                       <Check
                         aria-hidden
@@ -232,7 +259,7 @@ export function Contact() {
                     <span>
                       J’accepte que mes données soient utilisées pour traiter cette demande,
                       conformément à la{' '}
-                      <a href="/confidentialite" className="text-brand-300 underline underline-offset-2">
+                      <a href="/confidentialite" className="text-accent underline underline-offset-2">
                         politique de confidentialité
                       </a>
                       .
@@ -240,10 +267,10 @@ export function Contact() {
                   </label>
 
                   {status === 'error' && (
-                    <div className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/[0.08] p-3 text-xs text-rose-200">
+                    <div role="alert" className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/[0.08] p-3 text-xs text-danger">
                       <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                       <span>
-                        {error} Vous pouvez aussi nous écrire directement à{' '}
+                        {error} Vous pouvez aussi m’écrire directement à{' '}
                         <a href={`mailto:${SITE.email}`} className="underline underline-offset-2">
                           {SITE.email}
                         </a>

@@ -51,8 +51,8 @@ export function Logo({
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <LogoMark size={size} />
       {showWordmark && (
-        <span className="font-display text-[17px] font-semibold tracking-[-0.02em] text-white">
-          Smart<span className="text-brand-400">Madrassa</span>
+        <span className="font-display text-[17px] font-semibold tracking-[-0.02em] text-contrast">
+          Smart<span className="text-accent">Madrassa</span>
         </span>
       )}
     </span>

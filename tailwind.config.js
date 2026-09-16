@@ -4,14 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
+        contrast: 'rgb(var(--contrast) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        success: 'rgb(var(--success) / <alpha-value>)',
+        danger: 'rgb(var(--danger) / <alpha-value>)',
+        warning: 'rgb(var(--warning) / <alpha-value>)',
+        'status-violet': 'rgb(var(--status-violet) / <alpha-value>)',
+        'status-sky': 'rgb(var(--status-sky) / <alpha-value>)',
+        slate: Object.fromEntries([100, 200, 300, 400, 500, 600].map((step) => [step, `rgb(var(--slate-${step}) / <alpha-value>)`])),
         ink: {
-          950: '#04070F',
-          900: '#070C18',
-          850: '#0A1020',
-          800: '#0E1628',
-          700: '#152036',
-          600: '#1D2B45',
-          500: '#2A3A57',
+          950: 'rgb(var(--ink-950) / <alpha-value>)',
+          900: 'rgb(var(--ink-900) / <alpha-value>)',
+          850: 'rgb(var(--ink-850) / <alpha-value>)',
+          800: 'rgb(var(--ink-800) / <alpha-value>)',
+          700: 'rgb(var(--ink-700) / <alpha-value>)',
+          600: 'rgb(var(--ink-600) / <alpha-value>)',
+          500: 'rgb(var(--ink-500) / <alpha-value>)',
         },
         brand: {
           50: '#FFF7ED',

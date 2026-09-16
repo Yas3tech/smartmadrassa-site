@@ -16,28 +16,25 @@ export function Manifesto() {
       const targets = gsap.utils.toArray<HTMLElement>('[data-word]');
       if (!targets.length) return;
 
-      // Sans scrub : tout s'affiche, l'utilisateur ayant demandé moins d'animation.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        gsap.set(targets, { opacity: 1, filter: 'blur(0px)' });
-        return;
-      }
-
-      gsap.fromTo(
-        targets,
-        { opacity: 0.12, filter: 'blur(2px)' },
-        {
-          opacity: 1,
-          filter: 'blur(0px)',
-          ease: 'none',
-          stagger: 0.55,
-          scrollTrigger: {
-            trigger: scope.current,
-            start: 'top 72%',
-            end: 'bottom 68%',
-            scrub: 0.6,
+      const mm = gsap.matchMedia();
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.fromTo(
+          targets,
+          { opacity: 0.35 },
+          {
+            opacity: 1,
+            ease: 'none',
+            stagger: 0.55,
+            scrollTrigger: {
+              trigger: scope.current,
+              start: 'top 82%',
+              end: 'bottom 68%',
+              scrub: true,
+            },
           },
-        },
-      );
+        );
+      });
+      return () => mm.revert();
     },
     scope,
     [],
@@ -53,9 +50,9 @@ export function Manifesto() {
       <div ref={scope} className="container-x relative z-10 max-w-4xl text-center">
         <Eyebrow>{MANIFESTO.eyebrow}</Eyebrow>
 
-        <p className="mt-9 text-balance font-display text-2xl font-semibold leading-[1.35] tracking-[-0.025em] text-white sm:text-[2.1rem] sm:leading-[1.3]">
+        <p className="mt-9 text-balance font-display text-2xl font-semibold leading-[1.35] tracking-[-0.025em] text-contrast sm:text-[2.1rem] sm:leading-[1.3]">
           {words.map((word, i) => (
-            <span key={`${word}-${i}`} data-word className="inline-block will-change-[opacity,filter]">
+            <span key={`${word}-${i}`} data-word className="inline-block">
               {word}
               {i < words.length - 1 && ' '}
             </span>

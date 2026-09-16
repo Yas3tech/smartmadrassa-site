@@ -1,5 +1,5 @@
 import { type ReactNode, type ElementType, useEffect, useRef, useState } from 'react';
-import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import { EASE, riseIn, stagger, viewportOnce } from '../../lib/motion';
 import { useMagnetic, useSpotlight } from '../../lib/hooks';
@@ -27,11 +27,10 @@ export function Reveal({
       whileInView="show"
       viewport={viewportOnce}
       variants={{
-        hidden: { opacity: 0, y: 26, filter: 'blur(6px)' },
+        hidden: { opacity: 0, y: 20 },
         show: {
           opacity: 1,
           y: 0,
-          filter: 'blur(0px)',
           transition: { duration: 0.85, ease: EASE, delay },
         },
       }}
@@ -136,14 +135,14 @@ export function Button({
 
   const base = cn(
     'group relative inline-flex select-none items-center justify-center gap-2 rounded-full font-medium',
-    'transition-[transform,box-shadow,background-color,border-color] duration-300 will-change-transform',
+    'transition-[transform,box-shadow,background-color,border-color] duration-300',
     'disabled:pointer-events-none disabled:opacity-50',
     size === 'lg' ? 'px-7 py-3.5 text-[15px]' : 'px-5 py-2.5 text-sm',
     variant === 'primary' &&
-      'bg-gradient-to-b from-brand-400 to-brand-600 text-white shadow-[0_10px_40px_-12px_rgba(249,115,22,.85)] hover:shadow-[0_16px_50px_-10px_rgba(249,115,22,.95)] hover:brightness-[1.06] active:scale-[.98]',
+      'button-primary text-white hover:brightness-110 active:scale-[.98]',
     variant === 'outline' &&
-      'border border-white/15 bg-white/[0.03] text-white backdrop-blur hover:border-white/30 hover:bg-white/[0.07] active:scale-[.98]',
-    variant === 'ghost' && 'text-slate-300 hover:text-white',
+      'border border-contrast/15 bg-contrast/[0.03] text-contrast backdrop-blur hover:border-contrast/30 hover:bg-contrast/[0.07] active:scale-[.98]',
+    variant === 'ghost' && 'text-slate-300 hover:text-contrast',
     className,
   );
 
@@ -173,6 +172,7 @@ export function Button({
     return (
       <a
         href={href}
+        onClick={onClick}
         className={base}
         {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
       >
@@ -192,24 +192,10 @@ export function Button({
 /* Décor                                                               */
 /* ------------------------------------------------------------------ */
 
-/** Nappes de couleur floutées qui dérivent lentement en arrière-plan. */
+/** Soft static color fields avoid continually compositing large blurred layers. */
 export function Aurora({ className, variant = 'hero' }: { className?: string; variant?: 'hero' | 'soft' }) {
   return (
-    <div aria-hidden className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}>
-      <div
-        className={cn(
-          'absolute left-[8%] top-[-18%] h-[36rem] w-[36rem] rounded-full blur-[120px] animate-drift',
-          variant === 'hero' ? 'bg-brand-500/25' : 'bg-brand-500/12',
-        )}
-      />
-      <div
-        className={cn(
-          'absolute right-[4%] top-[6%] h-[30rem] w-[30rem] rounded-full blur-[130px] animate-drift-slow',
-          variant === 'hero' ? 'bg-jade-500/20' : 'bg-jade-500/10',
-        )}
-      />
-      <div className="absolute bottom-[-20%] left-[35%] h-[28rem] w-[28rem] rounded-full bg-indigo-500/10 blur-[140px] animate-drift" />
-    </div>
+    <div aria-hidden className={cn('aurora pointer-events-none absolute inset-0', variant === 'soft' && 'opacity-60', className)} />
   );
 }
 
@@ -285,6 +271,7 @@ export function Tilt({
   max?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [max, -max]), { stiffness: 140, damping: 18 });
@@ -294,9 +281,9 @@ export function Tilt({
     <motion.div
       ref={ref}
       className={cn('preserve-3d', className)}
-      style={{ rotateX: rx, rotateY: ry }}
+      style={reduced ? undefined : { rotateX: rx, rotateY: ry }}
       onPointerMove={(e) => {
-        if (e.pointerType !== 'mouse') return;
+        if (reduced || e.pointerType !== 'mouse') return;
         const rect = ref.current?.getBoundingClientRect();
         if (!rect) return;
         mx.set((e.clientX - rect.left) / rect.width - 0.5);

@@ -13,12 +13,13 @@
 declare(strict_types=1);
 
 const DESTINATAIRE = 'contact@smartmadrassa.be';
-const EXPEDITEUR   = 'noreply@smartmadrassa.be';
+const EXPEDITEUR   = 'contact@smartmadrassa.be';
 const NOM_SITE     = 'SmartMadrassa';
 const MAX_PAR_HEURE = 5; // par adresse IP
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-store');
 
 function repondre(int $code, array $data): never
 {
@@ -28,6 +29,7 @@ function repondre(int $code, array $data): never
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Allow: POST');
     repondre(405, ['ok' => false, 'error' => 'Méthode non autorisée.']);
 }
 
@@ -53,7 +55,8 @@ if (count($horodatages) >= MAX_PAR_HEURE) {
 /* --- Récupération et validation ----------------------------------------- */
 function champ(string $cle, int $max = 500): string
 {
-    $valeur = trim((string) ($_POST[$cle] ?? ''));
+    $brut = $_POST[$cle] ?? '';
+    $valeur = is_string($brut) ? trim($brut) : '';
     $valeur = str_replace(["\r", "\n", "%0a", "%0d"], ' ', $valeur); // anti-injection d'en-tête
     return mb_substr($valeur, 0, $max);
 }
@@ -64,14 +67,16 @@ $email    = champ('email', 160);
 $tel      = champ('phone', 40);
 $sujet    = champ('subject', 120) ?: 'Demande via le site';
 $eleves   = champ('students', 20);
-$message  = mb_substr(trim((string) ($_POST['message'] ?? '')), 0, 5000);
-$consent  = !empty($_POST['consent']);
+$messageBrut = $_POST['message'] ?? '';
+$message  = is_string($messageBrut) ? mb_substr(trim($messageBrut), 0, 5000) : '';
+$consent  = ($_POST['consent'] ?? '') === 'on';
 
 $erreurs = [];
 if ($nom === '')                                   { $erreurs[] = 'nom'; }
 if ($ecole === '')                                 { $erreurs[] = 'école'; }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))    { $erreurs[] = 'e-mail'; }
 if (mb_strlen($message) < 10)                      { $erreurs[] = 'message'; }
+if ($eleves !== '' && !preg_match('/^[1-9][0-9]*$/', $eleves)) { $erreurs[] = 'nombre d’élèves'; }
 if (!$consent)                                     { $erreurs[] = 'consentement'; }
 
 if ($erreurs) {
@@ -83,7 +88,7 @@ if ($erreurs) {
 
 /* --- Composition du message --------------------------------------------- */
 $corps = <<<TXT
-Nouvelle demande depuis {$_SERVER['HTTP_HOST']}
+Nouvelle demande depuis le site SmartMadrassa
 
 Nom            : {$nom}
 École          : {$ecole}
@@ -106,7 +111,7 @@ $sujetMail = '[' . NOM_SITE . '] ' . $sujet . ' — ' . $ecole;
 
 $entetes = [
     'From'         => NOM_SITE . ' <' . EXPEDITEUR . '>',
-    'Reply-To'     => $nom . ' <' . $email . '>',
+    'Reply-To'     => '=?UTF-8?B?' . base64_encode($nom) . '?= <' . $email . '>',
     'MIME-Version' => '1.0',
     'Content-Type' => 'text/plain; charset=UTF-8',
     'X-Mailer'     => 'PHP/' . phpversion(),

@@ -19,7 +19,7 @@ export function Pricing() {
           <div
             role="group"
             aria-label="Périodicité de facturation"
-            className="relative inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1"
+            className="relative inline-flex items-center gap-1 rounded-full border border-contrast/10 bg-contrast/[0.03] p-1"
           >
             {[
               { id: 'monthly', label: 'Mensuel' },
@@ -48,7 +48,7 @@ export function Pricing() {
                 </button>
               );
             })}
-            <span className="ml-1 mr-2 hidden rounded-full bg-jade-500/15 px-2 py-0.5 text-[11px] font-semibold text-jade-300 sm:inline">
+            <span className="ml-1 mr-2 hidden rounded-full bg-jade-500/15 px-2 py-0.5 text-[11px] font-semibold text-success sm:inline">
               −20 %
             </span>
           </div>
@@ -64,7 +64,7 @@ export function Pricing() {
                     'relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 sm:p-8',
                     plan.highlighted
                       ? 'border-brand-500/35 bg-gradient-to-b from-brand-500/[0.12] via-ink-900 to-ink-900 shadow-[0_30px_90px_-40px_rgba(249,115,22,.6)]'
-                      : 'border-white/[0.08] bg-white/[0.015]',
+                      : 'border-contrast/[0.08] bg-contrast/[0.015]',
                   )}
                 >
                   {plan.highlighted && (
@@ -80,14 +80,14 @@ export function Pricing() {
                   )}
 
                   <div className="relative z-10 flex h-full flex-col">
-                    <h3 className="font-display text-lg font-bold text-white">{plan.name}</h3>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-brand-300/80">
+                    <h3 className="font-display text-lg font-bold text-contrast">{plan.name}</h3>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-accent/80">
                       {plan.cap}
                     </p>
 
                     <div className="mt-6 flex min-h-[3.75rem] items-end gap-1.5">
                       {price === null ? (
-                        <span className="font-display text-3xl font-extrabold tracking-[-0.03em] text-white">
+                        <span className="font-display text-3xl font-extrabold tracking-[-0.03em] text-contrast">
                           Sur mesure
                         </span>
                       ) : (
@@ -99,12 +99,12 @@ export function Pricing() {
                               animate={{ y: 0, opacity: 1 }}
                               exit={{ y: -14, opacity: 0 }}
                               transition={{ duration: 0.28, ease: EASE }}
-                              className="font-display text-5xl font-extrabold leading-none tracking-[-0.04em] text-white"
+                              className="font-display text-5xl font-extrabold leading-none tracking-[-0.04em] text-contrast"
                             >
                               {price}
                             </motion.span>
                           </AnimatePresence>
-                          <span className="pb-1 font-display text-2xl font-bold text-white">€</span>
+                          <span className="pb-1 font-display text-2xl font-bold text-contrast">€</span>
                           <span className="pb-1.5 text-sm text-slate-500">/ mois</span>
                         </>
                       )}
@@ -115,7 +115,7 @@ export function Pricing() {
 
                     <p className="mt-5 text-sm leading-relaxed text-slate-400">{plan.pitch}</p>
 
-                    <ul className="mt-6 space-y-2.5 border-t border-white/[0.07] pt-6">
+                    <ul className="mt-6 space-y-2.5 border-t border-contrast/[0.07] pt-6">
                       {plan.features.map((f, i) => {
                         const isHeading = f.endsWith(':');
                         return (
@@ -130,7 +130,7 @@ export function Pricing() {
                               <Check
                                 className={cn(
                                   'mt-0.5 h-3.5 w-3.5 shrink-0',
-                                  plan.highlighted ? 'text-brand-400' : 'text-jade-400',
+                                  plan.highlighted ? 'text-accent' : 'text-success',
                                 )}
                                 strokeWidth={3}
                               />

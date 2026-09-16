@@ -3,12 +3,14 @@
 Site de présentation public, **séparé de l'application** (`app.smartmadrassa.be`, hébergée sur
 Firebase). Il se compile en fichiers statiques déposés sur un hébergement mutualisé OVH.
 
-Ce dépôt ne contient que le site vitrine. Le code de l'application vit dans un dépôt distinct.
+Ce dépôt ne contient que le site vitrine ; le code de l'application vit dans un dépôt distinct.
+Site en ligne : **https://smartmadrassa.be**
 
 - **Stack** : Vite 7 + React 19 + TypeScript + Tailwind CSS 3
-- **Animation** : Framer Motion (composants) + GSAP/ScrollTrigger (chorégraphie au scroll) + Lenis (défilement inertiel)
-- **Graphisme** : shader WebGL via OGL pour le fond du hero, chargé à la demande
-- **Poids** : ~215 Ko de JS gzippé au premier rendu (+38 Ko différés pour le shader), polices auto-hébergées, aucun appel à un service tiers
+- **Thèmes** : clair par défaut (soigné et chaleureux), mode sombre disponible via un commutateur mémorisé
+- **Animation** : Framer Motion (composants) + GSAP/ScrollTrigger (chorégraphie au scroll natif)
+- **Graphisme** : shader WebGL via OGL pour le fond du hero, allégé et chargé à la demande
+- **Poids** : ~210 Ko de JS gzippé au premier rendu, polices auto-hébergées, aucun appel à un service tiers
 - **Langue** : français (structure prête pour NL / AR, voir plus bas)
 
 ---
@@ -16,8 +18,9 @@ Ce dépôt ne contient que le site vitrine. Le code de l'application vit dans un
 ## 1. Développer en local
 
 ```bash
-cd site
-pnpm install --ignore-workspace
+git clone https://github.com/Yas3tech/smartmadrassa-site.git
+cd smartmadrassa-site
+pnpm install
 pnpm dev              # http://localhost:5174
 ```
 
@@ -28,9 +31,6 @@ pnpm build            # compile vers dist/
 pnpm preview          # sert dist/ sur http://localhost:4174
 pnpm og               # régénère public/og-image.png (aperçu de partage)
 ```
-
-> `--ignore-workspace` évite que pnpm remonte au `package.json` de l'application.
-> Un `.npmrc` local le règle déjà par défaut.
 
 ---
 
@@ -62,10 +62,8 @@ pnpm og               # régénère public/og-image.png (aperçu de partage)
 
 ### Points à compléter avant la mise en ligne
 
-1. **Tarifs** (`PRICING`) — 39 € / 79 € / sur mesure sont des valeurs de départ à confirmer.
-2. **Numéro d'entreprise / TVA** — `« à compléter »` dans le pied de page
-   ([`src/components/layout/Footer.tsx`](src/components/layout/Footer.tsx)) et dans les mentions
-   légales ([`src/pages/Legal.tsx`](src/pages/Legal.tsx)).
+1. **Tarifs** (`PRICING`) — 39 € / 79 € / sur mesure sont des valeurs de départ indicatives à confirmer.
+2. **Éditeur et mentions** — Le site présente SmartMadrassa comme projet indépendant conçu et développé en solo par Yassine E. en Belgique.
 3. **URL de l'application** — `SITE.appUrl` pointe vers `https://app.smartmadrassa.be`.
    Ajustez-la si le sous-domaine diffère.
 4. **Témoignages** — n'ajoutez dans `TESTIMONIALS` que des retours réels obtenus par écrit.
@@ -77,11 +75,10 @@ pnpm og               # régénère public/og-image.png (aperçu de partage)
 ### 3.1 Compiler
 
 ```bash
-cd site
 pnpm build
 ```
 
-Le résultat est dans `site/dist/`. Il contient déjà `.htaccess`, `robots.txt`, `sitemap.xml`,
+Le résultat est dans `dist/`. Il contient déjà `.htaccess`, `robots.txt`, `sitemap.xml`,
 `og-image.png` et `api/contact.php` (copiés depuis `public/`).
 
 ### 3.2 Déploiement automatique (recommandé)
@@ -155,7 +152,7 @@ devez retrouver `index.html`, `.htaccess`, `assets/`, `api/`.
 ```bash
 # Installation unique : winget install --id=WinSCP.WinSCP  (ou lftp sous WSL)
 lftp -u "IDENTIFIANT,MOTDEPASSE" ftp.clusterXXX.hosting.ovh.net \
-  -e "mirror -R --delete --verbose site/dist /www ; quit"
+  -e "mirror -R --delete --verbose dist /www ; quit"
 ```
 
 ### 3.5 Configuration du domaine
@@ -177,11 +174,10 @@ Avant la mise en ligne, ouvrez [`public/api/contact.php`](public/api/contact.php
 
 ```php
 const DESTINATAIRE = 'contact@smartmadrassa.be';   // qui reçoit les demandes
-const EXPEDITEUR   = 'noreply@smartmadrassa.be';   // DOIT exister sur le domaine OVH
+const EXPEDITEUR   = 'contact@smartmadrassa.be';   // boîte existante sur OVH
 ```
 
-L'adresse `EXPEDITEUR` doit être une **boîte réellement créée dans OVH e-mail**, sinon les messages
-partent en spam ou sont rejetés.
+L'adresse `EXPEDITEUR` est configurée sur `contact@smartmadrassa.be` (la boîte active sur votre hébergement OVH). Les réponses se font directement à l'adresse du visiteur via l'en-tête `Reply-To`.
 
 Protections déjà en place : pot de miel, limite de 5 envois par heure et par IP, nettoyage des
 en-têtes contre l'injection, validation côté serveur.
@@ -236,11 +232,11 @@ site/
 ├─ scripts/generate-og.mjs   Génération de l'image de partage (sharp)
 └─ src/
    ├─ content/site.ts        ← TOUT le texte du site
-   ├─ lib/                   hooks (scroll inertiel, magnétisme, halo), variantes Framer, pont GSAP
+   ├─ lib/                   hooks (magnétisme, halo, préférences), variantes Framer, pont GSAP
    ├─ components/
-   │  ├─ ui/                 primitives (boutons, révélations, aurores, marquee, shader WebGL)
+   │  ├─ ui/                 primitives (boutons, révélations, aurores, marquee, shader WebGL, bascule de thème)
    │  ├─ mock/               maquettes d'interface reconstituées en HTML/CSS
-   │  ├─ layout/             en-tête, pied de page, jauge de lecture
+   │  ├─ layout/             en-tête avec bascule de thème, pied de page, jauge de lecture
    │  └─ sections/           les 15 sections de la page d'accueil
    └─ pages/                 accueil, pages légales, 404
 ```
@@ -258,33 +254,25 @@ anonymiser toute donnée personnelle visible.
 
 ---
 
-## 8. Les trois techniques d'animation, et quand chacune sert
+## 8. Les techniques d'animation et de performance
 
 | Technique | Fichier | Ce qu'elle porte |
 | --- | --- | --- |
 | **Framer Motion** | partout dans `components/` | Apparitions au scroll, transitions d'état (onglets, accordéon, bascule tarifs), dépliage 3D du hero. Idéal quand l'animation suit le cycle de vie d'un composant React. |
-| **GSAP + ScrollTrigger** | [`lib/gsap.ts`](src/lib/gsap.ts), [`YearJourney`](src/components/sections/YearJourney.tsx), [`Manifesto`](src/components/sections/Manifesto.tsx) | Chorégraphie pilotée par la molette : section épinglée avec défilement horizontal, révélation mot à mot en mode « scrub ». Framer Motion ne sait pas épingler une section. |
-| **OGL (WebGL)** | [`ui/ShaderBackdrop.tsx`](src/components/ui/ShaderBackdrop.tsx) | Le fond du hero : bruit fractal doublement déformé, synthèse additive aux couleurs de la marque. Un dégradé CSS ne produit pas ce mouvement organique. |
+| **GSAP + ScrollTrigger** | [`lib/gsap.ts`](src/lib/gsap.ts), [`YearJourney`](src/components/sections/YearJourney.tsx), [`Manifesto`](src/components/sections/Manifesto.tsx) | Chorégraphie au scroll natif : section épinglée avec défilement horizontal sur grand écran, révélation mot à mot en mode « scrub ». Aucun wrapper de scroll artificiel pour garantir une fluidité maximale à 60/120 fps. |
+| **OGL (WebGL)** | [`ui/ShaderBackdrop.tsx`](src/components/ui/ShaderBackdrop.tsx) | Le fond du hero en mode sombre : bruit fractal doublement déformé, synthèse additive aux couleurs de la marque. Se suspend hors écran et sur appareils tactiles pour préserver la batterie. |
 
 **Points d'attention si vous modifiez ces sections :**
 
-- Lenis et GSAP partagent une seule horloge (`registerLenis` dans `lib/gsap.ts`). Sans cette
-  synchronisation, la section épinglée saccade. Ne créez pas de second `requestAnimationFrame`
-  pour Lenis.
-- Le défilement horizontal épinglé est réservé aux écrans ≥ 1024 px via `gsap.matchMedia()`.
-  En dessous, le rail redevient un simple glissement natif avec accrochage.
-- Si vous ajoutez ou retirez des cartes dans `YEAR.stops`, rien à recalculer : la distance de
-  défilement est dérivée de `scrollWidth` et recalculée à chaque redimensionnement
-  (`invalidateOnRefresh`).
-- Le shader s'arrête dès qu'il sort de l'écran ou que l'onglet passe en arrière-plan, et il ne se
-  charge pas du tout si l'utilisateur a demandé à réduire les animations.
+- Le défilement est **100 % natif** pour éviter les saccades ou les ralentissements constatés avec les bibliothèques d'inertie logicielle.
+- Le défilement horizontal épinglé est réservé aux écrans ≥ 1024 px via `gsap.matchMedia()`. En dessous ou sur écran tactile, le rail redevient un simple glissement natif avec accrochage CSS.
+- Si vous ajoutez ou retirez des cartes dans `YEAR.stops`, rien à recalculer : la distance de défilement est dérivée de `scrollWidth` et recalculée à chaque redimensionnement (`invalidateOnRefresh`).
+- Le shader s'arrête dès qu'il sort de l'écran ou que l'onglet passe en arrière-plan, et ne tourne qu'en mode sombre.
 
 ---
 
-## 9. Accessibilité et animations
+## 9. Accessibilité, thèmes et animations
 
-- Toutes les animations respectent `prefers-reduced-motion` : le défilement inertiel, le dépliage 3D
-  du hero, les compteurs, le shader WebGL, la révélation mot à mot et le défilement horizontal
-  épinglé se désactivent automatiquement — la page reste entièrement lisible et navigable.
-- Le scroll inertiel est également désactivé sur écran tactile, où le défilement natif est meilleur.
-- Navigation au clavier complète, lien d'évitement, contrastes vérifiés sur fond sombre.
+- **Thème clair et sombre** : le site s'affiche par défaut dans un thème clair élégant et chaleureux, avec une bascule immédiate vers un mode sombre soigné. Le choix est mémorisé localement dans le navigateur.
+- **Réduction des mouvements** : toutes les animations respectent `prefers-reduced-motion` : le dépliage 3D du hero, les compteurs, le shader WebGL, la révélation mot à mot et le défilement horizontal épinglé se simplifient automatiquement.
+- Navigation au clavier complète, gestion de la touche Échap pour le menu mobile, lien d'évitement, contrastes vérifiés.

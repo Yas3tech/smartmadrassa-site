@@ -43,7 +43,7 @@ function ShieldSigil() {
         />
       ))}
       <span className="relative grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-jade-500/25 to-jade-700/10 ring-1 ring-inset ring-jade-400/30">
-        <svg viewBox="0 0 24 24" className="h-7 w-7 text-jade-300" fill="none" strokeWidth="1.7">
+        <svg viewBox="0 0 24 24" className="h-7 w-7 text-success" fill="none" strokeWidth="1.7">
           <motion.path
             d="M12 2.5 4.5 5.8v5.4c0 4.6 3.2 8.9 7.5 10.3 4.3-1.4 7.5-5.7 7.5-10.3V5.8z"
             stroke="currentColor"
@@ -91,11 +91,11 @@ export function Security() {
             const Icon = ICONS[card.icon] ?? ShieldCheck;
             return (
               <RevealItem key={card.title}>
-                <div className="group h-full rounded-2xl border border-white/[0.07] bg-white/[0.015] p-6 transition-colors duration-300 hover:border-jade-500/25 hover:bg-jade-500/[0.03]">
-                  <span className="mb-4 grid h-9 w-9 place-items-center rounded-lg bg-jade-500/10 text-jade-300 ring-1 ring-inset ring-jade-500/20">
+                <div className="group h-full rounded-2xl border border-contrast/[0.07] bg-contrast/[0.015] p-6 transition-colors duration-300 hover:border-jade-500/25 hover:bg-jade-500/[0.03]">
+                  <span className="mb-4 grid h-9 w-9 place-items-center rounded-lg bg-jade-500/10 text-success ring-1 ring-inset ring-jade-500/20">
                     <Icon className="h-4 w-4" strokeWidth={1.9} />
                   </span>
-                  <h3 className="font-display text-[15px] font-semibold text-white">{card.title}</h3>
+                  <h3 className="font-display text-[15px] font-semibold text-contrast">{card.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-400">{card.body}</p>
                 </div>
               </RevealItem>
@@ -110,7 +110,7 @@ export function Security() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-slate-600"
         >
-          Le détail des traitements, des durées de conservation et de vos droits figure dans notre
+          Le détail des traitements, des durées de conservation et de vos droits figure dans la
           politique de confidentialité. Une convention de sous-traitance conforme à l’article 28 du
           RGPD est fournie à chaque établissement.
         </motion.p>

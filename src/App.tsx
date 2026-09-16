@@ -1,14 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import { Header, ScrollProgress } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
-import { Grain } from './components/ui/primitives';
-import { useSmoothScroll } from './lib/hooks';
 import { Home } from './pages/Home';
 import { Conditions, Confidentialite, MentionsLegales, NotFound } from './pages/Legal';
 
 export default function App() {
-  useSmoothScroll();
-
   return (
     <>
       <a
@@ -18,7 +14,6 @@ export default function App() {
         Aller au contenu
       </a>
 
-      <Grain />
       <ScrollProgress />
       <Header />
 

@@ -10,25 +10,25 @@ import { SectionHeading } from '../ui/primitives';
 
 const ACCENT: Record<string, { text: string; ring: string; glow: string; dot: string }> = {
   brand: {
-    text: 'text-brand-300',
+    text: 'text-accent',
     ring: 'ring-brand-500/25 bg-brand-500/[0.08]',
     glow: 'bg-brand-500/20',
     dot: 'bg-brand-400',
   },
   jade: {
-    text: 'text-jade-300',
+    text: 'text-success',
     ring: 'ring-jade-500/25 bg-jade-500/[0.08]',
     glow: 'bg-jade-500/20',
     dot: 'bg-jade-400',
   },
   violet: {
-    text: 'text-violet-300',
+    text: 'text-status-violet',
     ring: 'ring-violet-500/25 bg-violet-500/[0.08]',
     glow: 'bg-violet-500/20',
     dot: 'bg-violet-400',
   },
   sky: {
-    text: 'text-sky-300',
+    text: 'text-status-sky',
     ring: 'ring-sky-500/25 bg-sky-500/[0.08]',
     glow: 'bg-sky-500/20',
     dot: 'bg-sky-400',
@@ -95,7 +95,7 @@ export function Showcase() {
                   ref={(el) => {
                     blockRefs.current[i] = el;
                   }}
-                  className="border-b border-white/[0.06] py-12 last:border-0 lg:min-h-[76vh] lg:flex lg:flex-col lg:justify-center lg:border-0 lg:py-0"
+                  className="border-b border-contrast/[0.06] py-12 last:border-0 lg:min-h-[76vh] lg:flex lg:flex-col lg:justify-center lg:border-0 lg:py-0"
                 >
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
@@ -119,7 +119,7 @@ export function Showcase() {
                       {mod.eyebrow}
                     </span>
 
-                    <h3 className="mt-5 text-balance font-display text-2xl font-bold leading-[1.15] tracking-[-0.025em] text-white sm:text-[2rem]">
+                    <h3 className="mt-5 text-balance font-display text-2xl font-bold leading-[1.15] tracking-[-0.025em] text-contrast sm:text-[2rem]">
                       {mod.title}
                     </h3>
                     <p className="mt-4 max-w-lg text-pretty leading-relaxed text-slate-400">
@@ -188,7 +188,7 @@ export function Showcase() {
                       key={m.id}
                       className={cn(
                         'w-1 rounded-full transition-all duration-500',
-                        i === active ? 'h-7 bg-brand-400' : 'h-3 bg-white/15',
+                        i === active ? 'h-7 bg-brand-400' : 'h-3 bg-contrast/15',
                       )}
                     />
                   ))}

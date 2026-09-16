@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { Bell, Check } from 'lucide-react';
@@ -80,8 +81,7 @@ export function Languages() {
             align="left"
             eyebrow={LANGUAGES.eyebrow}
             title={
-              <>
-                Chaque famille <span className="text-gradient">dans sa langue</span>
+              <>{t("Chaque famille ")}<span className="text-gradient">{t("dans sa langue")}</span>
               </>
             }
             lead={LANGUAGES.lead}
@@ -144,9 +144,7 @@ export function Languages() {
             />
             <div className="card p-5 sm:p-6">
               <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                <Bell className="h-3.5 w-3.5 text-accent" />
-                Notification envoyée au parent
-              </div>
+                <Bell className="h-3.5 w-3.5 text-accent" />{t("Notification envoyée au parent")}</div>
 
               <div id="language-preview" className="relative min-h-[170px]">
                 <AnimatePresence mode="wait">

@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { Smartphone, Languages, Lock, FileDown, Zap, LifeBuoy } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { BENTO } from '../../content/site';
@@ -18,14 +19,13 @@ export function Bento() {
     <section className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Ce qui change au quotidien"
+          eyebrow={t("Ce qui change au quotidien")}
           title={
-            <>
-              Les détails qui font qu’un outil{' '}
-              <span className="text-gradient">est réellement utilisé</span>
+            <>{t("Les détails qui font qu’un outil")}{' '}
+              <span className="text-gradient">{t("est réellement utilisé")}</span>
             </>
           }
-          lead="Un logiciel scolaire ne tient pas à sa liste de fonctions, mais à la vitesse à laquelle un enseignant pressé arrive au bout de sa tâche."
+          lead={t("Un logiciel scolaire ne tient pas à sa liste de fonctions, mais à la vitesse à laquelle un enseignant pressé arrive au bout de sa tâche.")}
         />
 
         <RevealGroup className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" gap={0.07}>

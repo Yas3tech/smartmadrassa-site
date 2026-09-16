@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export function ThemeToggle() {
     return () => window.removeEventListener('storage', sync);
   }, []);
 
-  const label = theme === 'light' ? 'Activer le mode sombre' : 'Activer le mode clair';
+  const label = theme === 'light' ? t("Activer le mode sombre") : t("Activer le mode clair");
   return (
     <button
       type="button"

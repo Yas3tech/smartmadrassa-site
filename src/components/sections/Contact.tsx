@@ -1,3 +1,4 @@
+import { t, localizedHref, locale } from '../../lib/i18n';
 import { useState, type FormEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Check, Loader2, Mail, AlertTriangle } from 'lucide-react';
@@ -20,6 +21,7 @@ export function Contact() {
     if (status === 'sending') return;
     const form = e.currentTarget;
     const data = new FormData(form);
+    data.set('language', locale);
 
     // Pot de miel : rempli uniquement par les robots.
     if (data.get('website')) {
@@ -41,7 +43,7 @@ export function Contact() {
       const payload = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
 
       if (!res.ok || !payload?.ok) {
-        throw new Error(payload?.error || 'Envoi impossible pour le moment.');
+        throw new Error(t("Envoi impossible pour le moment."));
       }
       setStatus('sent');
       form.reset();
@@ -49,12 +51,12 @@ export function Contact() {
       setStatus('error');
       setError(
         controller.signal.aborted
-          ? 'Le serveur n’a pas confirmé l’envoi à temps. Votre demande a peut-être été transmise.'
+          ? t("Le serveur n’a pas confirmé l’envoi à temps. Votre demande a peut-être été transmise.")
           : err instanceof TypeError
-            ? 'La connexion au serveur a échoué. Vérifiez votre connexion Internet.'
+            ? t("La connexion au serveur a échoué. Vérifiez votre connexion Internet.")
             : err instanceof Error
               ? err.message
-              : 'Envoi impossible pour le moment.',
+              : t("Envoi impossible pour le moment."),
       );
     } finally {
       window.clearTimeout(timeout);
@@ -138,18 +140,13 @@ export function Contact() {
                   <span className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/30">
                     <Check className="h-6 w-6" strokeWidth={2.5} />
                   </span>
-                  <h3 className="font-display text-xl font-bold text-contrast">Message transmis</h3>
-                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">
-                    Merci. Je vous répondrai sous deux jours ouvrables, à l’adresse que vous avez
-                    indiquée.
-                  </p>
+                  <h3 className="font-display text-xl font-bold text-contrast">{t("Message transmis")}</h3>
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-400">{t("Merci. Je vous répondrai sous deux jours ouvrables, à l’adresse que vous avez indiquée.")}</p>
                   <button
                     type="button"
                     onClick={() => setStatus('idle')}
                     className="mt-6 text-sm font-medium text-accent hover:text-accent"
-                  >
-                    Envoyer un autre message
-                  </button>
+                  >{t("Envoyer un autre message")}</button>
                 </motion.div>
               ) : (
                 <motion.form
@@ -161,8 +158,7 @@ export function Contact() {
                   aria-busy={status === 'sending'}
                 >
                   <h3 className="font-display text-xl font-bold text-contrast">{CONTACT.title}</h3>
-                  <p className="text-xs leading-relaxed text-slate-500">
-                    Votre message est adressé directement à Yassine, à{' '}
+                  <p className="text-xs leading-relaxed text-slate-500">{t("Votre message est adressé directement à Yassine, à")}{' '}
                     <a href={`mailto:${SITE.email}`} className="text-accent underline underline-offset-2">
                       {SITE.email}
                     </a>
@@ -171,45 +167,35 @@ export function Contact() {
 
                   {/* Pot de miel anti-robot */}
                   <div className="absolute left-[-9999px]" aria-hidden>
-                    <label htmlFor="website">Ne pas remplir</label>
+                    <label htmlFor="website">{t("Ne pas remplir")}</label>
                     <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        Nom et prénom *
-                      </label>
-                      <input id="name" name="name" required maxLength={120} autoComplete="name" className={FIELD} placeholder="Votre nom et prénom" />
+                      <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-slate-400">{t("Nom et prénom *")}</label>
+                      <input id="name" name="name" required maxLength={120} autoComplete="name" className={FIELD} placeholder={t("Votre nom et prénom")} />
                     </div>
                     <div>
-                      <label htmlFor="school" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        École / structure *
-                      </label>
-                      <input id="school" name="school" required maxLength={160} autoComplete="organization" className={FIELD} placeholder="Nom de votre école" />
+                      <label htmlFor="school" className="mb-1.5 block text-xs font-medium text-slate-400">{t("École / structure *")}</label>
+                      <input id="school" name="school" required maxLength={160} autoComplete="organization" className={FIELD} placeholder={t("Nom de votre école")} />
                     </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        E-mail *
-                      </label>
+                      <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-slate-400">{t("E-mail *")}</label>
                       <input id="email" name="email" type="email" required maxLength={160} autoComplete="email" className={FIELD} placeholder="vous@exemple.be" />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        Téléphone
-                      </label>
-                      <input id="phone" name="phone" type="tel" maxLength={40} autoComplete="tel" className={FIELD} placeholder="+32 4xx xx xx xx" />
+                      <label htmlFor="phone" className="mb-1.5 block text-xs font-medium text-slate-400">{t("Téléphone")}</label>
+                      <input id="phone" name="phone" type="tel" maxLength={40} autoComplete="tel" className={FIELD} placeholder={t("+32 4xx xx xx xx")} />
                     </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="subject" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        Sujet
-                      </label>
+                      <label htmlFor="subject" className="mb-1.5 block text-xs font-medium text-slate-400">{t("Sujet")}</label>
                       <select id="subject" name="subject" className={cn(FIELD, 'appearance-none')} defaultValue={CONTACT.subjects[0]}>
                         {CONTACT.subjects.map((s) => (
                           <option key={s} value={s} className="bg-ink-900">
@@ -219,17 +205,13 @@ export function Contact() {
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="students" className="mb-1.5 block text-xs font-medium text-slate-400">
-                        Nombre d’élèves
-                      </label>
+                      <label htmlFor="students" className="mb-1.5 block text-xs font-medium text-slate-400">{t("Nombre d’élèves")}</label>
                       <input id="students" name="students" type="number" min={1} step={1} inputMode="numeric" className={FIELD} placeholder="120" />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="mb-1.5 block text-xs font-medium text-slate-400">
-                      Votre message *
-                    </label>
+                    <label htmlFor="message" className="mb-1.5 block text-xs font-medium text-slate-400">{t("Votre message *")}</label>
                     <textarea
                       id="message"
                       name="message"
@@ -238,7 +220,7 @@ export function Contact() {
                       maxLength={5000}
                       rows={4}
                       className={cn(FIELD, 'resize-none')}
-                      placeholder="Ce qui vous pose problème aujourd’hui, et ce que vous aimeriez améliorer."
+                      placeholder={t("Ce qui vous pose problème aujourd’hui, et ce que vous aimeriez améliorer.")}
                     />
                   </div>
 
@@ -256,12 +238,8 @@ export function Contact() {
                         strokeWidth={4}
                       />
                     </span>
-                    <span>
-                      J’accepte que mes données soient utilisées pour traiter cette demande,
-                      conformément à la{' '}
-                      <a href="/confidentialite" className="text-accent underline underline-offset-2">
-                        politique de confidentialité
-                      </a>
+                    <span>{t("J’accepte que mes données soient utilisées pour traiter cette demande, conformément à la")}{' '}
+                      <a href={localizedHref('/confidentialite')} className="text-accent underline underline-offset-2">{t("politique de confidentialité")}</a>
                       .
                     </span>
                   </label>
@@ -270,7 +248,7 @@ export function Contact() {
                     <div role="alert" className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/[0.08] p-3 text-xs text-danger">
                       <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                       <span>
-                        {error} Vous pouvez aussi m’écrire directement à{' '}
+                        {error}{t(" Vous pouvez aussi m’écrire directement à")}{' '}
                         <a href={`mailto:${SITE.email}`} className="underline underline-offset-2">
                           {SITE.email}
                         </a>
@@ -282,12 +260,9 @@ export function Contact() {
                   <Button type="submit" size="lg" className="w-full" disabled={status === 'sending'}>
                     {status === 'sending' ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin" /> Envoi…
-                      </>
+                        <Loader2 className="h-4 w-4 animate-spin" />{t(" Envoi…")}</>
                     ) : (
-                      <>
-                        Envoyer la demande
-                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      <>{t("Envoyer la demande")}<ArrowRight className="icon-directional h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                       </>
                     )}
                   </Button>

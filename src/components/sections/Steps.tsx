@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { STEPS } from '../../content/site';
@@ -16,13 +17,12 @@ export function Steps() {
     <section id="demarrage" className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Mise en route"
+          eyebrow={t("Mise en route")}
           title={
-            <>
-              Opérationnel en <span className="text-gradient">deux à trois semaines</span>
+            <>{t("Opérationnel en ")}<span className="text-gradient">{t("deux à trois semaines")}</span>
             </>
           }
-          lead="Je reprends vos fichiers existants et je configure la plateforme avec vous. Puis j’accompagne votre équipe dans sa prise en main."
+          lead={t("Je reprends vos fichiers existants et je configure la plateforme avec vous. Puis j’accompagne votre équipe dans sa prise en main.")}
         />
 
         <div ref={ref} className="relative mt-16 pl-12 sm:pl-16">

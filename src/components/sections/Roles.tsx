@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Building2, GraduationCap, Users, BookOpen, ArrowRight } from 'lucide-react';
@@ -24,21 +25,21 @@ const ICONS: Record<string, LucideIcon> = {
 function RoleVisual({ id }: { id: string }) {
   if (id === 'direction') {
     return (
-      <AppFrame compact active="dashboard" title="Tableau de bord" subtitle="Vue direction">
+      <AppFrame compact active="dashboard" title={t("Tableau de bord")} subtitle={t("Vue direction")}>
         <DashboardScreen />
       </AppFrame>
     );
   }
   if (id === 'enseignant') {
     return (
-      <AppFrame compact active="attendance" title="Appel & présences" subtitle="Arabe — 3A, 09:00">
+      <AppFrame compact active="attendance" title={t("Appel & présences")} subtitle={t("Arabe — 3A, 09:00")}>
         <AttendanceScreen />
       </AppFrame>
     );
   }
   if (id === 'parent') {
     return (
-      <AppFrame compact active="grades" title="Résultats d’Amina" subtitle="Période 2 — 3A">
+      <AppFrame compact active="grades" title={t("Résultats d’Amina")} subtitle={t("Période 2 — 3A")}>
         <GradesScreen />
       </AppFrame>
     );
@@ -57,7 +58,7 @@ export function Roles() {
   const role = ROLES.find((r) => r.id === active) ?? ROLES[0];
 
   return (
-    <section id="roles" className="relative py-20 sm:py-28">
+    <section id="roles" className="relative overflow-hidden py-20 sm:py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-24 h-96 w-[48rem] -translate-x-1/2 rounded-full bg-brand-500/[0.07] blur-[120px]"
@@ -65,13 +66,12 @@ export function Roles() {
 
       <div className="container-x relative z-10">
         <SectionHeading
-          eyebrow="Pour qui"
+          eyebrow={t("Pour qui")}
           title={
-            <>
-              Un seul outil, <span className="text-gradient">quatre façons de s’en servir</span>
+            <>{t("Un seul outil, ")}<span className="text-gradient">{t("quatre façons de s’en servir")}</span>
             </>
           }
-          lead="Chaque profil n’accède qu’à ce qui le concerne. Personne ne se perd dans des écrans qui ne lui sont pas destinés."
+          lead={t("Chaque profil n’accède qu’à ce qui le concerne. Personne ne se perd dans des écrans qui ne lui sont pas destinés.")}
         />
 
         {/* Onglets */}
@@ -127,7 +127,7 @@ export function Roles() {
                     transition={{ duration: 0.45, ease: EASE, delay: 0.08 + i * 0.06 }}
                     className="flex items-center gap-3 border-b border-contrast/[0.05] pb-3 last:border-0"
                   >
-                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-accent" />
+                    <ArrowRight className="icon-directional h-3.5 w-3.5 shrink-0 text-accent" />
                     <span className="text-sm text-slate-300">{p}</span>
                   </motion.li>
                 ))}

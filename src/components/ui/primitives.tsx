@@ -3,6 +3,7 @@ import { motion, useInView, useMotionValue, useSpring, useTransform, useReducedM
 import { cn } from '../../lib/utils';
 import { EASE, riseIn, stagger, viewportOnce } from '../../lib/motion';
 import { useMagnetic, useSpotlight } from '../../lib/hooks';
+import { localizedHref } from '../../lib/i18n';
 
 /* ------------------------------------------------------------------ */
 /* Révélations au scroll                                               */
@@ -171,7 +172,7 @@ export function Button({
   if (href) {
     return (
       <a
-        href={href}
+        href={localizedHref(href)}
         onClick={onClick}
         className={base}
         {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}

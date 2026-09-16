@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { cn } from '../../lib/utils';
 
 /**
@@ -9,7 +10,7 @@ export function LogoMark({ className, size = 36 }: { className?: string; size?: 
   return (
     <img
       src="/logo.png"
-      alt="Logo SmartMadrassa"
+      alt={t("Logo SmartMadrassa")}
       width={width}
       height={size}
       className={cn('shrink-0 object-contain select-none', className)}
@@ -31,7 +32,7 @@ export function Logo({
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <LogoMark size={size} />
       {showWordmark && (
-        <span className="font-display text-[17px] font-semibold tracking-[-0.02em] text-contrast">
+        <span className="logo-wordmark font-display text-[17px] font-semibold tracking-[-0.02em] text-contrast" dir="ltr">
           Smart<span className="text-accent">Madrassa</span>
         </span>
       )}

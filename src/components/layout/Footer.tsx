@@ -1,3 +1,4 @@
+import { t, localizedHref } from '../../lib/i18n';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { FOOTER, SITE } from '../../content/site';
@@ -29,9 +30,7 @@ export function Footer() {
               {SITE.email}
             </a>
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-jade-500/20 bg-jade-500/[0.06] px-3 py-1.5 text-[11px] font-medium text-success">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Données hébergées dans l’Union européenne
-            </div>
+              <ShieldCheck className="h-3.5 w-3.5" />{t("Données hébergées dans l’Union européenne")}</div>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-3">
@@ -40,32 +39,33 @@ export function Footer() {
                 <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                   {col.title}
                 </h3>
-                <ul className="space-y-2.5">
+                {/* min-h : une cible confortable au doigt, sans casser le rythme vertical. */}
+                <ul className="space-y-0.5">
                   {col.links.map((link) => {
                     const external = 'external' in link && link.external;
                     return (
                       <li key={link.label}>
                         {external ? (
                           <a
-                            href={link.href}
+                            href={localizedHref(link.href)}
                             target="_blank"
                             rel="noreferrer noopener"
-                            className="group inline-flex items-center gap-1 text-sm text-slate-400 transition-colors hover:text-contrast"
+                            className="group inline-flex min-h-[2rem] items-center gap-1 text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
-                            <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
+                            <ArrowUpRight className="icon-directional h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
                           </a>
                         ) : link.href.startsWith('/#') ? (
                           <a
-                            href={link.href}
-                            className="text-sm text-slate-400 transition-colors hover:text-contrast"
+                            href={localizedHref(link.href)}
+                            className="inline-flex min-h-[2rem] items-center text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
                           </a>
                         ) : (
                           <Link
-                            to={link.href}
-                            className="text-sm text-slate-400 transition-colors hover:text-contrast"
+                            to={localizedHref(link.href)}
+                            className="inline-flex min-h-[2rem] items-center text-sm text-slate-400 transition-colors hover:text-contrast"
                           >
                             {link.label}
                           </Link>
@@ -84,7 +84,7 @@ export function Footer() {
             © {year} {SITE.name} — {SITE.editor}, {SITE.country}.
           </p>
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>Conçu et développé en solo, en Belgique</span>
+            <span>{t("Conçu et développé en solo, en Belgique")}</span>
           </p>
         </div>
       </div>

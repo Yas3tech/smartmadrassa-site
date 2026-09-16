@@ -1,3 +1,4 @@
+import { t, localizedHref } from '../../lib/i18n';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
@@ -9,6 +10,7 @@ import { useActiveSection, useScrolled } from '../../lib/hooks';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/primitives';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { LanguageSelect } from '../ui/LanguageSelect';
 
 const SECTION_IDS = NAV.map((n) => n.href.replace('#', ''));
 
@@ -66,18 +68,18 @@ export function Header() {
               : 'border border-transparent bg-transparent',
           )}
         >
-          <Link to="/" aria-label={`${SITE.name} — accueil`} className="shrink-0">
-            <Logo />
+          <Link to={localizedHref('/')} aria-label={`${SITE.name} — ${t('accueil')}`} className="shrink-0">
+            <Logo className="[&_.logo-wordmark]:hidden min-[400px]:[&_.logo-wordmark]:inline [&_.logo-wordmark]:text-[13px] sm:[&_.logo-wordmark]:text-[17px]" />
           </Link>
 
-          <nav className="mx-auto hidden items-center gap-1 lg:flex">
+          <nav className="mx-auto hidden items-center gap-1 xl:flex">
             {NAV.map((item) => {
               const id = item.href.replace('#', '');
               const isActive = isHome && active === id;
               return (
                 <a
                   key={item.href}
-                  href={isHome ? item.href : `/${item.href}`}
+                  href={isHome ? item.href : localizedHref(`/${item.href}`)}
                   className={cn(
                     'relative rounded-full px-2.5 py-1.5 text-[13px] font-medium transition-colors',
                     isActive ? 'text-contrast' : 'text-slate-400 hover:text-contrast',
@@ -96,26 +98,23 @@ export function Header() {
             })}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <div className="ms-auto flex items-center gap-1.5 xl:ms-0">
+            <LanguageSelect />
             <ThemeToggle />
             <a
               href={SITE.appUrl}
               target="_blank"
               rel="noreferrer noopener"
-              className="hidden items-center gap-1 rounded-full px-3 py-2 text-[13px] font-medium text-slate-300 transition-colors hover:text-contrast sm:inline-flex"
-            >
-              Se connecter
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              className="hidden items-center gap-1 rounded-full px-3 py-2 text-[13px] font-medium text-slate-300 transition-colors hover:text-contrast md:inline-flex"
+            >{t("Se connecter")}<ArrowUpRight className="icon-directional h-3.5 w-3.5" />
             </a>
-            <Button href={isHome ? '#contact' : '/#contact'} className="hidden sm:inline-flex">
-              Demander une démo
-            </Button>
+            <Button href={isHome ? '#contact' : '/#contact'} className="hidden sm:inline-flex">{t("Demander une démo")}</Button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-label={open ? t("Fermer le menu") : t("Ouvrir le menu")}
               aria-expanded={open}
-              className="grid h-10 w-10 place-items-center rounded-xl border border-contrast/10 bg-contrast/[0.03] text-contrast lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-contrast/10 bg-contrast/[0.03] text-contrast xl:hidden"
             >
               {open ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
             </button>
@@ -130,13 +129,13 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-30 bg-ink-950/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-30 overflow-y-auto bg-ink-950/95 backdrop-blur-xl xl:hidden"
           >
-            <nav className="flex h-full flex-col justify-center gap-1 px-8">
+            <nav className="flex min-h-full flex-col justify-center gap-1 px-8 pb-8 pt-24">
               {NAV.map((item, i) => (
                 <motion.a
                   key={item.href}
-                  href={isHome ? item.href : `/${item.href}`}
+                  href={isHome ? item.href : localizedHref(`/${item.href}`)}
                   onClick={() => setOpen(false)}
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -152,12 +151,8 @@ export function Header() {
                 transition={{ delay: 0.4, duration: 0.5, ease: EASE }}
                 className="mt-8 flex flex-col gap-3"
               >
-                <Button href={isHome ? '#contact' : '/#contact'} size="lg" onClick={() => setOpen(false)}>
-                  Demander une démo
-                </Button>
-                <Button href={SITE.appUrl} variant="outline" size="lg" external>
-                  Se connecter
-                </Button>
+                <Button href={isHome ? '#contact' : '/#contact'} size="lg" onClick={() => setOpen(false)}>{t("Demander une démo")}</Button>
+                <Button href={SITE.appUrl} variant="outline" size="lg" external>{t("Se connecter")}</Button>
               </motion.div>
             </nav>
           </motion.div>

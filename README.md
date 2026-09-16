@@ -206,16 +206,45 @@ consentement préalable et élargir la CSP.
 
 ---
 
-## 6. Ajouter le néerlandais et l'arabe
+## 6. Les trois langues : français, néerlandais, arabe
 
-La structure est prête : tout le texte est déjà isolé dans `src/content/site.ts`.
+Le site est servi en FR, NL et AR. La langue se choisit dans l'en-tête, se retient dans
+`localStorage` et voyage dans l'URL (`?lang=nl`), ce qui rend chaque version partageable et
+indexable.
 
-1. Dupliquer le fichier en `src/content/site.nl.ts` et `src/content/site.ar.ts` ;
-2. Créer un petit contexte de langue qui sélectionne le bon objet ;
-3. Pour l'arabe, poser `dir="rtl"` sur `<html>` et utiliser `font-arabic` (Cairo est déjà installé
-   et auto-hébergé) ;
-4. Ajouter les balises `<link rel="alternate" hreflang="...">` dans `index.html` et les URL
-   correspondantes dans `sitemap.xml`.
+**Comment ça marche.** Le français est la source : tout le texte éditorial vit dans
+`src/content/site.fr.ts`, et les libellés d'interface passent par `t('…')` dans les composants.
+`src/lib/i18n.ts` charge le dictionnaire de la langue demandée *avant* de monter React, puis
+`translateContent()` traduit l'objet de contenu en une passe. **La clef d'un dictionnaire est la
+phrase française elle-même** : il n'y a donc aucun identifiant à inventer, et une phrase sans
+traduction retombe visiblement en français plutôt que d'afficher une clef technique.
+
+```
+src/content/translations/
+├─ nl.json            phrase française → phrase néerlandaise
+├─ ar.json            phrase française → phrase arabe
+└─ identiques.json    phrases qui s'écrivent pareil dans les deux langues
+```
+
+**Modifier un texte.** Changez la phrase dans `site.fr.ts` (ou le `t('…')` du composant), puis
+reportez la nouvelle clef dans `nl.json` et `ar.json`. Si la phrase s'écrit de la même façon dans
+la langue cible — un nom propre, une marque, une unité — déclarez-la dans `identiques.json`
+plutôt que de la recopier telle quelle.
+
+**Le garde-fou.** `pnpm check:i18n` compare les phrases réellement affichées aux deux
+dictionnaires et signale trois choses : la traduction absente, la valeur restée identique au
+français, et l'arabe écrit sans un seul caractère arabe. Il tourne au début de `pnpm build`, donc
+un oubli bloque le déploiement au lieu de partir en production.
+
+```bash
+pnpm check:i18n                      # vérifie
+node scripts/check-i18n.mjs --purger # retire les clefs devenues inutiles
+```
+
+**L'arabe.** `<html dir="rtl">` est posé au démarrage, la typographie bascule sur Cairo
+(auto-hébergée) et les flèches marquées `.icon-directional` se retournent pour suivre le sens de
+lecture. Deux zones restent volontairement en `ltr` : le rail de l'année scolaire, dont
+l'animation dépend d'un sens de translation fixe, et le sélecteur de langue.
 
 ---
 
@@ -229,9 +258,14 @@ site/
 │  ├─ og-image.png           Aperçu de partage (généré par pnpm og)
 │  ├─ robots.txt, sitemap.xml, site.webmanifest
 │  └─ favicon / icônes
-├─ scripts/generate-og.mjs   Génération de l'image de partage (sharp)
+├─ scripts/
+│  ├─ generate-og.mjs        Génération de l'image de partage (sharp)
+│  ├─ check-i18n.mjs         Garde-fou des traductions (lancé par pnpm build)
+│  └─ deploy-sftp.mjs        Publication SFTP vers OVH
 └─ src/
-   ├─ content/site.ts        ← TOUT le texte du site
+   ├─ content/site.fr.ts     ← TOUT le texte du site, en français
+   ├─ content/translations/  dictionnaires néerlandais et arabe
+   ├─ lib/i18n.ts            choix de la langue, RTL, traduction du contenu
    ├─ lib/                   hooks (magnétisme, halo, préférences), variantes Framer, pont GSAP
    ├─ components/
    │  ├─ ui/                 primitives (boutons, révélations, aurores, marquee, shader WebGL, bascule de thème)

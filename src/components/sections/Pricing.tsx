@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
@@ -18,12 +19,12 @@ export function Pricing() {
         <div className="mt-10 flex justify-center">
           <div
             role="group"
-            aria-label="Périodicité de facturation"
+            aria-label={t("Périodicité de facturation")}
             className="relative inline-flex items-center gap-1 rounded-full border border-contrast/10 bg-contrast/[0.03] p-1"
           >
             {[
-              { id: 'monthly', label: 'Mensuel' },
-              { id: 'yearly', label: 'Annuel' },
+              { id: 'monthly', label: t("Mensuel") },
+              { id: 'yearly', label: t("Annuel") },
             ].map((opt) => {
               const isActive = (opt.id === 'yearly') === yearly;
               return (
@@ -33,14 +34,14 @@ export function Pricing() {
                   onClick={() => setYearly(opt.id === 'yearly')}
                   aria-pressed={isActive}
                   className={cn(
-                    'relative rounded-full px-5 py-2 text-sm font-medium transition-colors',
+                    'relative isolate rounded-full px-5 py-2 text-sm font-medium transition-colors',
                     isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200',
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="pricing-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-b from-brand-400 to-brand-600"
+                      className="button-primary absolute inset-0 -z-10 rounded-full"
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -74,8 +75,7 @@ export function Pricing() {
                         className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-brand-500/20 blur-3xl"
                       />
                       <span className="absolute right-6 top-6 inline-flex items-center gap-1 rounded-full bg-brand-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                        <Sparkles className="h-3 w-3" /> Recommandé
-                      </span>
+                        <Sparkles className="h-3 w-3" />{t(" Recommandé")}</span>
                     </>
                   )}
 
@@ -87,9 +87,7 @@ export function Pricing() {
 
                     <div className="mt-6 flex min-h-[3.75rem] items-end gap-1.5">
                       {price === null ? (
-                        <span className="font-display text-3xl font-extrabold tracking-[-0.03em] text-contrast">
-                          Sur mesure
-                        </span>
+                        <span className="font-display text-3xl font-extrabold tracking-[-0.03em] text-contrast">{t("Sur mesure")}</span>
                       ) : (
                         <>
                           <AnimatePresence mode="popLayout">
@@ -105,12 +103,12 @@ export function Pricing() {
                             </motion.span>
                           </AnimatePresence>
                           <span className="pb-1 font-display text-2xl font-bold text-contrast">€</span>
-                          <span className="pb-1.5 text-sm text-slate-500">/ mois</span>
+                          <span className="pb-1.5 text-sm text-slate-500">{t("/ mois")}</span>
                         </>
                       )}
                     </div>
                     <p className="mt-1 h-4 text-[11px] text-slate-600">
-                      {price !== null && yearly ? 'facturé annuellement' : price !== null ? 'sans engagement' : ''}
+                      {price !== null && yearly ? t("facturé annuellement") : price !== null ? t("sans engagement") : ''}
                     </p>
 
                     <p className="mt-5 text-sm leading-relaxed text-slate-400">{plan.pitch}</p>

@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Plus, MessagesSquare } from 'lucide-react';
@@ -32,13 +33,12 @@ export function Faq() {
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading
               align="left"
-              eyebrow="Questions fréquentes"
+              eyebrow={t("Questions fréquentes")}
               title={
-                <>
-                  Ce qu’on me demande <span className="text-gradient">avant de se lancer</span>
+                <>{t("Ce qu’on me demande ")}<span className="text-gradient">{t("avant de se lancer")}</span>
                 </>
               }
-              lead="Une question qui n’est pas ici ? Écrivez-moi, je vous réponds sous deux jours ouvrables."
+              lead={t("Une question qui n’est pas ici ? Écrivez-moi, je vous réponds sous deux jours ouvrables.")}
             />
             <a
               href={`mailto:${SITE.email}`}

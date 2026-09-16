@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { t } from '../../lib/i18n';
+import { memo, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { MODULES } from '../../content/site';
@@ -35,22 +36,33 @@ const ACCENT: Record<string, { text: string; ring: string; glow: string; dot: st
   },
 };
 
-function ModuleScreen({ index }: { index: number }) {
+const ModuleScreen = memo(function ModuleScreen({ index }: { index: number }) {
   const mod = MODULES[index];
   const meta = SCREEN_META[mod.mock];
   const Screen = SCREENS[mod.mock];
   return (
-    <AppFrame active={meta.nav} title={meta.title} subtitle={meta.subtitle}>
+    <AppFrame active={meta.nav} title={meta.title} subtitle={meta.subtitle} compact>
       <Screen />
     </AppFrame>
   );
-}
+});
+
+const STICKY_LAYOUT = '(min-width: 1024px) and (min-height: 720px)';
 
 export function Showcase() {
   const [active, setActive] = useState(0);
+  const [desktop, setDesktop] = useState(() => window.matchMedia(STICKY_LAYOUT).matches);
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    const query = window.matchMedia(STICKY_LAYOUT);
+    const update = () => setDesktop(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!desktop) return;
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -64,7 +76,7 @@ export function Showcase() {
     );
     blockRefs.current.forEach((el) => el && observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [desktop]);
 
   const accent = ACCENT[MODULES[active].accent];
 
@@ -72,19 +84,18 @@ export function Showcase() {
     <section id="modules" className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Les modules"
+          eyebrow={t("Les modules")}
           title={
-            <>
-              Cinq modules qui couvrent{' '}
-              <span className="text-gradient">toute l’année scolaire</span>
+            <>{t("Cinq modules qui couvrent")}{' '}
+              <span className="text-gradient">{t("toute l’année scolaire")}</span>
             </>
           }
-          lead="De la rentrée au dernier bulletin : rien à brancher entre eux, tout partage la même base d’élèves, de classes et de périodes."
+          lead={t("De la rentrée au dernier bulletin : rien à brancher entre eux, tout partage la même base d’élèves, de classes et de périodes.")}
         />
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] lg:gap-16">
+        <div className={cn('mt-12 grid gap-12 sm:mt-16', desktop && 'grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] gap-16')}>
           {/* Colonne texte (mobile : maquette intercalée) */}
-          <div className="order-2 lg:order-1">
+          <div className="min-w-0">
             {MODULES.map((mod, i) => {
               const a = ACCENT[mod.accent];
               const isActive = i === active;
@@ -95,7 +106,7 @@ export function Showcase() {
                   ref={(el) => {
                     blockRefs.current[i] = el;
                   }}
-                  className="border-b border-contrast/[0.06] py-12 last:border-0 lg:min-h-[76vh] lg:flex lg:flex-col lg:justify-center lg:border-0 lg:py-0"
+                  className={cn('min-w-0 border-b border-contrast/[0.06] py-10 last:border-0 sm:py-12', desktop && 'flex min-h-[76vh] flex-col justify-center border-0 py-0 sm:py-0')}
                 >
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
@@ -104,8 +115,7 @@ export function Showcase() {
                     transition={{ duration: 0.75, ease: EASE }}
                     className={cn(
                       'transition-opacity duration-500',
-                      'lg:opacity-40',
-                      isActive && 'lg:opacity-100',
+                      desktop && (isActive ? 'opacity-100' : 'opacity-40'),
                     )}
                   >
                     <span
@@ -144,9 +154,9 @@ export function Showcase() {
                     </ul>
 
                     {/* Maquette en flux, uniquement sur petit écran */}
-                    <div className="mt-8 lg:hidden">
+                    {!desktop && <div className="mt-8 min-w-0">
                       <ModuleScreen index={i} />
-                    </div>
+                    </div>}
                   </motion.div>
                 </div>
               );
@@ -154,7 +164,7 @@ export function Showcase() {
           </div>
 
           {/* Colonne maquette collante (desktop) */}
-          <div className="order-1 hidden lg:order-2 lg:block">
+          {desktop && <div className="min-w-0">
             <div className="sticky top-24">
               <div className="relative">
                 <motion.div
@@ -182,7 +192,7 @@ export function Showcase() {
                 </AnimatePresence>
 
                 {/* Indicateur de progression vertical */}
-                <div className="absolute -left-10 top-1/2 flex -translate-y-1/2 flex-col gap-2.5">
+                <div className="absolute -start-10 top-1/2 flex -translate-y-1/2 flex-col gap-2.5">
                   {MODULES.map((m, i) => (
                     <span
                       key={m.id}
@@ -195,7 +205,7 @@ export function Showcase() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </section>

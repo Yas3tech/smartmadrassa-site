@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { motion } from 'framer-motion';
 import {
   Check,
@@ -93,16 +94,16 @@ export function DashboardScreen() {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <Kpi label="Élèves" value="248" delta="+12 cette année" tone="slate" />
-        <Kpi label="Présents" value="94 %" delta="aujourd’hui" tone="jade" />
-        <Kpi label="Absences" value="14" delta="dont 9 justifiées" tone="brand" />
-        <Kpi label="Bulletins" value="72 %" delta="période 2" tone="slate" />
+        <Kpi label={t("Élèves")} value="248" delta={t("+12 cette année")} tone="slate" />
+        <Kpi label={t("Présents")} value="94 %" delta={t("aujourd’hui")} tone="jade" />
+        <Kpi label={t("Absences")} value="14" delta={t("dont 9 justifiées")} tone="brand" />
+        <Kpi label={t("Bulletins")} value="72 %" delta={t("période 2")} tone="slate" />
       </div>
 
       <div className="grid gap-2 sm:grid-cols-[1.4fr_1fr]">
         <div className="ui-pane">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-slate-300">Présence — 7 derniers jours</span>
+            <span className="text-[10px] font-semibold text-slate-300">{t("Présence — 7 derniers jours")}</span>
             <span className="inline-flex items-center gap-1 text-[9px] text-success">
               <TrendingUp className="h-2.5 w-2.5" /> +3,2 %
             </span>
@@ -120,7 +121,7 @@ export function DashboardScreen() {
             ))}
           </div>
           <div className="mt-1.5 flex justify-between text-[8px] text-slate-600">
-            {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
+            {[t("L"), t("M"), t("M"), t("J"), t("V"), t("S"), t("D")].map((d, i) => (
               <span key={i} className="flex-1 text-center">
                 {d}
               </span>
@@ -129,12 +130,12 @@ export function DashboardScreen() {
         </div>
 
         <div className="ui-pane">
-          <div className="mb-2 text-[10px] font-semibold text-slate-300">Prochains cours</div>
+          <div className="mb-2 text-[10px] font-semibold text-slate-300">{t("Prochains cours")}</div>
           <div className="space-y-1.5">
             {[
-              ['09:00', 'Arabe — 3A', 'brand'],
-              ['10:30', 'Coran — 2B', 'jade'],
-              ['13:15', 'Sciences — 4A', 'sky'],
+              ['09:00', t("Arabe — 3A"), 'brand'],
+              ['10:30', t("Coran — 2B"), 'jade'],
+              ['13:15', t("Sciences — 4A"), 'sky'],
             ].map(([time, label, tone]) => (
               <div key={label} className="flex items-center gap-2 rounded-md bg-contrast/[0.03] px-2 py-1.5">
                 <span className="font-mono text-[9px] text-slate-500">{time}</span>
@@ -161,19 +162,19 @@ export function DashboardScreen() {
 /* ------------------------------------------------------------------ */
 
 const ROLL = [
-  { name: 'Amina Benali', initials: 'AB', status: 'present' },
-  { name: 'Youssef Haddad', initials: 'YH', status: 'present' },
-  { name: 'Lina De Smet', initials: 'LD', status: 'late' },
-  { name: 'Omar Cherkaoui', initials: 'OC', status: 'absent' },
-  { name: 'Sara Vermeulen', initials: 'SV', status: 'present' },
-  { name: 'Ilyas Mansouri', initials: 'IM', status: 'present' },
+  { name: t("Amina Benali"), initials: 'AB', status: 'present' },
+  { name: t("Youssef Haddad"), initials: 'YH', status: 'present' },
+  { name: t("Lina De Smet"), initials: 'LD', status: 'late' },
+  { name: t("Omar Cherkaoui"), initials: 'OC', status: 'absent' },
+  { name: t("Sara Vermeulen"), initials: 'SV', status: 'present' },
+  { name: t("Ilyas Mansouri"), initials: 'IM', status: 'present' },
 ] as const;
 
 function StatusPills({ status, delay }: { status: string; delay: number }) {
   const options = [
-    { key: 'present', Icon: Check, on: 'bg-jade-500 text-white', label: 'Présent' },
-    { key: 'absent', Icon: X, on: 'bg-rose-500 text-white', label: 'Absent' },
-    { key: 'late', Icon: Clock, on: 'bg-amber-500 text-white', label: 'Retard' },
+    { key: 'present', Icon: Check, on: 'bg-jade-500 text-white', label: t("Présent") },
+    { key: 'absent', Icon: X, on: 'bg-rose-500 text-white', label: t("Absent") },
+    { key: 'late', Icon: Clock, on: 'bg-amber-500 text-white', label: t("Retard") },
   ];
   return (
     <div className="flex gap-1">
@@ -204,21 +205,18 @@ export function AttendanceScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-brand-500/15 text-accent ring-1 ring-inset ring-brand-500/25">
-          Classe 3A
-        </span>
-        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Arabe — 09:00</span>
-        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Lun. 16 sept.</span>
+        <span className="ui-chip bg-brand-500/15 text-accent ring-1 ring-inset ring-brand-500/25">{t("Classe 3A")}</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Arabe — 09:00")}</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Lun. 16 sept.")}</span>
         <span className="ml-auto inline-flex items-center gap-1 text-[9px] text-success">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-jade-400" /> Synchronisé
-        </span>
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-jade-400" />{t(" Synchronisé")}</span>
       </div>
 
       <div className="grid grid-cols-4 gap-2">
-        <Kpi label="Effectif" value="24" tone="slate" />
-        <Kpi label="Présents" value="21" tone="jade" />
-        <Kpi label="Absents" value="2" tone="red" />
-        <Kpi label="Retards" value="1" tone="brand" />
+        <Kpi label={t("Effectif")} value="24" tone="slate" />
+        <Kpi label={t("Présents")} value="21" tone="jade" />
+        <Kpi label={t("Absents")} value="2" tone="red" />
+        <Kpi label={t("Retards")} value="1" tone="brand" />
       </div>
 
       <div className="ui-pane space-y-1">
@@ -241,12 +239,9 @@ export function AttendanceScreen() {
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="rounded-md bg-brand-500 px-2.5 py-1 text-[9px] font-semibold text-white">
-          Valider l’appel
-        </span>
+        <span className="rounded-md bg-brand-500 px-2.5 py-1 text-[9px] font-semibold text-white">{t("Valider l’appel")}</span>
         <span className="inline-flex items-center gap-1 rounded-md border border-contrast/[0.08] px-2.5 py-1 text-[9px] text-slate-400">
-          <Download className="h-2.5 w-2.5" /> Export Excel
-        </span>
+          <Download className="h-2.5 w-2.5" />{t(" Export Excel")}</span>
       </div>
     </div>
   );
@@ -257,31 +252,29 @@ export function AttendanceScreen() {
 /* ------------------------------------------------------------------ */
 
 const GRADES = [
-  { name: 'Amina Benali', initials: 'AB', scores: ['18', '16', '17'], avg: '17,0' },
-  { name: 'Youssef Haddad', initials: 'YH', scores: ['14', '15', '13'], avg: '14,0' },
-  { name: 'Lina De Smet', initials: 'LD', scores: ['12', '17', '15'], avg: '14,7' },
-  { name: 'Omar Cherkaoui', initials: 'OC', scores: ['16', '—', '18'], avg: '17,0' },
-  { name: 'Sara Vermeulen', initials: 'SV', scores: ['19', '18', '19'], avg: '18,7' },
+  { name: t("Amina Benali"), initials: 'AB', scores: ['18', '16', '17'], avg: '17,0' },
+  { name: t("Youssef Haddad"), initials: 'YH', scores: ['14', '15', '13'], avg: '14,0' },
+  { name: t("Lina De Smet"), initials: 'LD', scores: ['12', '17', '15'], avg: '14,7' },
+  { name: t("Omar Cherkaoui"), initials: 'OC', scores: ['16', '—', '18'], avg: '17,0' },
+  { name: t("Sara Vermeulen"), initials: 'SV', scores: ['19', '18', '19'], avg: '18,7' },
 ];
 
 export function GradesScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">
-          Arabe — 3A
-        </span>
-        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Période 2</span>
-        <span className="ml-auto ui-chip bg-contrast/[0.04] text-slate-400">Moyenne classe 16,3</span>
+        <span className="ui-chip bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">{t("Arabe — 3A")}</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Période 2")}</span>
+        <span className="ml-auto ui-chip bg-contrast/[0.04] text-slate-400">{t("Moyenne classe 16,3")}</span>
       </div>
 
       <div className="ui-pane overflow-hidden p-0">
         <div className="grid grid-cols-[1.6fr_repeat(3,1fr)_0.9fr] gap-1 border-b border-contrast/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-          <span>Élève</span>
-          <span className="text-center">Interro.</span>
-          <span className="text-center">Devoir</span>
-          <span className="text-center">Examen</span>
-          <span className="text-right">Moy.</span>
+          <span>{t("Élève")}</span>
+          <span className="text-center">{t("Interro.")}</span>
+          <span className="text-center">{t("Devoir")}</span>
+          <span className="text-center">{t("Examen")}</span>
+          <span className="text-right">{t("Moy.")}</span>
         </div>
         {GRADES.map((row, i) => (
           <motion.div
@@ -320,9 +313,9 @@ export function GradesScreen() {
 
       <div className="grid grid-cols-3 gap-2 text-[9px]">
         {[
-          ['Interrogations', 30],
-          ['Devoirs', 30],
-          ['Examen', 40],
+          [t("Interrogations"), 30],
+          [t("Devoirs"), 30],
+          [t("Examen"), 40],
         ].map(([label, weight], i) => (
           <div key={label as string} className="rounded-lg border border-contrast/[0.07] bg-contrast/[0.02] p-2">
             <div className="mb-1.5 flex items-center justify-between">
@@ -342,20 +335,18 @@ export function GradesScreen() {
 /* ------------------------------------------------------------------ */
 
 const CLASSES = [
-  { name: 'Classe 1A', done: 100, teacher: 'S. Haddadi' },
-  { name: 'Classe 2B', done: 100, teacher: 'N. El Moussaoui' },
-  { name: 'Classe 3A', done: 76, teacher: 'K. Berrada' },
-  { name: 'Classe 4A', done: 42, teacher: 'M. Janssens' },
+  { name: t("Classe 1A"), done: 100, teacher: t("S. Haddadi") },
+  { name: t("Classe 2B"), done: 100, teacher: t("N. El Moussaoui") },
+  { name: t("Classe 3A"), done: 76, teacher: t("K. Berrada") },
+  { name: t("Classe 4A"), done: 42, teacher: t("M. Janssens") },
 ];
 
 export function BulletinScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-violet-500/15 text-status-violet ring-1 ring-inset ring-violet-500/25">
-          Période 2 · 2025-2026
-        </span>
-        <span className="ui-chip bg-contrast/[0.04] text-slate-400">Clôture le 20 déc.</span>
+        <span className="ui-chip bg-violet-500/15 text-status-violet ring-1 ring-inset ring-violet-500/25">{t("Période 2 · 2025-2026")}</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Clôture le 20 déc.")}</span>
       </div>
 
       <div className="ui-pane space-y-2.5">
@@ -382,8 +373,7 @@ export function BulletinScreen() {
               >
                 {c.done === 100 ? (
                   <>
-                    <FileCheck2 className="h-2.5 w-2.5" /> Prêt
-                  </>
+                    <FileCheck2 className="h-2.5 w-2.5" />{t(" Prêt")}</>
                 ) : (
                   <>
                     <AlertCircle className="h-2.5 w-2.5" /> {c.done} %
@@ -398,12 +388,8 @@ export function BulletinScreen() {
 
       <div className="flex items-center gap-2 rounded-lg border border-violet-500/20 bg-violet-500/[0.06] p-2.5">
         <FileCheck2 className="h-3.5 w-3.5 shrink-0 text-status-violet" />
-        <span className="text-[10px] text-slate-300">
-          2 classes sur 4 sont prêtes à être publiées.
-        </span>
-        <span className="ml-auto shrink-0 rounded-md bg-violet-500 px-2.5 py-1 text-[9px] font-semibold text-white">
-          Publier
-        </span>
+        <span className="text-[10px] text-slate-300">{t("2 classes sur 4 sont prêtes à être publiées.")}</span>
+        <span className="ml-auto shrink-0 rounded-md bg-violet-500 px-2.5 py-1 text-[9px] font-semibold text-white">{t("Publier")}</span>
       </div>
     </div>
   );
@@ -414,9 +400,9 @@ export function BulletinScreen() {
 /* ------------------------------------------------------------------ */
 
 const THREAD = [
-  { from: 'them', name: 'Mme Benali', initials: 'MB', text: 'Bonjour, Amina sera absente vendredi (rendez-vous médical).' },
-  { from: 'me', name: 'Direction', initials: 'YE', text: 'Bonjour, c’est noté — l’absence sera marquée comme justifiée.' },
-  { from: 'them', name: 'Mme Benali', initials: 'MB', text: 'Merci beaucoup, bonne journée.' },
+  { from: 'them', name: t("Mme Benali"), initials: 'MB', text: t("Bonjour, Amina sera absente vendredi (rendez-vous médical).") },
+  { from: 'me', name: t("Direction"), initials: 'YE', text: t("Bonjour, c’est noté — l’absence sera marquée comme justifiée.") },
+  { from: 'them', name: t("Mme Benali"), initials: 'MB', text: t("Merci beaucoup, bonne journée.") },
 ];
 
 export function CommsScreen() {
@@ -426,8 +412,8 @@ export function CommsScreen() {
         <div className="flex items-center gap-2 border-b border-contrast/[0.07] pb-2">
           <Avatar initials="MB" tone="sky" />
           <div className="min-w-0">
-            <div className="truncate text-[10px] font-medium text-slate-200">Mme Benali</div>
-            <div className="text-[9px] text-slate-600">Parent · Amina, 3A</div>
+            <div className="truncate text-[10px] font-medium text-slate-200">{t("Mme Benali")}</div>
+            <div className="text-[9px] text-slate-600">{t("Parent · Amina, 3A")}</div>
           </div>
         </div>
 
@@ -455,27 +441,24 @@ export function CommsScreen() {
         ))}
 
         <div className="mt-auto flex items-center gap-2 rounded-lg border border-contrast/[0.07] bg-ink-950/60 px-2.5 py-1.5">
-          <span className="text-[10px] text-slate-600">Écrire un message…</span>
+          <span className="text-[10px] text-slate-600">{t("Écrire un message…")}</span>
           <Send className="ml-auto h-3 w-3 text-accent" />
         </div>
       </div>
 
       <div className="ui-pane space-y-2">
         <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-300">
-          <Megaphone className="h-3 w-3 text-accent" /> Nouvelle annonce
-        </div>
+          <Megaphone className="h-3 w-3 text-accent" />{t(" Nouvelle annonce")}</div>
         <div className="rounded-lg border border-contrast/[0.07] bg-ink-950/60 p-2">
-          <div className="text-[10px] font-medium text-slate-200">Réunion de parents — 12 octobre</div>
-          <p className="mt-1 text-[9px] leading-relaxed text-slate-500">
-            Chers parents, la réunion se tiendra le samedi 12 octobre à 14 h dans la grande salle…
-          </p>
+          <div className="text-[10px] font-medium text-slate-200">{t("Réunion de parents — 12 octobre")}</div>
+          <p className="mt-1 text-[9px] leading-relaxed text-slate-500">{t("Chers parents, la réunion se tiendra le samedi 12 octobre à 14 h dans la grande salle…")}</p>
         </div>
         <div className="space-y-1">
-          <div className="text-[9px] uppercase tracking-wider text-slate-600">Destinataires</div>
+          <div className="text-[9px] uppercase tracking-wider text-slate-600">{t("Destinataires")}</div>
           {[
-            ['Tous les parents', true],
-            ['Enseignants', false],
-            ['Élèves', false],
+            [t("Tous les parents"), true],
+            [t("Enseignants"), false],
+            [t("Élèves"), false],
           ].map(([label, on]) => (
             <div key={label as string} className="flex items-center gap-2">
               <span
@@ -491,8 +474,7 @@ export function CommsScreen() {
           ))}
         </div>
         <div className="flex items-center gap-1.5 rounded-md bg-jade-500/10 px-2 py-1.5 text-[9px] text-success">
-          <Check className="h-2.5 w-2.5" /> 186 e-mails seront envoyés
-        </div>
+          <Check className="h-2.5 w-2.5" />{t(" 186 e-mails seront envoyés")}</div>
       </div>
     </div>
   );
@@ -519,17 +501,17 @@ export function FinanceScreen() {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-3 gap-2">
-        <Kpi label="Encaissé" value="32 400 €" delta="année 2025-2026" tone="jade" />
-        <Kpi label="Restant dû" value="4 860 €" delta="27 familles" tone="brand" />
-        <Kpi label="Recouvrement" value="87 %" delta="+6 pts vs 2024" tone="slate" />
+        <Kpi label={t("Encaissé")} value="32 400 €" delta={t("année 2025-2026")} tone="jade" />
+        <Kpi label={t("Restant dû")} value="4 860 €" delta={t("27 familles")} tone="brand" />
+        <Kpi label={t("Recouvrement")} value="87 %" delta={t("+6 pts vs 2024")} tone="slate" />
       </div>
 
       <div className="ui-pane overflow-hidden p-0">
         <div className="grid grid-cols-[1.6fr_1fr_0.9fr_auto] gap-2 border-b border-contrast/[0.07] px-3 py-2 text-[9px] font-semibold uppercase tracking-wide text-slate-500">
-          <span>Élève</span>
-          <span>Minerval</span>
-          <span>Statut</span>
-          <span className="sr-only">Reçu</span>
+          <span>{t("Élève")}</span>
+          <span>{t("Minerval")}</span>
+          <span>{t("Statut")}</span>
+          <span className="sr-only">{t("Reçu")}</span>
         </div>
         {PAYMENTS.map((p, i) => (
           <motion.div
@@ -545,7 +527,7 @@ export function FinanceScreen() {
               <span className="truncate text-[10px] text-slate-300">{p.name}</span>
             </span>
             <span className="font-mono text-[10px] text-slate-400">{p.amount}</span>
-            <span className={cn('ui-chip w-fit', STATUS_TONE[p.status])}>{p.status}</span>
+            <span className={cn('ui-chip w-fit', STATUS_TONE[p.status])}>{t(p.status)}</span>
             <Download className="h-3 w-3 text-slate-600" />
           </motion.div>
         ))}
@@ -553,9 +535,7 @@ export function FinanceScreen() {
 
       <div className="flex items-center gap-2 rounded-lg border border-contrast/[0.07] bg-contrast/[0.02] p-2.5">
         <Download className="h-3.5 w-3.5 shrink-0 text-accent" />
-        <span className="text-[10px] text-slate-400">
-          Reçu PDF à l’en-tête de l’école, généré pour chaque règlement.
-        </span>
+        <span className="text-[10px] text-slate-400">{t("Reçu PDF à l’en-tête de l’école, généré pour chaque règlement.")}</span>
       </div>
     </div>
   );
@@ -569,15 +549,15 @@ export function PhoneAttendanceScreen() {
   return (
     <div className="space-y-2.5 px-3 pb-3 pt-2">
       <div>
-        <div className="text-[9px] text-slate-500">Lundi 16 septembre</div>
-        <div className="font-display text-[13px] font-semibold text-contrast">Arabe — 3A</div>
+        <div className="text-[9px] text-slate-500">{t("Lundi 16 septembre")}</div>
+        <div className="font-display text-[13px] font-semibold text-contrast">{t("Arabe — 3A")}</div>
       </div>
 
       <div className="grid grid-cols-3 gap-1.5">
         {[
-          ['21', 'Présents', 'text-success'],
-          ['2', 'Absents', 'text-danger'],
-          ['1', 'Retards', 'text-warning'],
+          ['21', t("Présents"), 'text-success'],
+          ['2', t("Absents"), 'text-danger'],
+          ['1', t("Retards"), 'text-warning'],
         ].map(([v, l, c]) => (
           <div key={l} className="rounded-lg bg-contrast/[0.04] p-1.5 text-center">
             <div className={cn('font-display text-sm font-bold', c)}>{v}</div>
@@ -605,9 +585,7 @@ export function PhoneAttendanceScreen() {
         ))}
       </div>
 
-      <div className="rounded-lg bg-gradient-to-r from-brand-500 to-brand-600 py-2 text-center text-[10px] font-semibold text-white">
-        Valider l’appel
-      </div>
+      <div className="rounded-lg bg-gradient-to-r from-brand-500 to-brand-600 py-2 text-center text-[10px] font-semibold text-white">{t("Valider l’appel")}</div>
     </div>
   );
 }
@@ -625,10 +603,10 @@ export const SCREEN_META: Record<
   keyof typeof SCREENS,
   { nav: string; title: string; subtitle: string }
 > = {
-  dashboard: { nav: 'dashboard', title: 'Tableau de bord', subtitle: 'Vue direction — année 2025-2026' },
-  attendance: { nav: 'attendance', title: 'Appel & présences', subtitle: 'Marquer la présence — cours du jour' },
-  grades: { nav: 'grades', title: 'Notes', subtitle: 'Saisie par matière — Arabe, période 2' },
-  bulletin: { nav: 'bulletin', title: 'Bulletins', subtitle: 'Avancement et publication par classe' },
-  comms: { nav: 'comms', title: 'Messages & annonces', subtitle: 'Canal officiel de l’école' },
-  finance: { nav: 'finance', title: 'Finances', subtitle: 'Minerval et cotisations — 2025-2026' },
+  dashboard: { nav: 'dashboard', title: t("Tableau de bord"), subtitle: t("Vue direction — année 2025-2026") },
+  attendance: { nav: 'attendance', title: t("Appel & présences"), subtitle: t("Marquer la présence — cours du jour") },
+  grades: { nav: 'grades', title: t("Notes"), subtitle: t("Saisie par matière — Arabe, période 2") },
+  bulletin: { nav: 'bulletin', title: t("Bulletins"), subtitle: t("Avancement et publication par classe") },
+  comms: { nav: 'comms', title: t("Messages & annonces"), subtitle: t("Canal officiel de l’école") },
+  finance: { nav: 'finance', title: t("Finances"), subtitle: t("Minerval et cotisations — 2025-2026") },
 };

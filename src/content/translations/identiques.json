@@ -1,0 +1,29 @@
+{
+  "_lisezmoi": "Phrases qui s'écrivent de la même façon en français et dans la langue cible : noms propres, marques, unités, libellés déjà internationaux. Les déclarer ici évite que scripts/check-i18n.mjs les signale comme des traductions oubliées.",
+  "nl": [
+    "+32 4xx xx xx xx",
+    "30 s",
+    "s",
+    "E-mail *",
+    "Examen",
+    "Modules",
+    "Module 01",
+    "Module 02",
+    "Module 03",
+    "Module 04",
+    "Module 05",
+    "Amina Benali",
+    "Ilyas Mansouri",
+    "K. Berrada",
+    "Lina De Smet",
+    "M. Janssens",
+    "N. El Moussaoui",
+    "Omar Cherkaoui",
+    "S. Haddadi",
+    "Sara Vermeulen",
+    "Youssef Haddad"
+  ],
+  "ar": [
+    "+32 4xx xx xx xx"
+  ]
+}

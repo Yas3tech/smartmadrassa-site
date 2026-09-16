@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { motion } from 'framer-motion';
 import {
   Globe,
@@ -109,11 +110,7 @@ export function Security() {
           viewport={viewportOnce}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-slate-600"
-        >
-          Le détail des traitements, des durées de conservation et de vos droits figure dans la
-          politique de confidentialité. Une convention de sous-traitance conforme à l’article 28 du
-          RGPD est fournie à chaque établissement.
-        </motion.p>
+        >{t("Le détail des traitements, des durées de conservation et de vos droits figure dans la politique de confidentialité. Une convention de sous-traitance conforme à l’article 28 du RGPD est fournie à chaque établissement.")}</motion.p>
       </div>
     </section>
   );

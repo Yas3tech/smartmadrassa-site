@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import type { ReactNode } from 'react';
 import {
   LayoutDashboard,
@@ -13,14 +14,14 @@ import { cn } from '../../lib/utils';
 import { LogoMark } from '../ui/Logo';
 
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Tableau de bord', Icon: LayoutDashboard },
-  { id: 'attendance', label: 'Appel & présences', Icon: ClipboardCheck },
-  { id: 'grades', label: 'Notes', Icon: GraduationCap },
-  { id: 'bulletin', label: 'Bulletins', Icon: FileText },
-  { id: 'comms', label: 'Messages', Icon: MessageSquare },
-  { id: 'classes', label: 'Classes', Icon: School },
-  { id: 'users', label: 'Utilisateurs', Icon: Users },
-  { id: 'finance', label: 'Finances', Icon: Wallet },
+  { id: 'dashboard', label: t("Tableau de bord"), Icon: LayoutDashboard },
+  { id: 'attendance', label: t("Appel & présences"), Icon: ClipboardCheck },
+  { id: 'grades', label: t("Notes"), Icon: GraduationCap },
+  { id: 'bulletin', label: t("Bulletins"), Icon: FileText },
+  { id: 'comms', label: t("Messages"), Icon: MessageSquare },
+  { id: 'classes', label: t("Classes"), Icon: School },
+  { id: 'users', label: t("Utilisateurs"), Icon: Users },
+  { id: 'finance', label: t("Finances"), Icon: Wallet },
 ];
 
 /**
@@ -122,9 +123,7 @@ export function AppFrame({
               <span className="rounded-md border border-contrast/[0.08] px-2 py-1 text-[9px] text-slate-400">
                 2025 – 2026
               </span>
-              <span className="rounded-md bg-brand-500/90 px-2 py-1 text-[9px] font-semibold text-white">
-                Enregistrer
-              </span>
+              <span className="rounded-md bg-brand-500/90 px-2 py-1 text-[9px] font-semibold text-white">{t("Enregistrer")}</span>
             </div>
           </header>
           <div className="p-4">{children}</div>

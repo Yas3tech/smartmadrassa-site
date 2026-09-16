@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { Quote } from 'lucide-react';
 import { TESTIMONIALS } from '../../content/site';
 import { RevealGroup, RevealItem, SectionHeading } from '../ui/primitives';
@@ -14,10 +15,9 @@ export function Testimonials() {
     <section className="relative py-20 sm:py-28">
       <div className="container-x">
         <SectionHeading
-          eyebrow="Ils l’utilisent"
+          eyebrow={t("Ils l’utilisent")}
           title={
-            <>
-              Ce qu’en disent <span className="text-gradient">les écoles</span>
+            <>{t("Ce qu’en disent ")}<span className="text-gradient">{t("les écoles")}</span>
             </>
           }
         />

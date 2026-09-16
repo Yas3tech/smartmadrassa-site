@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n';
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Check, Play, Bell, CalendarCheck2 } from 'lucide-react';
@@ -76,7 +77,7 @@ export function Hero() {
             {HERO.badge}
           </motion.div>
 
-          <h1 className="mt-7 font-display text-[2.6rem] font-extrabold leading-[1.03] tracking-[-0.045em] text-contrast sm:text-6xl lg:text-7xl">
+          <h1 className="mt-7 max-w-full font-display text-[clamp(2rem,10vw,2.6rem)] font-extrabold leading-[1.03] tracking-[-0.045em] text-contrast sm:text-6xl lg:text-7xl">
             <MaskedLines
               lines={[
                 HERO.titleLines[0],
@@ -120,13 +121,13 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.74 }}
-            className="mt-9 flex flex-col items-center gap-3 sm:flex-row"
+            className="mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row"
           >
-            <Button href={HERO.primaryCta.href} size="lg" magnetic>
+            <Button href={HERO.primaryCta.href} size="lg" magnetic className="w-full sm:w-auto">
               {HERO.primaryCta.label}
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+              <ArrowRight className="icon-directional h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Button>
-            <Button href="#modules" variant="outline" size="lg">
+            <Button href="#modules" variant="outline" size="lg" className="w-full sm:w-auto">
               <Play className="h-3.5 w-3.5 fill-current" />
               {HERO.secondaryCta.label}
             </Button>
@@ -158,37 +159,43 @@ export function Hero() {
           <FloatingCard
             className="-left-6 top-12 w-[15.5rem] xl:left-0"
             icon={<CalendarCheck2 className="h-3.5 w-3.5" />}
-            title="Appel validé — 3A"
-            body="21 présents · 2 absents · 1 retard"
+            title={t("Appel validé — 3A")}
+            body={t("21 présents · 2 absents · 1 retard")}
             delay={1.25}
           />
           <FloatingCard
             className="-right-2 bottom-24 w-56 xl:right-4"
             icon={<Bell className="h-3.5 w-3.5" />}
-            title="Note publiée"
-            body="Mme Benali a été notifiée par e-mail"
+            title={t("Note publiée")}
+            body={t("Mme Benali a été notifiée par e-mail")}
             delay={1.45}
           />
 
           <motion.div
             style={{ rotateX, scale, y: translateY, transformPerspective: 1400 }}
-            className="origin-top"
+            className="hidden origin-top sm:block"
           >
             <AppFrame
               active="dashboard"
-              title="Tableau de bord"
-              subtitle="Vue direction — année 2025-2026"
+              title={t("Tableau de bord")}
+              subtitle={t("Vue direction — année 2025-2026")}
               className="mx-auto max-w-4xl"
             >
               <DashboardScreen />
             </AppFrame>
           </motion.div>
 
+          <div className="flex justify-center sm:hidden">
+            <PhoneFrame>
+              <PhoneAttendanceScreen />
+            </PhoneFrame>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 40, rotate: 6 }}
             animate={{ opacity: 1, y: 0, rotate: 4 }}
             transition={{ duration: 1, ease: EASE, delay: 1.1 }}
-            className="absolute -bottom-6 right-0 z-20 hidden origin-bottom-right md:block lg:-right-6"
+            className="absolute -bottom-6 -right-6 z-20 hidden origin-bottom-right xl:block"
           >
             <PhoneFrame>
               <PhoneAttendanceScreen />
@@ -198,7 +205,7 @@ export function Hero() {
           {/* Fondu bas pour fondre la maquette dans la page */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 -bottom-1 h-32 bg-gradient-to-t from-ink-950 via-ink-950/80 to-transparent"
+            className="pointer-events-none absolute inset-x-0 -bottom-1 hidden h-32 bg-gradient-to-t from-ink-950 via-ink-950/80 to-transparent sm:block"
           />
         </div>
       </div>

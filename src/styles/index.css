@@ -6,6 +6,7 @@
 @import '@fontsource/sora/latin-700.css';
 @import '@fontsource/sora/latin-800.css';
 @import '@fontsource/cairo/arabic-600.css';
+@import '@fontsource/cairo/arabic-400.css';
 @import '@fontsource/cairo/arabic-700.css';
 
 @tailwind base;
@@ -87,7 +88,10 @@
   body {
     @apply bg-ink-950 font-sans text-slate-300 antialiased;
     margin: 0;
-    overflow-x: hidden;
+    /* `clip` plutôt que `hidden` : le filet de sécurité contre un débordement
+       horizontal ne doit pas transformer la fenêtre en conteneur de défilement,
+       sinon `position: sticky` et l'épinglage GSAP perdent leur référence. */
+    overflow-x: clip;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
   }
 
@@ -101,6 +105,30 @@
 
   p {
     text-wrap: pretty;
+  }
+
+  :root[dir='rtl'] body,
+  :root[dir='rtl'] .font-display {
+    font-family: 'Cairo', system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+  :root[dir='rtl'] h1,
+  :root[dir='rtl'] h2,
+  :root[dir='rtl'] h3 { line-height: 1.4; }
+  :root[dir='rtl'] p { line-height: 1.9; }
+  :root[dir='rtl'] .eyebrow { letter-spacing: 0; }
+
+  input[type='email'], input[type='tel'], input[type='number'] { direction: ltr; }
+  a[href^='mailto:'] { unicode-bidi: isolate; }
+
+  /* Les flèches qui veulent dire « avancer » ou « revenir » suivent le sens de
+     lecture : en arabe, elles pointent vers la gauche. `:dir()` regarde la
+     direction réelle de l'élément, donc les zones remises en ltr — le rail de
+     l'année, le sélecteur de langue — gardent leurs flèches d'origine.
+     La composition avec les variables Tailwind préserve les translations au survol. */
+  .icon-directional:dir(rtl) {
+    --tw-scale-x: -1;
+    transform: translateX(var(--tw-translate-x, 0)) scaleX(var(--tw-scale-x, 1));
   }
 
   ::selection {

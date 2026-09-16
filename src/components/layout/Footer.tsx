@@ -2,6 +2,8 @@ import { t, localizedHref } from '../../lib/i18n';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { FOOTER, SITE } from '../../content/site';
+import { analyticsDisponible } from '../../lib/analytics';
+import { rouvrirConsentement } from './ConsentBanner';
 import { Logo } from '../ui/Logo';
 
 export function Footer() {
@@ -85,6 +87,16 @@ export function Footer() {
           </p>
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <span>{t("Conçu et développé en solo, en Belgique")}</span>
+            {/* Retirer son consentement doit être aussi accessible que le donner. */}
+            {analyticsDisponible && (
+              <button
+                type="button"
+                onClick={rouvrirConsentement}
+                className="inline-flex min-h-[2rem] items-center text-xs text-slate-500 underline underline-offset-2 transition-colors hover:text-contrast"
+              >
+                {t("Cookies de mesure d’audience")}
+              </button>
+            )}
           </p>
         </div>
       </div>

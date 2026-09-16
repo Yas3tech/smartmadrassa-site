@@ -40,7 +40,12 @@ jobs:
         run: pnpm exec tsc -b
 
       - name: Compiler
+        # VITE_GA_ID vient des variables du dépôt (Settings > Secrets and
+        # variables > Actions > Variables). Absente, le site se compile sans
+        # mesure d'audience : ni bannière, ni cookie, ni appel à Google.
         run: pnpm build
+        env:
+          VITE_GA_ID: ${{ vars.VITE_GA_ID }}
 
       - name: Vérifier que le build est complet
         run: |

@@ -124,14 +124,17 @@ export function Confidentialite() {
             <strong>{t("Formulaire de contact")}</strong>{t(" : nom, nom de la structure, e-mail, téléphone (facultatif), nombre d’élèves (facultatif), sujet et contenu du message. L’adresse IP et l’heure de l’envoi sont également utilisées pour limiter les abus et jointes au message.")}</li>
           <li>
             <strong>{t("Journaux techniques de l’hébergeur")}</strong>{t(" : adresse IP, date et heure d’accès, pages consultées, conservés par OVH à des fins de sécurité.")}</li>
+          <li>
+            <strong>{t("Mesure d’audience, uniquement si vous l’acceptez")}</strong>{t(" : pages consultées, provenance, pays, type d’appareil, via Google Analytics. Tant que vous n’avez pas accepté, aucun script de mesure n’est chargé et aucune donnée ne quitte votre navigateur.")}</li>
         </ul>
-        <p>{t("Ce site n’utilise ")}<strong>{t("aucun cookie publicitaire, aucun traceur tiers et aucun outil de mesure d’audience externe")}</strong>{t(". Les polices de caractères sont hébergées directement sur le site : aucune requête n’est adressée à un service tiers lors de votre visite.")}</p>
+        <p>{t("Ce site n’utilise ")}<strong>{t("aucun cookie publicitaire et aucun traceur de réseau social")}</strong>{t(". Les polices de caractères sont hébergées directement sur le site : aucune requête n’est adressée à un service tiers lors de votre visite, mesure d’audience mise à part.")}</p>
       </Article>
 
       <Article title={t("3. Finalités et bases légales")}>
         <ul className="space-y-1">
           <li>{t("Répondre à votre demande de contact ou de démonstration — base légale : mesures précontractuelles prises à votre demande (art. 6.1.b RGPD).")}</li>
           <li>{t("Assurer la sécurité et le bon fonctionnement du site — base légale : intérêt légitime (art. 6.1.f RGPD).")}</li>
+          <li>{t("Comprendre quelles pages intéressent les visiteurs, afin d’améliorer le site — base légale : votre consentement (art. 6.1.a RGPD), que vous pouvez retirer à tout moment.")}</li>
         </ul>
       </Article>
 
@@ -140,16 +143,19 @@ export function Confidentialite() {
           <li>{t("Demandes de contact sans suite : 12 mois à compter du dernier échange.")}</li>
           <li>{t("Demandes ayant abouti à une relation contractuelle : durée du contrat, puis 10 ans au titre des obligations comptables.")}</li>
           <li>{t("Journaux techniques de l’hébergeur : 12 mois maximum.")}</li>
+          <li>{t("Mesure d’audience : 14 mois, durée la plus courte proposée par Google Analytics.")}</li>
         </ul>
       </Article>
 
       <Article title={t("5. Destinataires")}>
         <p>{t("Les données transmises via le formulaire sont adressées à l’éditeur sur")}{' '}
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a>{t(". Elles ne sont ni vendues, ni louées, ni transmises à des fins publicitaires. Les seuls tiers susceptibles d’y accéder techniquement sont l’hébergeur du site et le fournisseur de messagerie, tous deux établis dans l’Union européenne.")}</p>
+        <p>{t("Si vous avez accepté la mesure d’audience, les données de navigation correspondantes sont traitées par ")}<strong>{t("Google Ireland Limited")}</strong>{t(", agissant comme sous-traitant. Elles ne comportent ni votre nom ni votre adresse e-mail, et votre adresse IP est tronquée avant enregistrement. Les signaux publicitaires et la personnalisation des annonces sont désactivés.")}</p>
       </Article>
 
       <Article title={t("6. Transferts hors Union européenne")}>
-        <p>{t("Aucun transfert de données hors de l’Union européenne n’est réalisé depuis ce site.")}</p>
+        <p>{t("Le formulaire de contact et l’hébergement du site ne donnent lieu à aucun transfert hors de l’Union européenne.")}</p>
+        <p>{t("La mesure d’audience, si vous l’acceptez, peut en revanche donner lieu à un transfert vers les États-Unis. Google LLC est certifié au titre du ")}<strong>{t("cadre de protection des données UE–États-Unis")}</strong>{t(", décision d’adéquation de la Commission européenne du 10 juillet 2023, et des clauses contractuelles types complètent ce cadre. Refuser la mesure d’audience suffit à écarter tout transfert.")}</p>
       </Article>
 
       <Article title={t("7. Vos droits")}>
@@ -164,7 +170,8 @@ export function Confidentialite() {
       </Article>
 
       <Article title={t("8. Cookies et préférences d’affichage")}>
-        <p id="cookies">{t("Ce site ne dépose ")}<strong>{t("aucun cookie")}</strong>{t(" autre que ceux strictement nécessaires à son affichage. Aucune bannière de consentement n’est donc requise. Si des cookies de mesure d’audience venaient à être ajoutés, un mécanisme de consentement préalable serait mis en place.")}</p>
+        <p id="cookies">{t("À votre première visite, une bande vous demande si vous acceptez la mesure d’audience. Tant que vous n’avez pas répondu, et si vous refusez, ")}<strong>{t("aucun cookie n’est déposé")}</strong>{t(" et le script de Google n’est pas chargé. Refuser n’altère en rien le fonctionnement du site.")}</p>
+        <p>{t("Si vous acceptez, Google Analytics dépose les cookies _ga et _ga_* pour distinguer les visites. Vous pouvez revenir sur votre choix à tout moment par le lien ")}<strong>{t("« Cookies de mesure d’audience »")}</strong>{t(" en bas de chaque page : refuser efface immédiatement les cookies déjà posés.")}</p>
       </Article>
 
       <Article title={t("9. Préférence de thème")}>

@@ -322,12 +322,40 @@ copie du HTML par route, avec ses propres balises, et le `.htaccess` y aiguille.
 - `<noscript>` décrivant la plateforme pour les navigateurs sans JavaScript.
 - Page 404 utile, avec retour à l'accueil.
 
+### Mesure d'audience (Google Analytics 4)
+
+Le site est prêt à mesurer son audience, **sous consentement**. Rien n'est actif
+tant que vous n'avez pas fourni l'identifiant :
+
+1. Sur [analytics.google.com](https://analytics.google.com), créez un compte
+   puis une propriété pour `smartmadrassa.be`.
+2. **Administration → Flux de données → Ajouter un flux → Web**, adresse
+   `https://smartmadrassa.be`. Copiez l'**ID de mesure**, de la forme
+   `G-XXXXXXXXXX`.
+3. **Administration → Conservation des données** : passez à **14 mois**, la
+   durée annoncée dans la politique de confidentialité.
+4. Sur GitHub : **Settings → Secrets and variables → Actions → Variables →
+   New repository variable**, nom `VITE_GA_ID`, valeur `G-XXXXXXXXXX`.
+5. Relancez le workflow « Déploiement OVH » (onglet Actions → Run workflow).
+
+Les chiffres se consultent ensuite sur `analytics.google.com`, onglet
+**Rapports**. Comptez 24 à 48 heures avant les premiers relevés complets.
+
+En local : copiez `.env.example` en `.env` et renseignez la même valeur.
+
+**Ce que le code garantit.** Le script de Google n'est pas mis en veille, il
+n'est **pas chargé du tout** tant qu'il n'y a pas de « Accepter » explicite. Un
+refus ne déclenche aucune requête vers un domaine tiers et ne dépose aucun
+cookie ; il efface aussi ceux déjà posés. Le lien « Cookies de mesure
+d'audience », en bas de chaque page, permet de revenir sur son choix à tout
+moment. L'IP est tronquée, les signaux publicitaires désactivés.
+
+Sans `VITE_GA_ID`, aucune bannière n'apparaît et le site ne dépose aucun cookie :
+c'est exactement l'état d'avant.
+
 ### Ce qui reste à votre main
 
-- **Mesure d'audience** : aucune n'est installée. Si vous en ajoutez une,
-  choisissez-la sans cookie (Plausible, Matomo sans cookie) pour rester sans
-  bandeau de consentement, et ouvrez `connect-src` dans la CSP.
-- **Suivi des erreurs** (Sentry) : même remarque, il faudra ouvrir la CSP.
+- **Suivi des erreurs** (Sentry) : non installé ; il faudra ouvrir la CSP.
 - **HSTS `preload`** : non activé. C'est une inscription difficile à annuler,
   à ne faire qu'une fois tous les sous-domaines certains d'être en HTTPS.
 - **Search Console et Bing Webmaster Tools** : à relier au domaine, puis y

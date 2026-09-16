@@ -3,6 +3,8 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { t } from './lib/i18n';
 import { applyPageSeo } from './lib/seo';
 import { useScrollRestoration } from './lib/useScrollRestoration';
+import { envoyerPageVue, initialiserAnalytics } from './lib/analytics';
+import { ConsentBanner } from './components/layout/ConsentBanner';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
 import { Header, ScrollProgress } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
@@ -19,6 +21,18 @@ export default function App() {
   }, [pathname]);
 
   useScrollRestoration();
+
+  // La mesure ne redémarre que si elle avait déjà été acceptée.
+  useEffect(() => {
+    initialiserAnalytics();
+  }, []);
+
+  // Application monopage : aucun rechargement, donc aucune page vue que Google
+  // pourrait observer de lui-même. On les émet au changement de route, une fois
+  // le titre posé par applyPageSeo().
+  useEffect(() => {
+    envoyerPageVue(pathname + window.location.search);
+  }, [pathname]);
 
   return (
     <>
@@ -41,6 +55,7 @@ export default function App() {
       </ErrorBoundary>
 
       <Footer />
+      <ConsentBanner />
     </>
   );
 }

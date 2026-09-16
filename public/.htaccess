@@ -54,10 +54,14 @@ DirectoryIndex index.html
   Header always set Cross-Origin-Resource-Policy "same-origin"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
 
-  # Le site n'appelle aucun service tiers : tout est servi depuis son origine.
+  # Tout est servi depuis l'origine, à une exception près : Google Analytics,
+  # et seulement si le visiteur l'a accepté — le script n'est pas chargé avant.
+  # Les trois domaines ouverts sont le strict nécessaire de GA4 : le script
+  # (googletagmanager), la collecte (google-analytics) et son point d'entrée
+  # régional européen.
   # style-src autorise l'inline parce que Tailwind et Framer Motion posent des
-  # styles sur l'élément ; script-src reste strict, sans 'unsafe-inline'.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
+  # styles sur l'élément ; script-src n'accepte toujours aucun script en ligne.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
 
   # Le contenu est négocié selon l'encodage : sans Vary, un cache partagé peut
   # servir une réponse compressée à un client qui ne la comprend pas.

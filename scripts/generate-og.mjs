@@ -53,15 +53,8 @@ const svg = `
   <ellipse cx="1080" cy="560" rx="400" ry="300" fill="url(#glowJade)"/>
 
   <!-- Marque -->
-  <g transform="translate(88 74)">
-    <rect width="60" height="60" rx="18" fill="url(#mark)"/>
-    <g transform="translate(12 12) scale(1.5)" fill="none" stroke="#fff" stroke-width="1.9"
-       stroke-linecap="round" stroke-linejoin="round">
-      <path d="M1 2h5a3.2 3.2 0 0 1 3.2 3.2V21a2.4 2.4 0 0 0-2.4-2.4H1z"/>
-      <path d="M23 2h-5a3.2 3.2 0 0 0-3.2 3.2V21a2.4 2.4 0 0 1 2.4-2.4H23z"/>
-    </g>
-    <circle cx="58" cy="58" r="8" fill="#23B37A" stroke="#04070F" stroke-width="3"/>
-    <text x="80" y="40" font-family="${FONT}" font-size="27" font-weight="700" fill="#ffffff">
+  <g transform="translate(184 74)">
+    <text x="0" y="40" font-family="${FONT}" font-size="28" font-weight="700" fill="#ffffff">
       Smart<tspan fill="#FB923C">Madrassa</tspan>
     </text>
   </g>
@@ -101,5 +94,11 @@ const svg = `
 </svg>
 `;
 
-await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(out);
+const logoPath = resolve(here, '../public/logo.png');
+const logoBuffer = await sharp(logoPath).resize({ height: 56 }).toBuffer();
+
+await sharp(Buffer.from(svg))
+  .composite([{ input: logoBuffer, top: 76, left: 88 }])
+  .png({ compressionLevel: 9 })
+  .toFile(out);
 console.log('og-image.png généré →', out);

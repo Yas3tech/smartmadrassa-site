@@ -85,15 +85,24 @@ async function fichiersLocaux(racine, base = racine) {
   return resultats;
 }
 
-/** Parcourt un dossier distant et renvoie fichiers et dossiers, chemins relatifs. */
+/**
+ * Parcourt un dossier distant et renvoie fichiers, dossiers et liens
+ * symboliques, en chemins relatifs.
+ *
+ * Les liens sont suivis séparément : un hébergement OVH neuf contient un
+ * `www/index.html` qui est un lien symbolique vers une cible inexistante.
+ * Écrire par-dessus échoue avec « No such file », car SFTP résout le lien
+ * avant d'ouvrir le fichier. Il faut donc le supprimer d'abord.
+ */
 async function contenuDistant(sftp, racine, prefixe = '') {
   const fichiers = [];
   const dossiers = [];
+  const liens = [];
   let entrees;
   try {
     entrees = await sftp.list(racine);
   } catch {
-    return { fichiers, dossiers }; // dossier inexistant : premier déploiement
+    return { fichiers, dossiers, liens }; // dossier inexistant : premier déploiement
   }
   for (const entree of entrees) {
     const rel = prefixe ? `${prefixe}/${entree.name}` : entree.name;
@@ -102,11 +111,14 @@ async function contenuDistant(sftp, racine, prefixe = '') {
       const sous = await contenuDistant(sftp, `${racine}/${entree.name}`, rel);
       fichiers.push(...sous.fichiers);
       dossiers.push(...sous.dossiers);
+      liens.push(...sous.liens);
+    } else if (entree.type === 'l') {
+      liens.push(rel);
     } else {
       fichiers.push(rel);
     }
   }
-  return { fichiers, dossiers };
+  return { fichiers, dossiers, liens };
 }
 
 async function main() {
@@ -135,6 +147,14 @@ async function main() {
   try {
     const avant = await contenuDistant(sftp, REMOTE);
 
+    // 0. Retrait des liens symboliques. Un hébergement OVH neuf pose un
+    //    www/index.html qui pointe vers une cible inexistante ; tant qu'il est
+    //    là, impossible d'écrire le vrai index.html par-dessus.
+    for (const rel of avant.liens) {
+      console.log(`  lien retiré  ${rel}`);
+      if (!dryRun) await sftp.delete(`${REMOTE}/${rel}`, true);
+    }
+
     // 1. Envoi — les dossiers sont créés à la volée, fichiers cachés compris.
     let envoyes = 0;
     const dossiersCrees = new Set();
@@ -146,7 +166,20 @@ async function main() {
         }
         dossiersCrees.add(cibleDossier);
       }
-      if (!dryRun) await sftp.fastPut(join(LOCAL_DIR, rel), `${REMOTE}/${rel}`);
+      if (!dryRun) {
+        const cible = `${REMOTE}/${rel}`;
+        try {
+          await sftp.fastPut(join(LOCAL_DIR, rel), cible);
+        } catch (err) {
+          // Filet de sécurité : si l'entrée distante est dans un état qui
+          // empêche l'écriture (lien cassé, fichier verrouillé), on la retire
+          // et on retente une fois avant d'abandonner.
+          await sftp.delete(cible, true).catch(() => {});
+          await sftp.fastPut(join(LOCAL_DIR, rel), cible).catch(() => {
+            throw err;
+          });
+        }
+      }
       envoyes++;
       if (envoyes % 10 === 0 || envoyes === locaux.length) {
         console.log(`  envoyés ${envoyes}/${locaux.length}`);

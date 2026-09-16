@@ -87,29 +87,53 @@ Le résultat est dans `site/dist/`. Il contient déjà `.htaccess`, `robots.txt`
 ### 3.2 Déploiement automatique (recommandé)
 
 Le workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) compile et publie le
-site à chaque `push` sur `main`. Il vérifie aussi les types et s'assure que `.htaccess`,
-`robots.txt`, `sitemap.xml`, `og-image.png` et `api/contact.php` sont bien présents dans `dist/`
-avant d'envoyer quoi que ce soit.
+site à chaque `push` sur `main` : vérification des types → build → contrôle que le build est
+complet → envoi **SFTP** → vérification que le site répond en HTTPS.
 
 **Configuration, une seule fois** — dans le repo GitHub, *Settings → Secrets and variables →
 Actions* :
 
 | Nom | Type | Valeur |
 | --- | --- | --- |
-| `OVH_FTP_HOST` | Secret | `ftp.clusterXXX.hosting.ovh.net` (espace client OVH) |
+| `OVH_FTP_HOST` | Secret | `ftp.cluster121.hosting.ovh.net` |
 | `OVH_FTP_USER` | Secret | identifiant FTP de l'hébergement |
 | `OVH_FTP_PASSWORD` | Secret | mot de passe FTP |
-| `OVH_SERVER_DIR` | Variable *(facultatif)* | `./www/` par défaut — à changer seulement en multisite |
+| `OVH_REMOTE_PATH` | Variable | `/home/<utilisateur>/www` |
 
-Le transfert se fait en **FTPS** (chiffré), et l'action ne renvoie que les fichiers modifiés :
-elle garde un état `.ftp-deploy-state.json` à la racine du serveur.
+Déclenchement manuel sans commit : onglet *Actions* → *Déploiement OVH* → *Run workflow*.
 
-> Créez de préférence un **utilisateur FTP dédié** dans l'espace client OVH, limité au dossier du
-> site. Si le mot de passe fuite un jour, il ne donne accès qu'à cet hébergement.
+#### Pourquoi SFTP et pas FTPS
 
-Déclenchement manuel possible sans commit : onglet *Actions* → *Déploiement OVH* → *Run workflow*.
+Cet hébergement mutualisé OVH a été testé : il **refuse FTPS** (ni `AUTH TLS` sur le port 21, ni
+le mode implicite sur 990) et **n'ouvre pas de shell SSH**. Seul SFTP, sur le port 22, répond.
 
-### 3.3 Envoyer par FTP à la main
+C'est pourquoi l'envoi passe par [`scripts/deploy-sftp.mjs`](scripts/deploy-sftp.mjs) plutôt que
+par une action toute faite. Les actions courantes échouent ici pour l'une de ces trois raisons :
+
+- elles reposent sur FTPS, refusé par le serveur ;
+- elles suppriment les fichiers distants avec `ssh <commande>` ou synchronisent avec rsync, deux
+  choses qui exigent un shell absent de cette offre ;
+- elles envoient `dist/*`, un motif qui laisse de côté les fichiers commençant par un point —
+  **`.htaccess` ne partirait jamais**, et sans lui le site perd le HTTPS forcé, le routage des
+  pages et les en-têtes de sécurité.
+
+Le script fait un **miroir incrémental** : il envoie tout le contenu de `dist/`, puis supprime à
+distance ce qui n'existe plus localement (les noms de fichiers compilés changent à chaque build et
+satureraient les 100 Mo de l'hébergement). Rien n'est effacé avant l'envoi : pas de fenêtre pendant
+laquelle le site serait vide. Il refuse de publier si `index.html`, `.htaccess`, `robots.txt`,
+`sitemap.xml` ou `api/contact.php` manquent au build.
+
+Il s'utilise aussi à la main :
+
+```bash
+export SFTP_HOST=ftp.cluster121.hosting.ovh.net
+export SFTP_USER=votre_identifiant
+export SFTP_PASSWORD=votre_mot_de_passe
+pnpm deploy:dry     # simulation, n'écrit rien
+pnpm deploy         # publication
+```
+
+### 3.3 Envoyer à la main (dépannage)
 
 Connexion via FileZilla ou l'Explorateur de fichiers OVH :
 

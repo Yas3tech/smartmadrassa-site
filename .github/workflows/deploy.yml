@@ -53,18 +53,25 @@ jobs:
           done
           echo "Build complet — $(du -sh dist | cut -f1)"
 
-      - name: Envoyer sur OVH par FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.OVH_FTP_HOST }}
-          username: ${{ secrets.OVH_FTP_USER }}
-          password: ${{ secrets.OVH_FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./dist/
-          server-dir: ${{ vars.OVH_SERVER_DIR || './www/' }}
-          # Synchronisation incrémentale : l'action garde un état sur le serveur
-          # et ne renvoie que les fichiers modifiés.
-          state-name: .ftp-deploy-state.json
-          dangerous-clean-slate: false
-          log-level: minimal
+      # Publication par SFTP via scripts/deploy-sftp.mjs.
+      #
+      # Pourquoi pas une action toute faite : cet hébergement OVH refuse FTPS
+      # (AUTH TLS comme mode implicite) et n'ouvre pas de shell SSH. Les actions
+      # courantes reposent soit sur FTPS, soit sur `ssh <commande>` ou rsync,
+      # soit sur un motif `dist/*` qui laisse .htaccess de côté — et sans lui le
+      # site perd HTTPS, le routage des pages et les en-têtes de sécurité.
+      - name: Publier sur OVH par SFTP
+        env:
+          SFTP_HOST: ${{ secrets.OVH_FTP_HOST }}
+          SFTP_USER: ${{ secrets.OVH_FTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
+          SFTP_REMOTE_PATH: ${{ vars.OVH_REMOTE_PATH }}
+        run: node scripts/deploy-sftp.mjs
+
+      - name: Vérifier que le site répond
+        run: |
+          set -e
+          sleep 5
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 https://smartmadrassa.be/)
+          echo "https://smartmadrassa.be/ → HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::Le site ne répond pas correctement"; exit 1; }

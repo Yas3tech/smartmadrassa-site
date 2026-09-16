@@ -108,7 +108,7 @@ export function Languages() {
                 <span
                   className={cn(
                     'grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[11px] font-bold transition-colors',
-                    index === i ? 'bg-brand-500 text-white' : 'bg-contrast/[0.06] text-slate-400',
+                    index === i ? 'bg-brand-700 text-white' : 'bg-contrast/[0.06] text-slate-400',
                   )}
                 >
                   {item.code}
@@ -167,7 +167,7 @@ export function Languages() {
                         current.dir === 'rtl' && 'flex-row-reverse',
                       )}
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 text-white">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-700 to-brand-900 text-white">
                         <Bell className="h-3.5 w-3.5" />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -184,7 +184,7 @@ export function Languages() {
                         current.dir === 'rtl' && 'flex-row-reverse',
                       )}
                     >
-                      <span className="rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-semibold text-white">
+                      <span className="rounded-lg bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white">
                         {current.action}
                       </span>
                       <span className="inline-flex items-center gap-1 text-[11px] text-success">

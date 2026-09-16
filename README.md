@@ -248,7 +248,94 @@ l'animation dépend d'un sens de translation fixe, et le sélecteur de langue.
 
 ---
 
-## 7. Structure du projet
+## 7. Ce qui est en place avant la mise en ligne
+
+Le site est une application monopage compilée en fichiers statiques : pas de
+serveur applicatif, pas de base de données, un seul point dynamique — le
+formulaire de contact en PHP. La liste ci-dessous dit ce qui est déjà couvert et
+où le lire.
+
+### Référencement
+
+| Point | Où |
+|---|---|
+| Titre, description et balise canonique **propres à chaque page** | `src/content/site.fr.ts` (`PAGES`), posés au build par `scripts/prerender.mjs` et au fil de la navigation par `src/lib/seo.ts` |
+| Open Graph et Twitter Cards par page | idem |
+| `hreflang` fr / nl / ar réciproques, `og:locale:alternate` | `scripts/prerender.mjs`, `index.html`, `public/sitemap.xml` |
+| Canonique **portant la langue** (`?lang=nl`) | `src/lib/seo.ts` |
+| Données structurées : `Organization`, `Person`, `WebSite`, `SoftwareApplication`, `FAQPage`, `BreadcrumbList` | `index.html` + `scripts/prerender.mjs` |
+| `sitemap.xml` avec variantes de langue, `robots.txt` | `public/` |
+| Une seule `<h1>` par page, hiérarchie Hn sans saut | vérifié au navigateur |
+| Vraie 404 (code 404 + `noindex`), pas de « soft 404 » | `public/.htaccess`, `dist/404.html` |
+
+Le point qui mérite l'attention : une application monopage renvoie le même
+`index.html` pour toutes les routes. Les robots d'aperçu — WhatsApp, LinkedIn,
+X, Slack — n'exécutent pas JavaScript et ne verraient donc que la page
+d'accueil, quelle que soit l'adresse partagée. `scripts/prerender.mjs` écrit une
+copie du HTML par route, avec ses propres balises, et le `.htaccess` y aiguille.
+
+### Performance
+
+- Découpage du JavaScript par bibliothèque (`vite.config.ts`), fond WebGL chargé
+  à la demande.
+- Polices auto-hébergées, les deux du premier écran préchargées avec leur nom
+  haché (`scripts/prerender.mjs`).
+- Logo servi en WebP redimensionné (21 ko contre 76 ko), avec repli PNG ;
+  `width`/`height` posés sur chaque image pour ne pas décaler la mise en page.
+- Exemplaire de l'en-tête en `fetchpriority="high"`, les autres en
+  `loading="lazy"`.
+- Cache immuable d'un an sur les fichiers versionnés, revalidation à chaque
+  visite sur le HTML ; Brotli avec repli gzip.
+
+### Sécurité
+
+- HTTPS forcé, HSTS un an, redirection `www` vers l'apex.
+- CSP sans `'unsafe-inline'` sur les scripts, `frame-ancestors 'none'`,
+  `object-src 'none'`, `upgrade-insecure-requests`.
+- `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
+  `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`.
+- Formulaire : pot de miel, contrôle de l'origine de la requête, quota de
+  5 envois par heure et par IP compté dès la tentative, neutralisation des
+  retours à la ligne contre l'injection d'en-têtes, validation côté serveur.
+  Pas de jeton CSRF : sans session, il n'y a aucun état à détourner — c'est le
+  contrôle d'origine qui écarte le formulaire posté depuis un autre domaine.
+- Aucun cookie déposé : le seul état conservé est le thème et la langue, dans
+  `localStorage`, jamais transmis au serveur. Pas de bandeau de consentement à
+  afficher, et rien à bloquer avant acceptation.
+
+### Accessibilité
+
+- Repères `header` / `nav` / `main` / `footer` uniques ; les maquettes
+  d'application sont annoncées comme des images (`role="img"`) plutôt que comme
+  de faux tableaux.
+- Lien d'évitement, focus visible, navigation au clavier sur le rail de l'année.
+- Contrastes vérifiés au navigateur : le texte blanc ne descend jamais en
+  dessous de 4,5:1 (les pastilles orange sont passées du palier 500 au 700).
+- `alt` sur chaque image, `aria-label` sur les boutons sans texte, `role="alert"`
+  et `role="status"` sur les retours du formulaire.
+- Animations désactivées si le système demande à les réduire.
+
+### Robustesse
+
+- `ErrorBoundary` autour des routes : une erreur de rendu affiche un message et
+  un lien de contact, pas une page blanche.
+- `<noscript>` décrivant la plateforme pour les navigateurs sans JavaScript.
+- Page 404 utile, avec retour à l'accueil.
+
+### Ce qui reste à votre main
+
+- **Mesure d'audience** : aucune n'est installée. Si vous en ajoutez une,
+  choisissez-la sans cookie (Plausible, Matomo sans cookie) pour rester sans
+  bandeau de consentement, et ouvrez `connect-src` dans la CSP.
+- **Suivi des erreurs** (Sentry) : même remarque, il faudra ouvrir la CSP.
+- **HSTS `preload`** : non activé. C'est une inscription difficile à annuler,
+  à ne faire qu'une fois tous les sous-domaines certains d'être en HTTPS.
+- **Search Console et Bing Webmaster Tools** : à relier au domaine, puis y
+  déposer `sitemap.xml`.
+
+---
+
+## 8. Structure du projet
 
 ```
 site/
@@ -288,7 +375,7 @@ anonymiser toute donnée personnelle visible.
 
 ---
 
-## 8. Les techniques d'animation et de performance
+## 9. Les techniques d'animation et de performance
 
 | Technique | Fichier | Ce qu'elle porte |
 | --- | --- | --- |
@@ -305,7 +392,7 @@ anonymiser toute donnée personnelle visible.
 
 ---
 
-## 9. Accessibilité, thèmes et animations
+## 10. Accessibilité, thèmes et animations
 
 - **Thème clair et sombre** : le site s'affiche par défaut dans un thème clair élégant et chaleureux, avec une bascule immédiate vers un mode sombre soigné. Le choix est mémorisé localement dans le navigateur.
 - **Réduction des mouvements** : toutes les animations respectent `prefers-reduced-motion` : le dépliage 3D du hero, les compteurs, le shader WebGL, la révélation mot à mot et le défilement horizontal épinglé se simplifient automatiquement.

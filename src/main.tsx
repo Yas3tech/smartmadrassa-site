@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
-import { initializeLocale, t, locale } from './lib/i18n';
+import { initializeLocale } from './lib/i18n';
 import './styles/index.css';
 
 /**
@@ -13,11 +13,6 @@ import './styles/index.css';
 async function start() {
   await initializeLocale();
   const { default: App } = await import('./App');
-
-  document.title = `SmartMadrassa — ${t('La plateforme de gestion pour écoles associatives et instituts')}`;
-  document
-    .querySelector('meta[property="og:locale"]')
-    ?.setAttribute('content', locale === 'nl' ? 'nl_BE' : locale === 'ar' ? 'ar' : 'fr_BE');
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

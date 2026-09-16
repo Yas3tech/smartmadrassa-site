@@ -19,8 +19,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { transformWithEsbuild } from 'vite';
+import { chargerContenuFrancais } from './lib/contenu.mjs';
 
 const root = process.cwd();
 const listOrphans = process.argv.includes('--list-orphelines');
@@ -30,28 +29,10 @@ const dumpDir = dumpIndex > -1 ? process.argv[dumpIndex + 1] : null;
 
 /** Clefs qui ne sont pas du texte affiché : identifiants, liens, icônes. */
 const STRUCTURAL = new Set([
-  'id', 'href', 'url', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample',
+  'id', 'href', 'url', 'path', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample',
 ]);
 
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
-
-/**
- * Charge le contenu éditorial français. site.fr.ts ne contient que des données,
- * on le transpile donc en mémoire — via esbuild, déjà présent avec Vite — puis
- * on l'importe comme un module ordinaire.
- */
-async function loadFrenchContent() {
-  const file = path.join(root, 'src/content/site.fr.ts');
-  const { code } = await transformWithEsbuild(fs.readFileSync(file, 'utf8'), file, { loader: 'ts' });
-  const compiled = path.join(root, 'node_modules', '.cache-site-fr.mjs');
-  fs.mkdirSync(path.dirname(compiled), { recursive: true });
-  fs.writeFileSync(compiled, code);
-  try {
-    return await import(`${pathToFileURL(compiled).href}?t=${Date.now()}`);
-  } finally {
-    fs.rmSync(compiled, { force: true });
-  }
-}
 
 const strings = new Set();
 function walk(value, key = '') {
@@ -62,7 +43,7 @@ function walk(value, key = '') {
   if (Array.isArray(value)) return value.forEach((item) => walk(item));
   if (value && typeof value === 'object') Object.entries(value).forEach(([k, v]) => walk(v, k));
 }
-Object.values(await loadFrenchContent()).forEach((value) => walk(value));
+Object.values(await chargerContenuFrancais(root)).forEach((value) => walk(value));
 
 /** Chaînes passées à t('…') dans les composants. */
 function sourceFiles(dir) {

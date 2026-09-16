@@ -69,7 +69,7 @@ export function Header() {
           )}
         >
           <Link to={localizedHref('/')} aria-label={`${SITE.name} — ${t('accueil')}`} className="shrink-0">
-            <Logo className="[&_.logo-wordmark]:hidden min-[400px]:[&_.logo-wordmark]:inline [&_.logo-wordmark]:text-[13px] sm:[&_.logo-wordmark]:text-[17px]" />
+            <Logo priority className="[&_.logo-wordmark]:hidden min-[400px]:[&_.logo-wordmark]:inline [&_.logo-wordmark]:text-[13px] sm:[&_.logo-wordmark]:text-[17px]" />
           </Link>
 
           <nav className="mx-auto hidden items-center gap-1 xl:flex">

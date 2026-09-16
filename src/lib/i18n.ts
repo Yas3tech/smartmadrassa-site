@@ -33,7 +33,7 @@ export function t(source: string): string {
 }
 
 /** Keep identifiers, destinations and the deliberately trilingual demo intact. */
-const structuralKeys = new Set(['id', 'href', 'url', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample']);
+const structuralKeys = new Set(['id', 'href', 'url', 'path', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample']);
 export function translateContent<T>(value: T, key = ''): T {
   if (typeof value === 'string') return (structuralKeys.has(key) ? value : t(value)) as T;
   if (Array.isArray(value)) return value.map(item => translateContent(item)) as T;

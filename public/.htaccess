@@ -9,12 +9,14 @@
 # AddHandler application/x-httpd-php82 .php
 
 # --- Page d'erreur --------------------------------------------------------
-ErrorDocument 404 /index.html
+# 404.html porte <meta name="robots" content="noindex"> et est servie avec un
+# vrai code 404. Renvoyer index.html en 200 pour une adresse inexistante — ce
+# qu'on appelle une « soft 404 » — pousse Google à indexer des pages d'erreur.
+ErrorDocument 404 /404.html
 
 Options -Indexes -MultiViews
 DirectoryIndex index.html
 
-# --- HTTPS + domaine canonique -------------------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
@@ -27,24 +29,39 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
-  # Application monopage : tout ce qui n'est pas un fichier réel
-  # ni un script PHP est servi par index.html
-  RewriteCond %{REQUEST_URI} !^/api/
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  # --- Routes de l'application monopage ----------------------------------
+  # Chaque route connue est servie par sa propre page, écrite au build par
+  # scripts/prerender.mjs : titre, description, balise canonique et données
+  # structurées qui lui sont propres. Les robots d'aperçu (WhatsApp, LinkedIn,
+  # X) n'exécutent pas JavaScript et ne verraient sinon que la page d'accueil.
+  #
+  # Une adresse inconnue n'est volontairement PAS réécrite : elle tombe sur
+  # ErrorDocument et repart en 404, comme il se doit.
+  RewriteRule ^mentions-legales/?$        /pages/mentions-legales.html        [L]
+  RewriteRule ^confidentialite/?$         /pages/confidentialite.html         [L]
+  RewriteRule ^conditions-utilisation/?$  /pages/conditions-utilisation.html  [L]
 </IfModule>
 
 # --- En-têtes de sécurité -------------------------------------------------
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
-  Header always set X-Frame-Options "SAMEORIGIN"
+  # DENY plutôt que SAMEORIGIN : aucune page du site ne s'intègre elle-même
+  # dans un cadre, autant fermer complètement la porte au clickjacking.
+  Header always set X-Frame-Options "DENY"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
-  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
 
   # Le site n'appelle aucun service tiers : tout est servi depuis son origine.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
+  # style-src autorise l'inline parce que Tailwind et Framer Motion posent des
+  # styles sur l'élément ; script-src reste strict, sans 'unsafe-inline'.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
+
+  # Le contenu est négocié selon l'encodage : sans Vary, un cache partagé peut
+  # servir une réponse compressée à un client qui ne la comprend pas.
+  Header append Vary "Accept-Encoding"
 
   # Les fichiers versionnés par Vite (hash dans le nom) sont immuables
   <FilesMatch "\.(js|css|woff2|woff|svg|png|jpg|jpeg|webp|avif|ico)$">
@@ -60,14 +77,28 @@ DirectoryIndex index.html
   <Files "theme-init.js">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </Files>
+
+  # Le point d'entrée du formulaire n'a rien à faire dans un index.
+  <FilesMatch "\.php$">
+    Header always set X-Robots-Tag "noindex, nofollow"
+    Header always set Cache-Control "no-store"
+  </FilesMatch>
 </IfModule>
 
 # --- Compression ----------------------------------------------------------
+# Brotli d'abord quand le module est disponible : environ 15 % de mieux que
+# gzip sur du texte. mod_deflate prend le relais sinon.
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/x-javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/json application/xml
+  AddOutputFilterByType BROTLI_COMPRESS application/manifest+json image/svg+xml
+</IfModule>
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
   AddOutputFilterByType DEFLATE application/javascript application/x-javascript
   AddOutputFilterByType DEFLATE application/json application/xml
-  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE application/manifest+json image/svg+xml
 </IfModule>
 
 # --- Expiration (repli si mod_headers absent) -----------------------------
@@ -77,6 +108,7 @@ DirectoryIndex index.html
   ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
@@ -84,10 +116,11 @@ DirectoryIndex index.html
 # --- Types MIME -----------------------------------------------------------
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
+  AddType image/webp .webp
   AddType application/manifest+json .webmanifest
 </IfModule>
 
 # --- Protection des fichiers sensibles ------------------------------------
-<FilesMatch "^(\.env|\.htaccess|\.htpasswd|composer\.(json|lock)|package(-lock)?\.json)$">
+<FilesMatch "^(\.env|\.htaccess|\.htpasswd|composer\.(json|lock)|package(-lock)?\.json|pnpm-lock\.yaml|.*\.map|.*\.ts|.*\.tsx)$">
   Require all denied
 </FilesMatch>

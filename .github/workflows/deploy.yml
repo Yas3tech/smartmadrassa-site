@@ -45,7 +45,7 @@ jobs:
       - name: Vérifier que le build est complet
         run: |
           set -e
-          for f in index.html .htaccess robots.txt sitemap.xml og-image.png api/contact.php theme-init.js; do
+          for f in index.html 404.html .htaccess robots.txt sitemap.xml og-image.png api/contact.php theme-init.js pages/mentions-legales.html pages/confidentialite.html pages/conditions-utilisation.html; do
             if [ ! -f "dist/$f" ]; then
               echo "::error::Fichier manquant dans dist/ : $f"
               exit 1

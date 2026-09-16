@@ -7,26 +7,14 @@ import { cn } from '../../lib/utils';
 import { EASE, viewportOnce } from '../../lib/motion';
 import { SectionHeading } from '../ui/primitives';
 
-const FAQ_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ.map((item) => ({
-    '@type': 'Question',
-    name: item.q,
-    acceptedAnswer: { '@type': 'Answer', text: item.a },
-  })),
-};
-
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section id="faq" className="relative py-20 sm:py-28">
-      <script
-        type="application/ld+json"
-        // Balisage FAQ pour les moteurs de recherche.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
-      />
+      {/* Le balisage FAQ (schema.org) est écrit dans le HTML servi par
+          scripts/prerender.mjs : les robots le lisent sans exécuter JavaScript,
+          et il n'apparaît qu'une fois. */}
 
       <div className="container-x">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">

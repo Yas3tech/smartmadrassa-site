@@ -621,3 +621,50 @@ export const TESTIMONIALS: {
   role: string;
   school: string;
 }[] = [];
+
+/**
+ * Métadonnées de tête, page par page.
+ *
+ * Une seule source pour trois consommateurs : le rendu statique au build
+ * (scripts/prerender.mjs), la mise à jour au fil de la navigation
+ * (src/lib/seo.ts), et le sitemap. Les titres visent 50-60 caractères et les
+ * descriptions 150-160 : au-delà, Google tronque.
+ */
+export const PAGES = [
+  {
+    path: '/',
+    title: 'SmartMadrassa — Gestion scolaire pour écoles et instituts',
+    ogTitle: 'SmartMadrassa — Toute votre école dans une seule plateforme',
+    description:
+      'Appel en 30 secondes, notes, bulletins, communication avec les parents et suivi des paiements, dans un seul espace. Trilingue FR/NL/AR, hébergé en Europe.',
+  },
+  {
+    path: '/mentions-legales',
+    title: 'Mentions légales — SmartMadrassa',
+    ogTitle: 'Mentions légales — SmartMadrassa',
+    description:
+      'Éditeur, directeur de la publication, hébergeur et propriété intellectuelle du site smartmadrassa.be, plateforme de gestion scolaire éditée en Belgique.',
+  },
+  {
+    path: '/confidentialite',
+    title: 'Politique de confidentialité — SmartMadrassa',
+    ogTitle: 'Politique de confidentialité — SmartMadrassa',
+    description:
+      'Données collectées par le site, finalités, bases légales, durées de conservation et exercice de vos droits RGPD. Aucun cookie publicitaire, aucun traceur tiers.',
+  },
+  {
+    path: '/conditions-utilisation',
+    title: 'Conditions d’utilisation — SmartMadrassa',
+    ogTitle: 'Conditions d’utilisation — SmartMadrassa',
+    description:
+      'Règles d’accès et d’utilisation du site vitrine smartmadrassa.be : objet, responsabilité, liens externes, informations commerciales et droit applicable.',
+  },
+];
+
+/** Page d'erreur : jamais indexée, mais elle doit rester présentable. */
+export const NOT_FOUND_PAGE = {
+  path: '/404',
+  title: 'Page introuvable — SmartMadrassa',
+  ogTitle: 'Page introuvable — SmartMadrassa',
+  description: 'Cette adresse ne correspond à aucune page du site SmartMadrassa.',
+};

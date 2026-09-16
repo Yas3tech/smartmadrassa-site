@@ -33,6 +33,26 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     repondre(405, ['ok' => false, 'error' => 'Méthode non autorisée.']);
 }
 
+/* --- Origine de la requête ----------------------------------------------
+ * Le formulaire n'a pas de session, donc pas de jeton CSRF à valider : il n'y
+ * a aucun état utilisateur à détourner. Ce qu'on veut écarter, c'est le
+ * formulaire posté depuis un autre domaine, qui sert à relayer du spam.
+ * Origin est envoyé par tous les navigateurs sur une requête POST ; Referer
+ * sert de repli. Une requête sans ni l'un ni l'autre vient d'un outil, pas
+ * d'un navigateur : on la refuse.
+ */
+$origines = [];
+foreach (['HTTP_ORIGIN', 'HTTP_REFERER'] as $cle) {
+    if (!empty($_SERVER[$cle])) {
+        $hote = parse_url((string) $_SERVER[$cle], PHP_URL_HOST);
+        if ($hote !== null && $hote !== false) { $origines[] = strtolower($hote); }
+    }
+}
+$hotesAutorises = ['smartmadrassa.be', 'www.smartmadrassa.be'];
+if (!$origines || !array_intersect($origines, $hotesAutorises)) {
+    repondre(403, ['ok' => false, 'error' => 'Origine de la requête non autorisée.']);
+}
+
 /* --- Pot de miel : rempli uniquement par les robots ---------------------- */
 if (!empty($_POST['website'])) {
     repondre(200, ['ok' => true]); // on fait semblant d'accepter
@@ -49,8 +69,14 @@ if (is_readable($fichierQuota)) {
     $horodatages = array_filter($brut, static fn($t) => is_int($t) && $t > $maintenant - 3600);
 }
 if (count($horodatages) >= MAX_PAR_HEURE) {
+    header('Retry-After: 3600');
     repondre(429, ['ok' => false, 'error' => 'Trop de messages envoyés. Réessayez dans une heure.']);
 }
+
+/* La tentative est comptée tout de suite, avant même la validation : sinon un
+ * robot qui envoie des charges invalides à la chaîne n'est jamais freiné. */
+$horodatages[] = $maintenant;
+@file_put_contents($fichierQuota, json_encode(array_values($horodatages)), LOCK_EX);
 
 /* --- Récupération et validation ----------------------------------------- */
 function champ(string $cle, int $max = 500): string
@@ -136,9 +162,5 @@ if (!$envoye) {
         'error' => 'Le serveur n’a pas pu envoyer le message.',
     ]);
 }
-
-/* --- Mise à jour du quota ------------------------------------------------ */
-$horodatages[] = $maintenant;
-@file_put_contents($fichierQuota, json_encode(array_values($horodatages)));
 
 repondre(200, ['ok' => true]);

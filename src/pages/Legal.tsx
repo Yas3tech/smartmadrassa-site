@@ -16,12 +16,10 @@ function LegalLayout({
   intro: string;
   children: ReactNode;
 }) {
+  // Le titre et la description sont posés par applyPageSeo(), au niveau de la
+  // route : ici on se contente de remonter en haut de la page légale.
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = `${title} — ${SITE.name}`;
-    return () => {
-      document.title = `${SITE.name} — ${t('La plateforme de gestion pour écoles associatives et instituts')}`;
-    };
   }, [title]);
 
   return (

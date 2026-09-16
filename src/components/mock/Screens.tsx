@@ -47,11 +47,13 @@ function Kpi({
 }
 
 function Avatar({ initials, tone = 'brand' }: { initials: string; tone?: 'brand' | 'jade' | 'sky' | 'violet' }) {
+  // Des initiales blanches sur une pastille : c'est le premier arrêt du dégradé,
+  // le plus clair, qui décide de la lisibilité. On part donc du palier 700.
   const tones = {
-    brand: 'from-brand-400 to-brand-600',
-    jade: 'from-jade-400 to-jade-600',
-    sky: 'from-sky-400 to-sky-600',
-    violet: 'from-violet-400 to-violet-600',
+    brand: 'from-brand-700 to-brand-900',
+    jade: 'from-jade-700 to-jade-900',
+    sky: 'from-sky-700 to-sky-900',
+    violet: 'from-violet-700 to-violet-900',
   };
   return (
     <span
@@ -239,7 +241,7 @@ export function AttendanceScreen() {
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="rounded-md bg-brand-500 px-2.5 py-1 text-[9px] font-semibold text-white">{t("Valider l’appel")}</span>
+        <span className="rounded-md bg-brand-700 px-2.5 py-1 text-[9px] font-semibold text-white">{t("Valider l’appel")}</span>
         <span className="inline-flex items-center gap-1 rounded-md border border-contrast/[0.08] px-2.5 py-1 text-[9px] text-slate-400">
           <Download className="h-2.5 w-2.5" />{t(" Export Excel")}</span>
       </div>
@@ -431,7 +433,7 @@ export function CommsScreen() {
               className={cn(
                 'rounded-xl px-2.5 py-1.5 text-[10px] leading-snug',
                 m.from === 'me'
-                  ? 'rounded-tr-sm bg-brand-500/90 text-white'
+                  ? 'rounded-tr-sm bg-brand-700 text-white'
                   : 'rounded-tl-sm bg-contrast/[0.06] text-slate-300',
               )}
             >
@@ -585,7 +587,7 @@ export function PhoneAttendanceScreen() {
         ))}
       </div>
 
-      <div className="rounded-lg bg-gradient-to-r from-brand-500 to-brand-600 py-2 text-center text-[10px] font-semibold text-white">{t("Valider l’appel")}</div>
+      <div className="rounded-lg bg-gradient-to-r from-brand-700 to-brand-900 py-2 text-center text-[10px] font-semibold text-white">{t("Valider l’appel")}</div>
     </div>
   );
 }

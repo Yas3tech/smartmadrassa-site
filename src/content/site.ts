@@ -22,3 +22,5 @@ export const CTA = translateContent(french.CTA);
 export const CONTACT = translateContent(french.CONTACT);
 export const FOOTER = translateContent(french.FOOTER);
 export const TESTIMONIALS = translateContent(french.TESTIMONIALS);
+export const PAGES = translateContent(french.PAGES);
+export const NOT_FOUND_PAGE = translateContent(french.NOT_FOUND_PAGE);

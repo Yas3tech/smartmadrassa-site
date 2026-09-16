@@ -36,9 +36,9 @@ export function Footer() {
           <div className="grid gap-8 sm:grid-cols-3">
             {FOOTER.columns.map((col) => (
               <div key={col.title}>
-                <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                   {col.title}
-                </h3>
+                </h2>
                 {/* min-h : une cible confortable au doigt, sans casser le rythme vertical. */}
                 <ul className="space-y-0.5">
                   {col.links.map((link) => {

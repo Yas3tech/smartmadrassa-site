@@ -74,7 +74,7 @@ export function Pricing() {
                         aria-hidden
                         className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-brand-500/20 blur-3xl"
                       />
-                      <span className="absolute right-6 top-6 inline-flex items-center gap-1 rounded-full bg-brand-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      <span className="absolute right-6 top-6 inline-flex items-center gap-1 rounded-full bg-brand-700 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                         <Sparkles className="h-3 w-3" />{t(" Recommandé")}</span>
                     </>
                   )}

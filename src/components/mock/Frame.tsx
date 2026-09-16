@@ -45,6 +45,11 @@ export function AppFrame({
 }) {
   return (
     <div
+      // Reproduction en HTML d'une capture d'écran de l'application. Pour une
+      // aide technique c'est une image, pas un document : role="img" fait
+      // annoncer la description et taire le faux tableau qu'elle contient.
+      role="img"
+      aria-label={subtitle ? `${t('Aperçu de l’application')} — ${title} · ${subtitle}` : `${t('Aperçu de l’application')} — ${title}`}
       className={cn(
         'relative overflow-hidden rounded-2xl border border-contrast/10 bg-ink-900',
         'shadow-window',
@@ -68,7 +73,7 @@ export function AppFrame({
           <span className="hidden rounded-full border border-contrast/10 px-2 py-0.5 text-[9px] font-semibold text-slate-400 sm:inline">
             FR
           </span>
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-[8px] font-bold text-white">
+          <span className="grid h-5 w-5 place-items-center rounded-full bg-gradient-to-br from-brand-700 to-brand-900 text-[8px] font-bold text-white">
             YE
           </span>
         </div>
@@ -76,7 +81,7 @@ export function AppFrame({
 
       <div className="flex">
         {/* Navigation latérale */}
-        <aside
+        <div
           className={cn(
             'hidden shrink-0 border-r border-contrast/[0.07] bg-ink-950/50 py-3',
             compact ? 'sm:block sm:w-[52px]' : 'sm:block sm:w-[160px]',
@@ -90,7 +95,7 @@ export function AppFrame({
               </span>
             )}
           </div>
-          <nav className="space-y-0.5 px-2">
+          <div className="space-y-0.5 px-2">
             {NAV_ITEMS.map(({ id, label, Icon }) => {
               const isActive = id === active;
               return (
@@ -109,23 +114,23 @@ export function AppFrame({
                 </div>
               );
             })}
-          </nav>
-        </aside>
+          </div>
+        </div>
 
         {/* Contenu */}
         <div className="min-w-0 flex-1">
-          <header className="flex items-end justify-between gap-3 border-b border-contrast/[0.07] px-4 py-3">
+          <div className="flex items-end justify-between gap-3 border-b border-contrast/[0.07] px-4 py-3">
             <div className="min-w-0">
-              <h3 className="truncate font-display text-[13px] font-semibold text-contrast">{title}</h3>
+              <p className="truncate font-display text-[13px] font-semibold text-contrast">{title}</p>
               {subtitle && <p className="truncate text-[10px] text-slate-500">{subtitle}</p>}
             </div>
             <div className="hidden shrink-0 gap-1.5 sm:flex">
               <span className="rounded-md border border-contrast/[0.08] px-2 py-1 text-[9px] text-slate-400">
                 2025 – 2026
               </span>
-              <span className="rounded-md bg-brand-500/90 px-2 py-1 text-[9px] font-semibold text-white">{t("Enregistrer")}</span>
+              <span className="rounded-md bg-brand-700 px-2 py-1 text-[9px] font-semibold text-white">{t("Enregistrer")}</span>
             </div>
-          </header>
+          </div>
           <div className="p-4">{children}</div>
         </div>
       </div>
@@ -137,6 +142,8 @@ export function AppFrame({
 export function PhoneFrame({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <div
+      role="img"
+      aria-label={t('Aperçu de l’application sur téléphone — appel et présences')}
       className={cn(
         'relative w-[218px] shrink-0 rounded-[2rem] border border-contrast/12 bg-ink-900 p-2',
         'shadow-device',

@@ -10,7 +10,8 @@
       content="SmartMadrassa digitalise votre école : appel et présences en 30 secondes, notes, bulletins automatisés, communication avec les parents, finances et inscriptions. Trilingue FR/NL/AR, hébergé en Europe, conforme RGPD."
     />
     <link rel="canonical" href="https://smartmadrassa.be/" />
-    <meta name="theme-color" content="#faf9f6" />
+    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#04070f" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <script src="/theme-init.js"></script>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -69,12 +70,10 @@
           "priceCurrency": "EUR",
           "description": "Essai gratuit — mise en route accompagnée"
         },
-        "publisher": {
-          "@type": "Person",
-          "name": "Yassine E.",
-          "email": "contact@smartmadrassa.be",
-          "url": "https://smartmadrassa.be"
-        }
+        "publisher": { "@id": "https://smartmadrassa.be/#organisation" },
+        "author": { "@id": "https://smartmadrassa.be/#yassine-e" },
+        "isAccessibleForFree": true,
+        "availableLanguage": ["fr", "nl", "ar"]
       }
     </script>
 

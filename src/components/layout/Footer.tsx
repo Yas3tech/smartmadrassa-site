@@ -83,7 +83,7 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-contrast/[0.07] pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {SITE.name} — {SITE.editor}, {SITE.country}.
+            © {year} {SITE.name} · {SITE.editor}, {SITE.country}.
           </p>
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <span>{t("Conçu et développé en solo, en Belgique")}</span>

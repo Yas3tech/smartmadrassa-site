@@ -77,13 +77,13 @@ export function MentionsLegales() {
       </Article>
 
       <Article title={t("2. Hébergement")}>
-        <p>{t("Le site vitrine est hébergé par ")}<strong>{t("OVH SAS")}</strong>{t(", 2 rue Kellermann, 59100 Roubaix, France — ")}<a href="https://www.ovhcloud.com">ovhcloud.com</a>.
+        <p>{t("Le site vitrine est hébergé par ")}<strong>{t("OVH SAS")}</strong>{t(", 2 rue Kellermann, 59100 Roubaix, France, ")}<a href="https://www.ovhcloud.com">ovhcloud.com</a>.
         </p>
         <p>{t("Les données de la plateforme applicative sont hébergées sur une infrastructure cloud sécurisée située dans l’Union européenne.")}</p>
       </Article>
 
       <Article title={t("3. Propriété intellectuelle")}>
-        <p>{t("L’ensemble des éléments du site — textes, interface, code, identité visuelle — est protégé par le droit d’auteur. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite.")}</p>
+        <p>{t("L’ensemble des éléments du site (textes, interface, code, identité visuelle) est protégé par le droit d’auteur. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable est interdite.")}</p>
         <p>{t("Les noms d’écoles, données d’élèves et captures d’interface présentés sur ce site sont des exemples fictifs créés à des fins d’illustration.")}</p>
       </Article>
 
@@ -132,9 +132,9 @@ export function Confidentialite() {
 
       <Article title={t("3. Finalités et bases légales")}>
         <ul className="space-y-1">
-          <li>{t("Répondre à votre demande de contact ou de démonstration — base légale : mesures précontractuelles prises à votre demande (art. 6.1.b RGPD).")}</li>
-          <li>{t("Assurer la sécurité et le bon fonctionnement du site — base légale : intérêt légitime (art. 6.1.f RGPD).")}</li>
-          <li>{t("Comprendre quelles pages intéressent les visiteurs, afin d’améliorer le site — base légale : votre consentement (art. 6.1.a RGPD), que vous pouvez retirer à tout moment.")}</li>
+          <li>{t("Répondre à votre demande de contact ou de démonstration. Base légale : mesures précontractuelles prises à votre demande (art. 6.1.b RGPD).")}</li>
+          <li>{t("Assurer la sécurité et le bon fonctionnement du site. Base légale : intérêt légitime (art. 6.1.f RGPD).")}</li>
+          <li>{t("Comprendre quelles pages intéressent les visiteurs, afin d’améliorer le site. Base légale : votre consentement (art. 6.1.a RGPD), que vous pouvez retirer à tout moment.")}</li>
         </ul>
       </Article>
 
@@ -155,13 +155,13 @@ export function Confidentialite() {
 
       <Article title={t("6. Transferts hors Union européenne")}>
         <p>{t("Le formulaire de contact et l’hébergement du site ne donnent lieu à aucun transfert hors de l’Union européenne.")}</p>
-        <p>{t("La mesure d’audience, si vous l’acceptez, peut en revanche donner lieu à un transfert vers les États-Unis. Google LLC est certifié au titre du ")}<strong>{t("cadre de protection des données UE–États-Unis")}</strong>{t(", décision d’adéquation de la Commission européenne du 10 juillet 2023, et des clauses contractuelles types complètent ce cadre. Refuser la mesure d’audience suffit à écarter tout transfert.")}</p>
+        <p>{t("La mesure d’audience, si vous l’acceptez, peut en revanche donner lieu à un transfert vers les États-Unis. Google LLC est certifié au titre du ")}<strong>{t("cadre de protection des données UE-États-Unis")}</strong>{t(", décision d’adéquation de la Commission européenne du 10 juillet 2023, et des clauses contractuelles types complètent ce cadre. Refuser la mesure d’audience suffit à écarter tout transfert.")}</p>
       </Article>
 
       <Article title={t("7. Vos droits")}>
         <p>{t("Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité. Pour les exercer, écrivez à")}{' '}
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a>{t(". Une réponse vous parviendra dans un délai d’un mois.")}</p>
-        <p>{t("Vous pouvez également introduire une réclamation auprès de l’")}<strong>{t("Autorité de protection des données")}</strong>{t(" (APD / GBA), Rue de la Presse 35, 1000 Bruxelles —")}{' '}
+        <p>{t("Vous pouvez également introduire une réclamation auprès de l’")}<strong>{t("Autorité de protection des données")}</strong>{t(" (APD / GBA), Rue de la Presse 35, 1000 Bruxelles,")}{' '}
           <a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noreferrer noopener">
             autoriteprotectiondonnees.be
           </a>
@@ -202,7 +202,7 @@ export function Conditions() {
       </Article>
 
       <Article title={t("3. Usage du formulaire de contact")}>
-        <p>{t("Le formulaire est destiné aux demandes professionnelles relatives à la plateforme. Toute utilisation abusive — prospection non sollicitée, contenu illicite, envoi automatisé — peut entraîner le blocage de l’expéditeur.")}</p>
+        <p>{t("Le formulaire est destiné aux demandes professionnelles relatives à la plateforme. Toute utilisation abusive (prospection non sollicitée, contenu illicite, envoi automatisé) peut entraîner le blocage de l’expéditeur.")}</p>
       </Article>
 
       <Article title={t("4. Informations commerciales")}>

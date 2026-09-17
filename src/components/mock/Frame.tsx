@@ -49,7 +49,7 @@ export function AppFrame({
       // aide technique c'est une image, pas un document : role="img" fait
       // annoncer la description et taire le faux tableau qu'elle contient.
       role="img"
-      aria-label={subtitle ? `${t('Aperçu de l’application')} — ${title} · ${subtitle}` : `${t('Aperçu de l’application')} — ${title}`}
+      aria-label={subtitle ? `${t('Aperçu de l’application')}, ${title} · ${subtitle}` : `${t('Aperçu de l’application')}, ${title}`}
       className={cn(
         'relative overflow-hidden rounded-2xl border border-contrast/10 bg-ink-900',
         'shadow-window',
@@ -126,7 +126,7 @@ export function AppFrame({
             </div>
             <div className="hidden shrink-0 gap-1.5 sm:flex">
               <span className="rounded-md border border-contrast/[0.08] px-2 py-1 text-[9px] text-slate-400">
-                2025 – 2026
+                2025-2026
               </span>
               <span className="rounded-md bg-brand-700 px-2 py-1 text-[9px] font-semibold text-white">{t("Enregistrer")}</span>
             </div>
@@ -143,7 +143,7 @@ export function PhoneFrame({ children, className }: { children: ReactNode; class
   return (
     <div
       role="img"
-      aria-label={t('Aperçu de l’application sur téléphone — appel et présences')}
+      aria-label={t('Aperçu de l’application sur téléphone : appel et présences')}
       className={cn(
         'relative w-[218px] shrink-0 rounded-[2rem] border border-contrast/12 bg-ink-900 p-2',
         'shadow-device',

@@ -79,4 +79,13 @@ jobs:
           sleep 5
           code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 https://smartmadrassa.be/)
           echo "https://smartmadrassa.be/ → HTTP $code"
-          [ "$code" = "200" ] || { echo "::error::Le site ne répond pas correctement"; exit 1; }
+          if [ -f dist/construction.html ]; then
+            # Mode construction : le public reçoit la page d'attente (503) et
+            # le cookie d'aperçu, lu dans .htaccess, doit ouvrir le vrai site.
+            jeton=$(grep -oE 'apercu=[0-9a-f]+' dist/.htaccess | head -1 | cut -d= -f2)
+            apercu=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 -b "sm_apercu=$jeton" https://smartmadrassa.be/)
+            echo "Aperçu privé → HTTP $apercu"
+            [ "$code" = "503" ] && [ "$apercu" = "200" ] || { echo "::error::Le mode construction ne s'applique pas correctement"; exit 1; }
+          else
+            [ "$code" = "200" ] || { echo "::error::Le site ne répond pas correctement"; exit 1; }
+          fi

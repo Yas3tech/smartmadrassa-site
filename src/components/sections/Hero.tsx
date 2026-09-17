@@ -159,7 +159,7 @@ export function Hero() {
           <FloatingCard
             className="-left-6 top-12 w-[15.5rem] xl:left-0"
             icon={<CalendarCheck2 className="h-3.5 w-3.5" />}
-            title={t("Appel validé — 3A")}
+            title={t("Appel validé · 3A")}
             body={t("21 présents · 2 absents · 1 retard")}
             delay={1.25}
           />
@@ -178,7 +178,7 @@ export function Hero() {
             <AppFrame
               active="dashboard"
               title={t("Tableau de bord")}
-              subtitle={t("Vue direction — année 2025-2026")}
+              subtitle={t("Vue direction · année 2025-2026")}
               className="mx-auto max-w-4xl"
             >
               <DashboardScreen />

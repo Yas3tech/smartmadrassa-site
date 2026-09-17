@@ -32,14 +32,14 @@ function RoleVisual({ id }: { id: string }) {
   }
   if (id === 'enseignant') {
     return (
-      <AppFrame compact active="attendance" title={t("Appel & présences")} subtitle={t("Arabe — 3A, 09:00")}>
+      <AppFrame compact active="attendance" title={t("Appel & présences")} subtitle={t("Arabe · 3A, 09:00")}>
         <AttendanceScreen />
       </AppFrame>
     );
   }
   if (id === 'parent') {
     return (
-      <AppFrame compact active="grades" title={t("Résultats d’Amina")} subtitle={t("Période 2 — 3A")}>
+      <AppFrame compact active="grades" title={t("Résultats d’Amina")} subtitle={t("Période 2 · 3A")}>
         <GradesScreen />
       </AppFrame>
     );

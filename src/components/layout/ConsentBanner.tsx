@@ -58,7 +58,7 @@ export function ConsentBanner() {
         >
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 rounded-2xl border border-contrast/12 bg-ink-950/98 p-4 shadow-header backdrop-blur-xl sm:p-5">
             <p className="text-pretty text-sm leading-relaxed text-slate-300">
-              {t('J’aimerais mesurer l’audience de ce site — combien de personnes le consultent et quelles pages les intéressent — avec Google Analytics, qui dépose des cookies. Rien n’est envoyé tant que vous n’avez pas accepté, et refuser ne change rien à votre navigation.')}{' '}
+              {t('J’aimerais mesurer l’audience de ce site (combien de personnes le consultent et quelles pages les intéressent) avec Google Analytics, qui dépose des cookies. Rien n’est envoyé tant que vous n’avez pas accepté, et refuser ne change rien à votre navigation.')}{' '}
               <Link
                 to={`${localizedHref('/confidentialite')}#cookies`}
                 className="text-accent underline underline-offset-2"

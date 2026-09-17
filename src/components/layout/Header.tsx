@@ -32,7 +32,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const active = useActiveSection(SECTION_IDS);
-  const isHome = pathname === '/';
+  const isHome = pathname === '/' || ['/fr', '/nl', '/ar', '/fr/', '/nl/', '/ar/'].includes(pathname);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -86,7 +86,7 @@ export function Header() {
           <Link
             to={localizedHref('/')}
             onClick={remonter}
-            aria-label={`${SITE.name} — ${t('accueil')}`}
+            aria-label={`${SITE.name}, ${t('accueil')}`}
             className="shrink-0"
           >
             <Logo priority className="[&_.logo-wordmark]:hidden min-[400px]:[&_.logo-wordmark]:inline [&_.logo-wordmark]:text-[13px] sm:[&_.logo-wordmark]:text-[17px]" />
@@ -94,12 +94,17 @@ export function Header() {
 
           <nav className="mx-auto hidden items-center gap-1 xl:flex">
             {NAV.map((item) => {
-              const id = item.href.replace('#', '');
-              const isActive = isHome && active === id;
+              const isAnchor = item.href.startsWith('#');
+              const id = isAnchor ? item.href.replace('#', '') : '';
+              const isActive = isAnchor ? (isHome && active === id) : pathname.includes(item.href);
+              const targetHref = isAnchor
+                ? (isHome ? item.href : localizedHref(`/${item.href}`))
+                : localizedHref(item.href);
+
               return (
                 <a
                   key={item.href}
-                  href={isHome ? item.href : localizedHref(`/${item.href}`)}
+                  href={targetHref}
                   className={cn(
                     'relative rounded-full px-2.5 py-1.5 text-[13px] font-medium transition-colors',
                     isActive ? 'text-contrast' : 'text-slate-400 hover:text-contrast',
@@ -152,19 +157,25 @@ export function Header() {
             className="fixed inset-0 z-30 overflow-y-auto bg-ink-950/95 backdrop-blur-xl xl:hidden"
           >
             <nav className="flex min-h-full flex-col justify-center gap-1 px-8 pb-8 pt-24">
-              {NAV.map((item, i) => (
-                <motion.a
-                  key={item.href}
-                  href={isHome ? item.href : localizedHref(`/${item.href}`)}
-                  onClick={() => setOpen(false)}
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE }}
-                  className="border-b border-contrast/[0.06] py-4 font-display text-2xl font-semibold text-contrast"
-                >
-                  {item.label}
-                </motion.a>
-              ))}
+              {NAV.map((item, i) => {
+                const isAnchor = item.href.startsWith('#');
+                const targetHref = isAnchor
+                  ? (isHome ? item.href : localizedHref(`/${item.href}`))
+                  : localizedHref(item.href);
+                return (
+                  <motion.a
+                    key={item.href}
+                    href={targetHref}
+                    onClick={() => setOpen(false)}
+                    initial={{ opacity: 0, x: -24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE }}
+                    className="border-b border-contrast/[0.06] py-4 font-display text-2xl font-semibold text-contrast"
+                  >
+                    {item.label}
+                  </motion.a>
+                );
+              })}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}

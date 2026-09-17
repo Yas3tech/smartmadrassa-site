@@ -13,6 +13,8 @@
 # vrai code 404. Renvoyer index.html en 200 pour une adresse inexistante — ce
 # qu'on appelle une « soft 404 » — pousse Google à indexer des pages d'erreur.
 ErrorDocument 404 /404.html
+# Page affichée pendant le mode construction (voir plus bas).
+ErrorDocument 503 /construction.html
 
 Options -Indexes -MultiViews
 DirectoryIndex index.html
@@ -29,17 +31,43 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
-  # --- Routes de l'application monopage ----------------------------------
-  # Chaque route connue est servie par sa propre page, écrite au build par
-  # scripts/prerender.mjs : titre, description, balise canonique et données
-  # structurées qui lui sont propres. Les robots d'aperçu (WhatsApp, LinkedIn,
-  # X) n'exécutent pas JavaScript et ne verraient sinon que la page d'accueil.
-  #
-  # Une adresse inconnue n'est volontairement PAS réécrite : elle tombe sur
-  # ErrorDocument et repart en 404, comme il se doit.
-  RewriteRule ^mentions-legales/?$        /pages/mentions-legales.html        [L]
-  RewriteRule ^confidentialite/?$         /pages/confidentialite.html         [L]
-  RewriteRule ^conditions-utilisation/?$  /pages/conditions-utilisation.html  [L]
+  # --- Mode construction ------------------------------------------------
+  # Actif tant que construction.html existe : les visiteurs voient cette page
+  # avec un code 503, que Google comprend comme une indisponibilité passagère.
+  # Pour voir le vrai site, ouvrir une fois par appareil :
+  #   https://smartmadrassa.be/?apercu=8a7bb2f69e036b0b10f25c36
+  # Un cookie d'un an ouvre ensuite l'accès. Pour ouvrir le site au public,
+  # supprimer public/construction.html et republier.
+  RewriteCond %{QUERY_STRING} (?:^|&)apercu=8a7bb2f69e036b0b10f25c36(?:&|$)
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1? [CO=sm_apercu:8a7bb2f69e036b0b10f25c36:smartmadrassa.be:525600:/:1:1,R=302,L]
+
+  RewriteCond %{DOCUMENT_ROOT}/construction.html -f
+  RewriteCond %{HTTP_COOKIE} !(?:^|;\s*)sm_apercu=8a7bb2f69e036b0b10f25c36(?:;|$)
+  RewriteCond %{REQUEST_URI} !^/(construction\.html|favicon\.ico|icon-192\.png|robots\.txt)$
+  RewriteRule ^ - [R=503,L]
+
+  # --- Rétrocompatibilité et redirection vers /fr/, /nl/, /ar/ ----------
+  # 1. Requêtes avec paramètre ?lang= (anciennes URL)
+  RewriteCond %{QUERY_STRING} (?:^|&)lang=(fr|nl|ar)(?:&|$) [NC]
+  RewriteRule ^(.*)$ /%1/$1? [R=301,L]
+
+  # 2. Anciennes URLs sans préfixe redirigées vers la version française
+  RewriteRule ^(mentions-legales|confidentialite|conditions-utilisation)/?$ /fr/$1/ [R=301,L]
+  RewriteRule ^(tarifs|fonctionnalites|solutions|comparatif|securite-rgpd|guides|contact)(/.*)?$ /fr/$1$2 [R=301,L]
+
+  # --- Servir les pages pré-rendues multilingues ------------------------
+  # Racine d'une langue (/fr/, /nl/, /ar/)
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(fr|nl|ar)/?$ /$1/index.html [L]
+
+  # Sous-pages pré-rendues (/fr/fonctionnalites/presences, etc.)
+  RewriteCond %{DOCUMENT_ROOT}/$1/$2/index.html -f
+  RewriteRule ^(fr|nl|ar)/(.+?)/?$ /$1/$2/index.html [L]
+
+  # Repli monopage si la ressource n'existe pas comme fichier réel
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(fr|nl|ar)/.*$ /$1/index.html [L]
 </IfModule>
 
 # --- En-têtes de sécurité -------------------------------------------------
@@ -61,7 +89,7 @@ DirectoryIndex index.html
   # régional européen.
   # style-src autorise l'inline parce que Tailwind et Framer Motion posent des
   # styles sur l'élément ; script-src n'accepte toujours aucun script en ligne.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; base-uri 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
 
   # Le contenu est négocié selon l'encodage : sans Vary, un cache partagé peut
   # servir une réponse compressée à un client qui ne la comprend pas.

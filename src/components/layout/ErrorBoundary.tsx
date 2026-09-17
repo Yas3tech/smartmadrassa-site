@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
             {t('Une erreur est survenue')}
           </h1>
           <p className="mt-4 text-pretty leading-relaxed text-slate-400">
-            {t('La page n’a pas pu s’afficher correctement. Rechargez-la, et si le problème persiste, écrivez-moi — je corrige.')}
+            {t('La page n’a pas pu s’afficher correctement. Rechargez-la, et si le problème persiste, écrivez-moi et je corrige.')}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <button

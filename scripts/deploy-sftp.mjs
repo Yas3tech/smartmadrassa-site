@@ -44,7 +44,21 @@ const PORT = Number(process.env.SFTP_PORT || 22);
 const REMOTE = remoteOverride || process.env.SFTP_REMOTE_PATH || `/home/${USER}/www`;
 
 /** Fichiers dont l'absence signale un build incomplet : on refuse de publier. */
-const REQUIS = ['index.html', '404.html', '.htaccess', 'robots.txt', 'sitemap.xml', 'api/contact.php', 'theme-init.js', 'pages/mentions-legales.html', 'pages/confidentialite.html', 'pages/conditions-utilisation.html'];
+const REQUIS = [
+  'index.html',
+  'fr/index.html',
+  'nl/index.html',
+  'ar/index.html',
+  '404.html',
+  '.htaccess',
+  'robots.txt',
+  'sitemap.xml',
+  'api/contact.php',
+  'theme-init.js',
+  'pages/mentions-legales.html',
+  'pages/confidentialite.html',
+  'pages/conditions-utilisation.html',
+];
 
 function echec(message) {
   console.error(`\n✖ ${message}\n`);

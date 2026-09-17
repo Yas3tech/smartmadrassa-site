@@ -29,7 +29,7 @@ const dumpDir = dumpIndex > -1 ? process.argv[dumpIndex + 1] : null;
 
 /** Clefs qui ne sont pas du texte affiché : identifiants, liens, icônes. */
 const STRUCTURAL = new Set([
-  'id', 'href', 'url', 'path', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample',
+  'id', 'href', 'url', 'path', 'appUrl', 'domain', 'email', 'icon', 'accent', 'span', 'mock', 'dir', 'code', 'sample', 'slug', 'categoryHref', 'step',
 ]);
 
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
@@ -37,10 +37,13 @@ const norm = (s) => s.replace(/\s+/g, ' ').trim();
 const strings = new Set();
 function walk(value, key = '') {
   if (typeof value === 'string') {
-    if (!STRUCTURAL.has(key)) strings.add(norm(value));
+    const v = norm(value);
+    if (!STRUCTURAL.has(key) && !/^[0-9\s\/·%+€\.,-]+$/.test(v) && v.length > 0) {
+      strings.add(v);
+    }
     return;
   }
-  if (Array.isArray(value)) return value.forEach((item) => walk(item));
+  if (Array.isArray(value)) return value.forEach((item) => walk(item, key));
   if (value && typeof value === 'object') Object.entries(value).forEach(([k, v]) => walk(v, k));
 }
 Object.values(await chargerContenuFrancais(root)).forEach((value) => walk(value));

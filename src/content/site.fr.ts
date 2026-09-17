@@ -3,24 +3,28 @@
  * Tout le texte affiché vit ici : modifier ce fichier suffit à faire évoluer le site.
  */
 
+import { CONTENT_PAGES } from './pagesData';
+export { CONTENT_PAGES };
+
 export const SITE = {
   name: 'SmartMadrassa',
   domain: 'smartmadrassa.be',
   url: 'https://smartmadrassa.be',
   appUrl: 'https://wns.smartmadrassa.be',
   email: 'contact@smartmadrassa.be',
-  editor: 'Yassine E. — créateur et éditeur indépendant',
+  editor: 'Yassine E., créateur et éditeur indépendant',
   country: 'Belgique',
   tagline: 'Toute votre école, dans une seule plateforme.',
 };
 
 export const NAV = [
   { label: 'Plateforme', href: '#plateforme' },
-  { label: 'Modules', href: '#modules' },
-  { label: 'Pour qui', href: '#roles' },
-  { label: 'Sécurité', href: '#securite' },
-  { label: 'Tarifs', href: '#tarifs' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Fonctionnalités', href: '/fonctionnalites' },
+  { label: 'Solutions', href: '/solutions' },
+  { label: 'Tarifs', href: '/tarifs' },
+  { label: 'Comparatif', href: '/comparatif' },
+  { label: 'Sécurité & RGPD', href: '/securite-rgpd' },
+  { label: 'Guides', href: '/guides' },
 ];
 
 export const HERO = {
@@ -28,7 +32,7 @@ export const HERO = {
   titleLines: ['Toute votre école,', 'dans une seule'],
   titleAccent: 'plateforme.',
   subtitle:
-    'SmartMadrassa remplace les feuilles d’appel, les groupes WhatsApp et les tableurs de notes par un espace unique — pour la direction, les enseignants, les parents et les élèves. Trilingue FR / NL / AR, accessible depuis n’importe quel téléphone.',
+    'SmartMadrassa remplace les feuilles d’appel, les groupes WhatsApp et les tableurs de notes par un espace unique, pour la direction, les enseignants, les parents et les élèves. Trilingue FR / NL / AR, accessible depuis n’importe quel téléphone.',
   primaryCta: { label: 'Demander une démo', href: '#contact' },
   secondaryCta: { label: 'Voir la plateforme', href: '#plateforme' },
   proofs: ['Aucune installation', 'Mise en route accompagnée', 'Vos données restent les vôtres'],
@@ -80,7 +84,7 @@ export const STATS = [
 export const PROBLEM = {
   eyebrow: 'Le quotidien, avant',
   title: 'Une école tourne rarement sur un seul outil.',
-  lead: 'Elle tourne sur un classeur de présences, trois groupes WhatsApp, un tableur de notes que seule une personne sait ouvrir, et beaucoup de mémoire humaine. Ça fonctionne — jusqu’au jour où ça ne fonctionne plus.',
+  lead: 'Elle tourne sur un classeur de présences, trois groupes WhatsApp, un tableur de notes que seule une personne sait ouvrir, et beaucoup de mémoire humaine. Ça fonctionne, jusqu’au jour où ça ne fonctionne plus.',
   before: {
     label: 'Sans SmartMadrassa',
     items: [
@@ -112,7 +116,7 @@ export const PROBLEM = {
 export const MANIFESTO = {
   eyebrow: 'Mon parti pris',
   text: 'Une école ne tourne pas grâce à un tableau de bord. Elle tourne grâce à des gens qui, entre deux cours, notent une absence, rassurent un parent, retrouvent un bulletin. Ce sont ces minutes-là que j’ai voulu leur rendre.',
-  signature: 'Yassine E. — concepteur de SmartMadrassa',
+  signature: 'Yassine E., concepteur de SmartMadrassa',
 };
 
 /** Traversée horizontale d'une année scolaire (section épinglée). */
@@ -122,7 +126,7 @@ export const YEAR = {
   lead: 'La plateforme suit le calendrier réel d’une école. Voici ce qu’elle prend en charge, mois après mois.',
   stops: [
     {
-      period: 'Août – septembre',
+      period: 'Août à septembre',
       title: 'La rentrée',
       body: 'Import des élèves et des familles, constitution des classes, envoi des accès aux parents dans leur langue.',
       metric: '1 semaine',
@@ -131,7 +135,7 @@ export const YEAR = {
       accent: 'jade',
     },
     {
-      period: 'Septembre – décembre',
+      period: 'Septembre à décembre',
       title: 'Le rythme de croisière',
       body: 'Appel à chaque cours, notes saisies au fil de l’eau, devoirs publiés, annonces envoyées aux bonnes personnes.',
       metric: '30 s',
@@ -149,7 +153,7 @@ export const YEAR = {
       accent: 'violet',
     },
     {
-      period: 'Janvier – mars',
+      period: 'Janvier à mars',
       title: 'Le suivi qui compte',
       body: 'Repérage des absences répétées, relance des minervals impayés, échanges directs avec les familles concernées.',
       metric: '2 clics',
@@ -158,7 +162,7 @@ export const YEAR = {
       accent: 'sky',
     },
     {
-      period: 'Avril – juin',
+      period: 'Avril à juin',
       title: 'La dernière ligne droite',
       body: 'Examens, moyennes annuelles, bulletins de fin d’année téléchargeables par chaque parent en PDF.',
       metric: '0 ressaisie',
@@ -196,7 +200,7 @@ export const MODULES: AppModule[] = [
     eyebrow: 'Module 01',
     title: 'L’appel, réglé en trente secondes',
     description:
-      'L’enseignant ouvre son cours du jour, tape sur les élèves absents, valide. La direction voit le résultat immédiatement — par classe, par élève, par période.',
+      'L’enseignant ouvre son cours du jour, tape sur les élèves absents, valide. La direction voit le résultat immédiatement : par classe, par élève, par période.',
     bullets: [
       'Présent · Absent · Retard · Justifié, en un geste',
       'Vue générale direction, filtrable par classe et par dates',
@@ -256,7 +260,7 @@ export const MODULES: AppModule[] = [
     eyebrow: 'Module 05',
     title: 'Les frais de scolarité, enfin lisibles',
     description:
-      'Minerval, cotisations et frais d’activité suivis par élève. Qui a payé, qui doit encore, combien il manque — et un reçu PDF généré pour chaque règlement.',
+      'Minerval, cotisations et frais d’activité suivis par élève. Qui a payé, qui doit encore, combien il manque, avec un reçu PDF généré pour chaque règlement.',
     bullets: [
       'Statut par élève : payé, partiel, en attente',
       'Indicateurs clés : encaissé, restant dû, taux de recouvrement',
@@ -379,7 +383,7 @@ export const STEPS = [
   {
     n: '01',
     title: 'Je reprends vos fichiers',
-    body: 'Vous me transmettez vos listes existantes — Excel, Word, papier scanné. Classes, élèves, parents et enseignants sont importés puis vérifiés avec vous.',
+    body: 'Vous me transmettez vos listes existantes : Excel, Word, papier scanné. Classes, élèves, parents et enseignants sont importés puis vérifiés avec vous.',
     duration: 'Jour 1 à 3',
   },
   {
@@ -391,7 +395,7 @@ export const STEPS = [
   {
     n: '03',
     title: 'Je forme votre équipe',
-    body: 'Une session courte par profil — direction, enseignants, secrétariat. L’interface est volontairement simple : une heure suffit en général.',
+    body: 'Une session courte par profil : direction, enseignants, secrétariat. L’interface est volontairement simple : une heure suffit en général.',
     duration: 'Semaine 2',
   },
   {
@@ -429,7 +433,7 @@ export const SECURITY = {
     },
     {
       title: 'Traçabilité des actions',
-      body: 'Les opérations sensibles — publication de bulletins, modification de notes, suppression de comptes — sont horodatées et attribuées.',
+      body: 'Les opérations sensibles (publication de bulletins, modification de notes, suppression de comptes) sont horodatées et attribuées.',
       icon: 'scroll',
     },
     {
@@ -443,7 +447,7 @@ export const SECURITY = {
 export const LANGUAGES = {
   eyebrow: 'Trilingue',
   title: 'Chaque famille dans sa langue',
-  lead: 'En Belgique, une même école accueille souvent des familles francophones, néerlandophones et arabophones. L’interface s’adapte à chacune — et pas seulement les libellés : toute la mise en page bascule en RTL pour l’arabe.',
+  lead: 'En Belgique, une même école accueille souvent des familles francophones, néerlandophones et arabophones. L’interface s’adapte à chacune, et pas seulement les libellés : toute la mise en page bascule en RTL pour l’arabe.',
   items: [
     { code: 'FR', label: 'Français', sample: 'Bulletin du 2ᵉ trimestre publié', dir: 'ltr' as const },
     { code: 'NL', label: 'Nederlands', sample: 'Rapport 2de trimester gepubliceerd', dir: 'ltr' as const },
@@ -455,7 +459,7 @@ export const PRICING = {
   eyebrow: 'Tarifs',
   title: 'Un prix clair, sans surprise en cours d’année',
   lead: 'Facturation mensuelle ou annuelle. Mise en route, import des données et formation inclus dans toutes les formules.',
-  note: 'Tarifs indicatifs par établissement, à confirmer ensemble selon vos besoins. Les écoles associatives sans but lucratif bénéficient d’un tarif adapté — parlons-en.',
+  note: 'Tarifs indicatifs par établissement, à confirmer ensemble selon vos besoins. Les écoles associatives sans but lucratif bénéficient d’un tarif adapté. Parlons-en.',
   plans: [
     {
       id: 'essentiel',
@@ -529,7 +533,7 @@ export const FAQ = [
   },
   {
     q: 'Comment récupérez-vous nos données existantes ?',
-    a: 'Vous m’envoyez ce que vous avez — un Excel, un export d’un autre logiciel, voire des listes papier scannées. Je me charge de la mise en forme et de l’import, puis nous validons ensemble avant l’ouverture aux familles.',
+    a: 'Vous m’envoyez ce que vous avez : un Excel, un export d’un autre logiciel, voire des listes papier scannées. Je me charge de la mise en forme et de l’import, puis nous validons ensemble avant l’ouverture aux familles.',
   },
   {
     q: 'Les parents doivent-ils créer un compte eux-mêmes ?',
@@ -581,27 +585,36 @@ export const FOOTER = {
     'Un projet indépendant, conçu et développé en solo par Yassine E. pour simplifier le quotidien des écoles associatives, instituts de langues et structures de soutien scolaire.',
   columns: [
     {
-      title: 'Plateforme',
+      title: 'Fonctionnalités',
       links: [
-        { label: 'Vue d’ensemble', href: '/#plateforme' },
-        { label: 'Modules', href: '/#modules' },
-        { label: 'Pour qui', href: '/#roles' },
-        { label: 'Sécurité', href: '/#securite' },
-        { label: 'Tarifs', href: '/#tarifs' },
+        { label: 'Vue d’ensemble', href: '/fonctionnalites' },
+        { label: 'Présences & appel', href: '/fonctionnalites/presences' },
+        { label: 'Notes & bulletins', href: '/fonctionnalites/bulletins-notes' },
+        { label: 'Badges scolaires A4', href: '/fonctionnalites/badges-scolaires' },
+        { label: 'Fiches santé Art. 9', href: '/fonctionnalites/sante-urgence' },
+        { label: 'Cotisations & reçus A5', href: '/fonctionnalites/paiements-recus' },
+        { label: 'Application parents', href: '/fonctionnalites/application-parents' },
       ],
     },
     {
-      title: 'Ressources',
+      title: 'Solutions & Comparatif',
       links: [
-        { label: 'Questions fréquentes', href: '/#faq' },
-        { label: 'Mise en route', href: '/#demarrage' },
-        { label: 'Me contacter', href: '/#contact' },
-        { label: 'Accéder à mon espace', href: SITE.appUrl, external: true },
+        { label: 'Écoles associatives', href: '/solutions/ecoles-associatives' },
+        { label: 'Grands instituts', href: '/solutions/instituts-reseaux' },
+        { label: 'Tarifs transparents', href: '/tarifs' },
+        { label: 'Comparatif logiciels', href: '/comparatif' },
+        { label: 'Alternative Pronote', href: '/comparatif/logiciels-generiques' },
+        { label: 'Sécurité & RGPD', href: '/securite-rgpd' },
       ],
     },
     {
-      title: 'Légal',
+      title: 'Ressources & Légal',
       links: [
+        { label: 'Guides pratiques', href: '/guides' },
+        { label: 'Choisir son logiciel', href: '/guides/choisir-logiciel-ecole' },
+        { label: 'Réussir sa rentrée', href: '/guides/reussir-sa-rentree' },
+        { label: 'Gestion des présences', href: '/guides/gestion-presences' },
+        { label: 'Demander une démo', href: '/contact' },
         { label: 'Mentions légales', href: '/mentions-legales' },
         { label: 'Confidentialité (RGPD)', href: '/confidentialite' },
         { label: 'Conditions d’utilisation', href: '/conditions-utilisation' },
@@ -633,29 +646,35 @@ export const TESTIMONIALS: {
 export const PAGES = [
   {
     path: '/',
-    title: 'SmartMadrassa — Gestion scolaire pour écoles et instituts',
-    ogTitle: 'SmartMadrassa — Toute votre école dans une seule plateforme',
+    title: 'SmartMadrassa | Gestion scolaire pour écoles et instituts',
+    ogTitle: 'SmartMadrassa | Toute votre école dans une seule plateforme',
     description:
       'Appel en 30 secondes, notes, bulletins, communication avec les parents et suivi des paiements, dans un seul espace. Trilingue FR/NL/AR, hébergé en Europe.',
   },
+  ...CONTENT_PAGES.map((page) => ({
+    path: `/${page.slug}`,
+    title: `${page.title} | SmartMadrassa`,
+    ogTitle: `${page.ogTitle}`,
+    description: page.description,
+  })),
   {
     path: '/mentions-legales',
-    title: 'Mentions légales — SmartMadrassa',
-    ogTitle: 'Mentions légales — SmartMadrassa',
+    title: 'Mentions légales | SmartMadrassa',
+    ogTitle: 'Mentions légales | SmartMadrassa',
     description:
       'Éditeur, directeur de la publication, hébergeur et propriété intellectuelle du site smartmadrassa.be, plateforme de gestion scolaire éditée en Belgique.',
   },
   {
     path: '/confidentialite',
-    title: 'Politique de confidentialité — SmartMadrassa',
-    ogTitle: 'Politique de confidentialité — SmartMadrassa',
+    title: 'Politique de confidentialité | SmartMadrassa',
+    ogTitle: 'Politique de confidentialité | SmartMadrassa',
     description:
       'Données collectées par le site, finalités, bases légales, durées de conservation et exercice de vos droits RGPD. Aucun cookie publicitaire, aucun traceur tiers.',
   },
   {
     path: '/conditions-utilisation',
-    title: 'Conditions d’utilisation — SmartMadrassa',
-    ogTitle: 'Conditions d’utilisation — SmartMadrassa',
+    title: 'Conditions d’utilisation | SmartMadrassa',
+    ogTitle: 'Conditions d’utilisation | SmartMadrassa',
     description:
       'Règles d’accès et d’utilisation du site vitrine smartmadrassa.be : objet, responsabilité, liens externes, informations commerciales et droit applicable.',
   },
@@ -664,7 +683,7 @@ export const PAGES = [
 /** Page d'erreur : jamais indexée, mais elle doit rester présentable. */
 export const NOT_FOUND_PAGE = {
   path: '/404',
-  title: 'Page introuvable — SmartMadrassa',
-  ogTitle: 'Page introuvable — SmartMadrassa',
+  title: 'Page introuvable | SmartMadrassa',
+  ogTitle: 'Page introuvable | SmartMadrassa',
   description: 'Cette adresse ne correspond à aucune page du site SmartMadrassa.',
 };

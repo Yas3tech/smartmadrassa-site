@@ -33,7 +33,7 @@ export function Testimonials() {
                 <figcaption className="mt-6 border-t border-contrast/[0.07] pt-4">
                   <div className="text-sm font-semibold text-contrast">{t.author}</div>
                   <div className="text-xs text-slate-500">
-                    {t.role} — {t.school}
+                    {t.role}, {t.school}
                   </div>
                 </figcaption>
               </figure>

@@ -105,7 +105,7 @@ export function DashboardScreen() {
       <div className="grid gap-2 sm:grid-cols-[1.4fr_1fr]">
         <div className="ui-pane">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-slate-300">{t("Présence — 7 derniers jours")}</span>
+            <span className="text-[10px] font-semibold text-slate-300">{t("Présence · 7 derniers jours")}</span>
             <span className="inline-flex items-center gap-1 text-[9px] text-success">
               <TrendingUp className="h-2.5 w-2.5" /> +3,2 %
             </span>
@@ -135,9 +135,9 @@ export function DashboardScreen() {
           <div className="mb-2 text-[10px] font-semibold text-slate-300">{t("Prochains cours")}</div>
           <div className="space-y-1.5">
             {[
-              ['09:00', t("Arabe — 3A"), 'brand'],
-              ['10:30', t("Coran — 2B"), 'jade'],
-              ['13:15', t("Sciences — 4A"), 'sky'],
+              ['09:00', t("Arabe · 3A"), 'brand'],
+              ['10:30', t("Coran · 2B"), 'jade'],
+              ['13:15', t("Sciences · 4A"), 'sky'],
             ].map(([time, label, tone]) => (
               <div key={label} className="flex items-center gap-2 rounded-md bg-contrast/[0.03] px-2 py-1.5">
                 <span className="font-mono text-[9px] text-slate-500">{time}</span>
@@ -208,7 +208,7 @@ export function AttendanceScreen() {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="ui-chip bg-brand-500/15 text-accent ring-1 ring-inset ring-brand-500/25">{t("Classe 3A")}</span>
-        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Arabe — 09:00")}</span>
+        <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Arabe · 09:00")}</span>
         <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Lun. 16 sept.")}</span>
         <span className="ml-auto inline-flex items-center gap-1 text-[9px] text-success">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-jade-400" />{t(" Synchronisé")}</span>
@@ -257,7 +257,7 @@ const GRADES = [
   { name: t("Amina Benali"), initials: 'AB', scores: ['18', '16', '17'], avg: '17,0' },
   { name: t("Youssef Haddad"), initials: 'YH', scores: ['14', '15', '13'], avg: '14,0' },
   { name: t("Lina De Smet"), initials: 'LD', scores: ['12', '17', '15'], avg: '14,7' },
-  { name: t("Omar Cherkaoui"), initials: 'OC', scores: ['16', '—', '18'], avg: '17,0' },
+  { name: t("Omar Cherkaoui"), initials: 'OC', scores: ['16', 'ABS', '18'], avg: '17,0' },
   { name: t("Sara Vermeulen"), initials: 'SV', scores: ['19', '18', '19'], avg: '18,7' },
 ];
 
@@ -265,7 +265,7 @@ export function GradesScreen() {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="ui-chip bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">{t("Arabe — 3A")}</span>
+        <span className="ui-chip bg-jade-500/15 text-success ring-1 ring-inset ring-jade-500/25">{t("Arabe · 3A")}</span>
         <span className="ui-chip bg-contrast/[0.04] text-slate-400">{t("Période 2")}</span>
         <span className="ml-auto ui-chip bg-contrast/[0.04] text-slate-400">{t("Moyenne classe 16,3")}</span>
       </div>
@@ -296,7 +296,7 @@ export function GradesScreen() {
                 key={j}
                 className={cn(
                   'mx-auto w-8 rounded-md py-0.5 text-center font-mono text-[10px]',
-                  s === '—'
+                  s === 'ABS'
                     ? 'text-slate-600'
                     : Number(s.replace(',', '.')) >= 16
                       ? 'bg-jade-500/12 text-success'
@@ -403,7 +403,7 @@ export function BulletinScreen() {
 
 const THREAD = [
   { from: 'them', name: t("Mme Benali"), initials: 'MB', text: t("Bonjour, Amina sera absente vendredi (rendez-vous médical).") },
-  { from: 'me', name: t("Direction"), initials: 'YE', text: t("Bonjour, c’est noté — l’absence sera marquée comme justifiée.") },
+  { from: 'me', name: t("Direction"), initials: 'YE', text: t("Bonjour, c’est noté. L’absence sera marquée comme justifiée.") },
   { from: 'them', name: t("Mme Benali"), initials: 'MB', text: t("Merci beaucoup, bonne journée.") },
 ];
 
@@ -452,7 +452,7 @@ export function CommsScreen() {
         <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-300">
           <Megaphone className="h-3 w-3 text-accent" />{t(" Nouvelle annonce")}</div>
         <div className="rounded-lg border border-contrast/[0.07] bg-ink-950/60 p-2">
-          <div className="text-[10px] font-medium text-slate-200">{t("Réunion de parents — 12 octobre")}</div>
+          <div className="text-[10px] font-medium text-slate-200">{t("Réunion de parents · 12 octobre")}</div>
           <p className="mt-1 text-[9px] leading-relaxed text-slate-500">{t("Chers parents, la réunion se tiendra le samedi 12 octobre à 14 h dans la grande salle…")}</p>
         </div>
         <div className="space-y-1">
@@ -552,7 +552,7 @@ export function PhoneAttendanceScreen() {
     <div className="space-y-2.5 px-3 pb-3 pt-2">
       <div>
         <div className="text-[9px] text-slate-500">{t("Lundi 16 septembre")}</div>
-        <div className="font-display text-[13px] font-semibold text-contrast">{t("Arabe — 3A")}</div>
+        <div className="font-display text-[13px] font-semibold text-contrast">{t("Arabe · 3A")}</div>
       </div>
 
       <div className="grid grid-cols-3 gap-1.5">
@@ -605,10 +605,10 @@ export const SCREEN_META: Record<
   keyof typeof SCREENS,
   { nav: string; title: string; subtitle: string }
 > = {
-  dashboard: { nav: 'dashboard', title: t("Tableau de bord"), subtitle: t("Vue direction — année 2025-2026") },
-  attendance: { nav: 'attendance', title: t("Appel & présences"), subtitle: t("Marquer la présence — cours du jour") },
-  grades: { nav: 'grades', title: t("Notes"), subtitle: t("Saisie par matière — Arabe, période 2") },
+  dashboard: { nav: 'dashboard', title: t("Tableau de bord"), subtitle: t("Vue direction · année 2025-2026") },
+  attendance: { nav: 'attendance', title: t("Appel & présences"), subtitle: t("Marquer la présence · cours du jour") },
+  grades: { nav: 'grades', title: t("Notes"), subtitle: t("Saisie par matière · Arabe, période 2") },
   bulletin: { nav: 'bulletin', title: t("Bulletins"), subtitle: t("Avancement et publication par classe") },
   comms: { nav: 'comms', title: t("Messages & annonces"), subtitle: t("Canal officiel de l’école") },
-  finance: { nav: 'finance', title: t("Finances"), subtitle: t("Minerval et cotisations — 2025-2026") },
+  finance: { nav: 'finance', title: t("Finances"), subtitle: t("Minerval et cotisations · 2025-2026") },
 };

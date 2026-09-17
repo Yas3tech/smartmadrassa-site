@@ -18,6 +18,11 @@ ErrorDocument 503 /construction.html
 
 Options -Indexes -MultiViews
 DirectoryIndex index.html
+# Les pages vivent dans des dossiers (fr/tarifs/index.html) mais leur adresse
+# n'a pas de barre finale : c'est celle des canoniques, du sitemap et des liens.
+# Sans cette ligne, Apache ajoute la barre par une redirection qui contredit la
+# canonique (et y colle un « :443 »).
+DirectorySlash Off
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
@@ -49,11 +54,15 @@ DirectoryIndex index.html
   # --- Rétrocompatibilité et redirection vers /fr/, /nl/, /ar/ ----------
   # 1. Requêtes avec paramètre ?lang= (anciennes URL)
   RewriteCond %{QUERY_STRING} (?:^|&)lang=(fr|nl|ar)(?:&|$) [NC]
-  RewriteRule ^(.*)$ /%1/$1? [R=301,L]
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/%1/$1? [R=301,L]
 
   # 2. Anciennes URLs sans préfixe redirigées vers la version française
-  RewriteRule ^(mentions-legales|confidentialite|conditions-utilisation)/?$ /fr/$1/ [R=301,L]
-  RewriteRule ^(tarifs|fonctionnalites|solutions|comparatif|securite-rgpd|guides|contact)(/.*)?$ /fr/$1$2 [R=301,L]
+  RewriteRule ^(mentions-legales|confidentialite|conditions-utilisation)/?$ https://%{HTTP_HOST}/fr/$1 [R=301,L]
+  RewriteRule ^(tarifs|fonctionnalites|solutions|comparatif|securite-rgpd|guides|contact)(/[^/].*?)?/?$ https://%{HTTP_HOST}/fr/$1$2 [R=301,L]
+
+  # 3. Une seule adresse par page : /fr/ avec barre, les sous-pages sans.
+  RewriteRule ^(fr|nl|ar)$ https://%{HTTP_HOST}/$1/ [R=301,L]
+  RewriteRule ^(fr|nl|ar)/(.+)/$ https://%{HTTP_HOST}/$1/$2 [R=301,L]
 
   # --- Servir les pages pré-rendues multilingues ------------------------
   # Racine d'une langue (/fr/, /nl/, /ar/)

@@ -56,13 +56,15 @@ export function translateContent<T>(value: T, key = ''): T {
 
 /** Retire un éventuel préfixe de langue au début d'un chemin. */
 export function stripLocalePrefix(path: string): string {
-  const clean = path.replace(/^\/+/, '');
+  // La barre finale est ignorée : /fr/tarifs/ et /fr/tarifs désignent la même
+  // page, et c'est la forme sans barre qui sert de clé dans PAGES.
+  const clean = path.replace(/^\/+|\/+$/g, '');
   const segments = clean.split('/');
   if ((LANGUAGES as readonly string[]).includes(segments[0])) {
     const rest = segments.slice(1).join('/');
     return rest ? `/${rest}` : '/';
   }
-  return path.startsWith('/') ? path : `/${path}`;
+  return `/${clean}`;
 }
 
 export function localizedHref(href: string): string {
